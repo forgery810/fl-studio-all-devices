@@ -1,0 +1,129 @@
+Start - start:
+
+Stop - stop:
+
+Toggle Record - record:
+
+Toggle Overdub - overdub:
+
+Metronome - metronome:
+
+Song/Pattern - song_pat:
+
+Toggle Countdown - countdown:
+
+Loop Record - loop_record:
+
+Pattern Down - pattern_down:
+
+Pattern Up - pattern_up:
+
+Up Arrow - up:
+
+Down Arrow - down:
+
+Left Arrow - left:
+
+Right Arrow - right:
+
+Enter - enter:
+
+Next - next:
+
+Previous - previous:
+
+Solo - solo:
+
+Mute - mute:
+
+Focus Mixer - focus_mixer:
+
+Focus Channels - focus_channels:
+
+Focus Piano Roll - focus_piano:
+
+Focus Browser - focus_browser:
+
+Focus Playlist - focus_playlist:
+
+Open Plugins - open_plugins:
+
+Rotate Set Windows - rotate_set_windows:
+
+Rotate All Windows - rotate_all:
+
+Escape - escape:
+
+Open Channel - open_channel:
+
+Cut - cut:
+
+Copy - copy:
+
+Copy All - copy_all:
+
+Paste - paste:
+
+Delete - delete:
+
+Undo/Redo - undo:
+
+Next Preset - next_preset:
+
+Previous Preset - prev_preset:
+
+Quick Quantize - quantize:
+
+Shift - shift:
+
+Step Record - step_rec:
+
+Change Color - change_color:
+
+Random Pattern - rand_pat:
+
+Random Notes - rand_notes:
+
+Link Mix/Chan - link_mix:
+
+Route Mixer Track - mixer_route:
+
+Pad Mode - pad_mode:
+
+Save - save:
+
+Step Parameters - step_param:
+
+Tap Tempo - tap_tempo:
+
+Wait for Input - wait_for_input:
+
+Item Menu - item_menu:
+
+Open New Pattern - new_pattern:
+
+Encoder/Pad Range - toggle_range:
+
+Next Preset/Pattern - next_pre_pat:
+
+Prev Preset/Pattern - prev_pre_pat:
+
+Arm Track - arm_track:
+
+Alt - alt:
+
+Octave Up - octave_up:
+
+Menu - menu:
+
+Change Step Parameter - change_step_parameter:
+
+Undo Up - undo_up:
+
+Set Root Note - set_root_note:
+
+Set Scale - increment_scale:
+
+Set Step Range - set_step_range:
+
+Nothing - nothing:

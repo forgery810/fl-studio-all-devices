@@ -12,11 +12,9 @@ import playlist
 import plugins  
 import transport 
 import ui 
-import config_layout as cl
-# import data 
-# from config import Config 
+import data 
+from config import Config 
 from utility import Utility
-from notes import Notes, Scales 
 
 class Shifter():
 

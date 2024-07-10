@@ -13,50 +13,53 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-import config_layout as cl
-# import data 
-# from config import Config 
+from config_layout import cl
+import data 
+from config import Config 
 from utility import Utility
 from notes import Notes, Scales 
+from modes import Modes 
 
 class Action():
 
-	
+	channel_name = ''
+
+	random_max_octave = 3
+	random_min_octave = 6
 	octave_index = 3
 	current_mode = 0
 	# color_num = 0
 	parameter_index = 0
-	mixer_num = 0
+	mixer_num = 0 
 	mixer_send = 0 
-	c = itertools.cycle(cl.defaults["colors"])
 	random_offset = 63
 	rotate_set_count = 0
-	shift_status = False
+	shift_status = 0
 	selected_step = 0
 	# offset_iter = 0
 	# pitch_value = 0
 
-	def call_func(f):
+	def call_func(f, data):
 		print(f)
 		method = getattr(Action, f)
-		return method()
+		return method(data)
 
 	def shift_pattern_right():
 		shift = Shifter()
-		shift.forward()	
+		return shift.forward()	
 
 	def shift_pattern_left():
 		shift = Shifter()
-		shift.back()
+		return shift.back()
 
 	def change_mode():
-		Action.current_mode += 1
-		if (Action.current_mode >= len(cl.modes)):
-			Action.current_mode = 0
-		ui.setHintMsg(cl.modes[Action.current_mode])
+		Modes.current_mode += 1
+		if (Modes.current_mode >= len(Modes.modes)):
+			Modes.current_mode = 0
+		ui.setHintMsg(Modes.modes[Modes.current_mode])
 
 	def get_mode():
-		return cl.modes[Action.current_mode]
+		return cl["default"]["modes"][Action.current_mode]
 
 	def standard_mode():
 		device.midiOutMsg(0xB0, 0x00, 0x7F, 0x00)
@@ -71,17 +74,28 @@ class Action():
 
 	def octave_up():
 		Action.octave_index += 1
-		if (Action.octave_index >= len(cl.octaves)):
+		if (Action.octave_index >= len(Notes.octaves)):
 			Action.octave_index = 0
-		print(Action.get_octave())
+		ui.setHintMsg(f"Octave: {Action.get_octave()}")
 
 	def octave_down():
 		Action.octave_index -= 1
 		if (Action.octave_index < 0):
-			Action.octave_index = len(cl.octaves) - 1
+			Action.octave_index = len(Notes.octaves) - 1
+		ui.setHintMsg(f"Octave: {Action.get_octave()}")
 
 	def get_octave():
-		return cl.octaves[Action.octave_index]
+		return Notes.octaves[Action.octave_index]
+
+	def set_random_max_octave(data2):
+		Action.random_max_octave = int(Utility.mapvalues(data2, 0, 10, 1, 127))
+		ui.setHintMsg(f"Max Octave: {Action.random_max_octave}")
+		return 
+
+	def set_random_min_octave(data2):
+		Action.random_min_octave = int(Utility.mapvalues(data2, 0, 10, 1, 127))
+		ui.setHintMsg(f"Min Octave: {Action.random_min_octave}")
+		return 
 
 	def set_mixer_route(track):
 		Action.mixer_send = track 
@@ -90,7 +104,7 @@ class Action():
 		return Action.mixer_send
 
 	def mixer_route():
-		mixer.setRouteTo(mixer.trackNumber(), Action.get_mixer_route(), 1)
+		return mixer.setRouteTo(mixer.trackNumber(), Action.get_mixer_route(), 1)
 
 	def start():
 		return transport.start()	
@@ -98,7 +112,11 @@ class Action():
 	def step_parameters():
 		if channels.isGraphEditorVisible():
 			ui.escape()
+			print(Action.channel_name)
+			channels.setChannelName(channels.selectedChannel(), Action.channel_name)
+
 		else:
+			Action.channel_name = channels.getChannelName(channels.selectedChannel())
 			channels.showGraphEditor(True, 0, 0, channels.selectedChannel())
 
 	def stop():
@@ -115,7 +133,7 @@ class Action():
 		return transport.setLoopMode()
 
 	def step_rec():
-		transport.globalTransport(midi.FPT_StepEdit, 114)		
+		return transport.globalTransport(midi.FPT_StepEdit, 114)		
 
 	def overdub():
 		return transport.globalTransport(midi.FPT_Overdub, 112)
@@ -133,11 +151,13 @@ class Action():
 		return transport.globalTransport(midi.FPT_PatternJog, 1)
 
 	def jog_wheel_up():
-		print('jog_wheel_up')
 		return ui.jog(1)
 
 	def jog_wheel_down():
 		return ui.jog(-1)
+
+	def open_editor():
+		channels.showEditor();
 
 	def mute():
 		if ui.getFocused(0):
@@ -160,7 +180,7 @@ class Action():
 		if ui.getFocused(5) and channels.getChannelType(channels.channelNumber()) != CT_Sampler:
 			return ui.previous()
 		elif ui.getFocused(widPlaylist):
-			arrangement.jumpToMarker(0, 1)
+			return arrangement.jumpToMarker(0, 1)
 		else:
 			return ui.left()
 
@@ -174,7 +194,8 @@ class Action():
 
 	def enter():
 		if ui.getFocused(4):
-			ui.selectBrowserMenuItem()		
+			ui.selectBrowserMenuItem()
+			Action.focus_browser()
 		elif ui.getFocused(widPlaylist):
 			arrangement.addAutoTimeMarker(arrangement.currentTime(1), str(arrangement.currentTime(1)))
 		else:
@@ -206,7 +227,6 @@ class Action():
 
 	def undo():
 		transport.globalTransport(midi.FPT_Undo, 20)
-		device.midiOutMsg(144, 1, 63, 80)
 
 	def focus_mixer():
 		ui.showWindow(widMixer)
@@ -259,7 +279,6 @@ class Action():
 		ui.next()
 
 	def previous():
-		print('adjkldjaklj')
 		ui.previous()
 
 	def escape():
@@ -276,20 +295,17 @@ class Action():
 	def arm_track():
 		mixer.armTrack(mixer.trackNumber())
 
-	def next():
-		ui.next()
-
-	def previous():
-		ui.previous()
+	def mixer_mute(d):
+		mixer.muteTrack(d["track"])
 
 	def quantize():
 		channels.quickQuantize(channels.channelNumber())
 
 	def rotate_set_windows():
 		Action.rotate_set_count += 1
-		if Action.rotate_set_count >= len(cl.defaults['windows']):
+		if Action.rotate_set_count >= len(cl["defaults"]['windows']):
 			Action.rotate_set_count = 0
-		ui.showWindow(cl.defaults['windows'][Action.rotate_set_count])
+		ui.showWindow(cl["defaults"]['windows'][Action.rotate_set_count])
 
 	def rotate_all():
 		ui.nextWindow()
@@ -356,22 +372,21 @@ class Action():
 			channels.setChannelColor(channels.selectedChannel(), next(Action.c))
 		elif ui.getFocused(widMixer):
 			mixer.setTrackColor(mixer.trackNumber(), next(Action.c))
-		# elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(ModWheel.get_pl_mod_value()):
+		elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(ModWheel.get_pl_mod_value()):
+			playlist.setTrackColor(ModWheel.get_pl_mod_value(), next(Action.c))
 
-		# 	playlist.setTrackColor(ModWheel.get_pl_mod_value(), next(Action.c))
-
-	# def trig_clip():
-	# 	playlist.triggerLiveClip(1, 1, midi.TLC_MuteOthers | midi.TLC_Fill)
-	# 	print(playlist.getLiveStatus(1))
+	def trig_clip():
+		playlist.triggerLiveClip(1, 1, midi.TLC_MuteOthers | midi.TLC_Fill)
+		print(playlist.getLiveStatus(1))
 
 	def rand_pat():
 			"""Function clears pattern and for each step, generates a random number. The number is checked"""
 			
-			for i in range(patterns.getPatternLength(patterns.patternNumber())):
+			for i in range(patterns.getPatternLength(patterns.patternNumber())): 
 				channels.setGridBit(channels.channelNumber(), i, 0)
 			for z in range (patterns.getPatternLength(patterns.patternNumber())):
 				y = Utility.num_gen()
-				if y > ( Action.random_offset * 516):
+				if y < ( Action.random_offset * 516):
 					channels.setGridBit(channels.channelNumber(), z, 1)
 				else:
 					pass
@@ -381,27 +396,31 @@ class Action():
 
 		scale = Scales.get_scale_choice()
 		root = Notes.get_root_note()
-		upper = Notes.get_upper_limit()
-		lower = Notes.get_lower_limit()
+		# upper = Notes.get_upper_limit()
+		# lower = Notes.get_lower_limit()
+		upper = Action.random_max_octave
+		lower = Action.random_min_octave
 		for i in range(patterns.getPatternLength(patterns.patternNumber())):
-			note = Scales.scales[scale][int(Utility.mapvalues(Utility.num_gen(), lower, len(Scales.scales[scale]) + upper, 0, 65535))]
-			# print(note)
+			# note = Scales.scales[scale][int(Utility.mapvalues(Utility.num_gen(), lower, len(Scales.scales[scale]) + upper, 0, 65535))]
+			interval = Scales.scales[scale][int(Utility.mapvalues(Utility.num_gen(), 0, len(Scales.scales[scale]), 0, 65535))]
+			octave = int(Utility.mapvalues(Utility.num_gen(), lower, upper, 0, 65535)) * 12
+			note = interval + octave
 			channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), i, 0, note + root, 1)		
 
 	def shift():
-		if Action.shift_status == False:
-			Action.shift_status = True
+		if Action.shift_status == 0:
+			Action.shift_status = 1
 			ui.setHintMsg('Shift Active')
-		elif Action.shift_status == True:
-			Action.shift_status = False
+		elif Action.shift_status == 1:
+			Action.shift_status = 0
 			ui.setHintMsg('Shift Disabled')
 
 	def get_shift_status():
 		return Action.shift_status
 
-	# def set_random_offset(val):
-	# 	Action.random_offset = val
-
+	def set_random_offset(val):
+		Action.random_offset = val
+		ui.setHintMsg(f'Random: {int(val/127 * 100)}%')
 	# def get_random_offset():
 	# 	return Action.random_offset
 
@@ -414,82 +433,141 @@ class Action():
 	def nothing():
 		pass
 
-# class Shifter():
+	def get_param_from_range(cc):
+		param = 0
+		if cc < 19:
+			param = 0
+		elif cc < 37:
+			param = 1
+		elif cc < 56:
+			param = 2
+		elif cc < 74:
+			param = 3
+		elif cc < 92:
+			param = 4
+		elif cc < 110:
+			param = 5
+		elif cc <= 127:
+			param = 6
+		return param
 
-# 	def __init__(self):
-# 		self.channel = channels.selectedChannel()
-# 		self.pattern = []
-# 		self.pat_num = patterns.patternNumber()
-# 		self.pat_len = patterns.getPatternLength(self.pat_num)
-# 		self.p_str = self.pattern_to_string() 	
-# 		self.p_int = self.str_to_int(self.p_str)
-# 		self.formatted = 0
-# 		self.list_outgoing = []
+	def set_step_parameter(data2):
+		Action.parameter_index = Action.get_param_from_range(data2)
+		print(Action.parameter_index)
+		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
-# 	def back(self):
-# 		self.formatted = format(self.shift_left(), self.get_format())	
-# 		self.list_outgoing = self.str_to_list()
-# 		if len(self.list_outgoing) > self.pat_len:
-# 			self.list_outgoing.pop(0)
-# 		self.write_to_pattern()
+	def set_parameter_value(data2):
 
-# 	def forward(self):
-# 		self.formatted = format(self.shift_right(), self.get_format())	
-# 		self.list_outgoing = self.str_to_list()
-# 		if len(self.list_outgoing) > self.pat_len:
-# 			self.list_outgoing.pop(0)
-# 		self.write_to_pattern()
-
-# 	def pattern_to_string(self):
-# 		"""takes current pattern, appends to list, return string of list"""
-# 		for bit in range(0, self.pat_len):
-# 			self.pattern.append(str(channels.getGridBit(self.channel, bit)))
-# 		return (''.join(self.pattern))
-
-# 	def str_to_int(self, pattern):
-# 		"""takes pattern as string of numbers and returns int"""
-
-# 		return int(pattern, 2)	
-
-# 	def get_format(self):
-# 		"""gets patterns num and returns appropriate string to format in into bits"""
-
-# 		length = patterns.getPatternLength(self.pat_num) + 2
-# 		return f'#0{length}b'
-
-# 	def shift_left(self):
-
-# 		out = (self.p_int << 1) | (self.p_int >> (self.pat_len - 1))
-# 		return out
-
-# 	def shift_right(self):
-
-# 		out = (self.p_int >> 1) | (self.p_int << (self.pat_len - 1)) & self.max_bits(self.pat_len)
-# 		return out
-
-# 	def str_to_list(self):
-# 		"""takes string and returns list without first two characters'b0' """
-
-# 		out_list = []
-# 		for i in self.formatted[2:]:
-# 			out_list.append(int(i))
-# 		return out_list
-
-# 	def write_to_pattern(self):
-# 		"""writes bit shifted pattern to approriate channel"""
-
-# 		inx = 0
-# 		if patterns.patternNumber() == self.pat_num:
-# 			for i in range(patterns.getPatternLength(self.pat_num)):    # clear pattern
-# 				channels.setGridBit(self.channel, i, 0)
-# 			for step in self.list_outgoing:
-# 				channels.setGridBit(self.channel, inx, step)
-# 				inx += 1
-
-# 	def max_bits(self, num):
-# 		"""returns the maximun integer based on num in bits"""
-
-# 		max_num = (1 << num) - 1
-# 		return max_num
+		c = channels.selectedChannel()
+		p = patterns.patternNumber()
+		s = Action.selected_step
+		pi = Action.parameter_index
+		if Action.parameter_index == midi.pModX or Action.parameter_index == midi.pModY: 					
+						#long index, long patNum, long step, long param, long value, (long globalIndex = 0)
+			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(data2, 0 , 255, 0, 127)), 1)
+		elif Action.parameter_index == midi.pFinePitch:	
+			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(data2, 0 , 240, 0, 127)), 1)
+		else:
+			channels.setStepParameterByIndex(c, p, s, pi, data2, 1)
+		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 
+
+class EncoderAction(Action):
+
+	def call_func(f, d2):
+		print(f)
+		method = getattr(EncoderAction, f)
+		print(d2)
+		return method(d2) 
+
+	def set_parameter_value(d2):
+		Action.set_parameter_value(d2)
+
+	def mixer_level(d2):
+		track = int(data['actions'][Action.shift_status][12:15])
+		print(track)
+		Encoder.mixer_level(self.event.data2, track)
+
+	def mixer_pan(d2):
+		track = int(data['actions'][Action.shift_status][10:13])
+		print(track)
+		Encoder.mixer_panning(d2, track)
+
+	def set_random_min_octave(d2):
+		Action.set_random_min_octave(d2)
+
+	def set_random_max_octave(d2):
+		Action.set_random_max_octave(d2)
+
+	def set_step_parameter(d2):
+		Action.set_step_parameter(d2)
+
+	def set_random_offset(d2):
+		Action.set_random_offset(d2)
+
+	def selected_level(d2):
+		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+			Action.set_parameter_value(d2)
+			# channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), Action.selected_step, Action.parameter_index, d2, 1) # int(Utility.level_adjust(d2, param_value, 1)),
+			# channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
+		elif ui.getFocused(midi.widMixer):
+			mixer.setTrackVolume(mixer.trackNumber(), d2/127, True)
+		elif ui.getFocused(midi.widChannelRack):
+			channels.setChannelVolume(channels.selectedChannel(), d2/127, True)
+
+	def selected_pan(d2):
+		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+			Action.set_step_parameter(d2)
+			# Action.parameter_index = Encoder.get_param_from_range(d2)
+			# channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
+		if ui.getFocused(midi.widMixer):
+			mixer.setTrackPan(mixer.trackNumber(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
+		elif ui.getFocused(midi.widChannelRack):
+			channels.setChannelPan(channels.selectedChannel(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
+			# if channels.isGraphEditorVisible():
+			# else:
+
+	def master_mixer_level(d2):
+		mixer.setTrackVolume(0, d2/127, True)
+
+	def set_efx_track(d2):
+		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+			Action.selected_step = EncoderAction.set_step(d2)
+		else:
+			channels.setTargetFxTrack(channels.selectedChannel(), d2)
+
+
+	def set_step(d2):
+		pat_len = patterns.getPatternLength(patterns.patternNumber()) - 1	
+		step = int(Utility.mapvalues(d2, 0, pat_len, 0, 127))
+		# original_name = channels.getChannelName(channels.selectedChannel())
+		# channels.setChannelName(channels.selectedChannel(), str(step + 1))
+		ui.setHintMsg(f"Step: {step + 1}")				
+		return step
+
+
+	def scroll(d2):
+		print(d2)
+		if ui.getFocused(0):
+			mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, 64, 0, 127)))
+			ui.scrollWindow(midi.widMixer, mixer.trackNumber())
+
+		elif ui.getFocused(1):
+			channels.selectOneChannel(int(round(Utility.mapvalues(d2, channels.channelCount()-1, 0, 0, 127), 0)))			
+
+		elif ui.getFocused(2):
+			playlist.deselectAll()
+			playlist.selectTrack(int(Utility.mapvalues(d2, 1, 30, 0, 127)))
+
+		elif ui.getFocused(4):
+			ui.navigateBrowser(midi.FPT_Down, 41)
+
+	def jog_wheel_up(d2):
+		Action.jog_wheel_up()
+
+	def jog_wheel_down(d2):
+		Action.jog_wheel_down()
+
+	def nothing(d2):
+		pass
