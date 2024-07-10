@@ -85,13 +85,15 @@ def AssignLayoutData(bt, kb, sq, en, jw, df):
 			'actions': v['actions'],
 			'channel': v['channel'],
 			'toggle': v['toggle'],
-			'release': v['midi'][3]
+			'release': v['midi'][3],
+			'track': v['track']
 			}
 		d.sequencerData[v['midi'][3]][v['midi'][1]] = { 
 			'actions': v['actions'],
 			'channel': v['channel'],
 			'toggle': v['toggle'],
-			'release': v['midi'][3]
+			'release': v['midi'][3],
+			'track': v['track']
 			}
 	for k, v in en.items():
 		d.encoderData[v['midi'][0]] = {}
@@ -123,4 +125,5 @@ def AssignLayoutData(bt, kb, sq, en, jw, df):
 	plg.knob_num = sorted(set(plg.knob_num))
 	# print(d.keyboardData)
 	# print(d.defaults)
+	# print(d.buttonData)
 	# print(Modes.modes)

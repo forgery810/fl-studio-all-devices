@@ -29,6 +29,7 @@ class Action():
 	octave_index = 3
 	current_mode = 0
 	# color_num = 0
+	active_track = 0
 	parameter_index = 0
 	mixer_num = 0 
 	mixer_send = 0 
@@ -36,13 +37,13 @@ class Action():
 	rotate_set_count = 0
 	shift_status = 0
 	selected_step = 0
+	track_number = -1
 	# offset_iter = 0
 	# pitch_value = 0
 
-	def call_func(f, data):
-		print(f)
+	def call_func(f):
 		method = getattr(Action, f)
-		return method(data)
+		return method()
 
 	def shift_pattern_right():
 		shift = Shifter()
@@ -112,7 +113,6 @@ class Action():
 	def step_parameters():
 		if channels.isGraphEditorVisible():
 			ui.escape()
-			print(Action.channel_name)
 			channels.setChannelName(channels.selectedChannel(), Action.channel_name)
 
 		else:
@@ -295,9 +295,6 @@ class Action():
 	def arm_track():
 		mixer.armTrack(mixer.trackNumber())
 
-	def mixer_mute(d):
-		mixer.muteTrack(d["track"])
-
 	def quantize():
 		channels.quickQuantize(channels.channelNumber())
 
@@ -453,7 +450,6 @@ class Action():
 
 	def set_step_parameter(data2):
 		Action.parameter_index = Action.get_param_from_range(data2)
-		print(Action.parameter_index)
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def set_parameter_value(data2):
@@ -472,27 +468,27 @@ class Action():
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 
+	def mixer_solo():
+		mixer.soloTrack(Action.track_number)
+
+	def mixer_record():
+		mixer.armTrack(Action.track_number);
+
+	def mixer_mute():
+		mixer.muteTrack(Action.track_number)
+
+
 
 class EncoderAction(Action):
 
+	track_number = -1
+
 	def call_func(f, d2):
-		print(f)
 		method = getattr(EncoderAction, f)
-		print(d2)
 		return method(d2) 
 
 	def set_parameter_value(d2):
 		Action.set_parameter_value(d2)
-
-	def mixer_level(d2):
-		track = int(data['actions'][Action.shift_status][12:15])
-		print(track)
-		Encoder.mixer_level(self.event.data2, track)
-
-	def mixer_pan(d2):
-		track = int(data['actions'][Action.shift_status][10:13])
-		print(track)
-		Encoder.mixer_panning(d2, track)
 
 	def set_random_min_octave(d2):
 		Action.set_random_min_octave(d2)
@@ -537,7 +533,6 @@ class EncoderAction(Action):
 		else:
 			channels.setTargetFxTrack(channels.selectedChannel(), d2)
 
-
 	def set_step(d2):
 		pat_len = patterns.getPatternLength(patterns.patternNumber()) - 1	
 		step = int(Utility.mapvalues(d2, 0, pat_len, 0, 127))
@@ -568,6 +563,12 @@ class EncoderAction(Action):
 
 	def jog_wheel_down(d2):
 		Action.jog_wheel_down()
+
+	def mixer_level(d2):
+		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
+
+	def mixer_pan(d2):
+		mixer.setTrackPan(EncoderAction.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
 
 	def nothing(d2):
 		pass
