@@ -30,35 +30,46 @@ class Process(Dispatch):
 		midi_id = self.event.midiId
 		data_1 = self.event.data1
 		data_2 = self.event.data2
-		if d.keyboardData.get(midi_id, {}).get(data_1) and Modes.mode_active('Keyboard'):
+		midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
+		if playlist.getPerformanceModeState() and d.performanceData.get(midi_chan, {}).get(midi_id).get(data_1) and ui.getFocused(widPlaylist):
+			print('performance')
+			if data_2 > 0:
+				Action.performance_row = int(d.performanceData[midi_chan][midi_id][data_1]["actions"][0])
+				Main.set_track(d.performanceData[midi_chan][midi_id][data_1])
+				Action.trig_clip()
+				# Main.transport_act(self, d.performanceData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		elif d.keyboardData.get(midi_id, {}).get(data_1) and Modes.mode_active('Keyboard'):
 				Keys.decide(self, d.keyboardData[midi_id][data_1])
 		elif d.sequencerData.get(midi_id, {}).get(data_1) and Modes.mode_active('Sequencer'):
 			if data_2 > 0 or d.sequencerData.get(midi_id, {}).get(data_1)["toggle"]:
 				Sequencer.step_pressed(self, d.sequencerData[midi_id][data_1])
-		elif d.buttonData.get(midi_id, {}).get(data_1):	
-			if data_2 > 0:
-				Main.set_track(d.buttonData[midi_id][data_1])
-				Main.transport_act(self, d.buttonData[midi_id][data_1]["actions"], Action.shift_status)
-		elif d.encoderData.get(midi_id, {}).get(data_1):
-			Encoder.set_data(d.encoderData[midi_id][data_1])
-			Encoder.set(self, d.encoderData[midi_id][data_1])
-		elif d.jogData.get(midi_id, {}.get(data_1)):
+		elif d.buttonData.get(midi_chan, {}).get(midi_id).get(data_1):	
+				Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
+				Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		elif d.encoderData.get(midi_chan, {}).get(midi_id).get(data_1):
+			Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
+			Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
+		elif d.jogData.get(midi_chan, {}).get(midi_id).get(data_1):
 			if (d.jogData[midi_id].get(data_1)):
-				Encoder.jogWheel(self, d.jogData[midi_id].get(data_1))
+				Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
 		else:
-			self.event.handled = True
+
+			self.event.handled = Config.PREVENT_PASSTHROUGH
 			print('not set')
 
 class Keys(Process):
 
 	oct_iter = 2
 	octave = [-36, -24, -12, 0, 12, 24, 36]
-	notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 	def decide(self, data):
+		index = Notes.note_list.index(data["actions"][0])
+		scale = Scales.scales[Scales.get_scale_choice()]
+		root = Notes.get_root_note()
+		note = scale[index] +  data["track"] * scale[12]  +  Action.get_octave() + 60 
+		channels.midiNoteOn(self.channel, note, self.event.data2)
 		# channels.midiNoteOn(channels.selectedChannel(), Notes.all_notes.index(act) + Action.get_octave() + 60, self.event.data2)
-		channels.midiNoteOn(channels.selectedChannel(), Notes.note_list.index(data["actions"][0]) + (data["track"] * 12) + Action.get_octave() + 60, self.event.data2)
+		# channels.midiNoteOn(channels.selectedChannel(), Notes.note_list.index(data["actions"][0]) + (data["track"] * 12) + Action.get_octave() + 60, self.event.data2)
 		self.event.handled = True
-		# channels.midiNoteOn(channels.selectedChannel(), Keys.notes.index(data) + Action.get_octave() + 60, 127)
 
 	def play_note(self, data):
 		channels.midiNoteOn(channels.selectedChannel(), Keys.notes.index(data) + 36, self.event.data2)
@@ -111,19 +122,15 @@ class Encoder(Process):
 	def set(self, data):
 		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
-
-		elif data['actions'][Action.shift_status][0:12] == 'mixer_level(':
-			track = int(data['actions'][Action.shift_status][12:15])
-			Encoder.mixer_level(self.event.data2, track)
- 
-		elif data['actions'][Action.shift_status][0:10] == 'mixer_pan(':
-			track = int(data['actions'][Action.shift_status][10:13])
-			Encoder.mixer_panning(self.event.data2, track)
 		else:			
 			EncoderAction.call_func(data['actions'][Action.shift_status], self.event.data2)
 
 	def set_data(d):
-		EncoderAction.track_number = d["track"] 
+		if Config.FOLLOW_TRACK and  mixer.trackNumber() != 0:
+			track_offset = cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
+		else:
+			track_offset = 0
+		EncoderAction.track_number = d["track"] + track_offset
 
 	def control_plugin(self):
 		plugin = plugins.getPluginName(channels.selectedChannel())	
@@ -159,15 +166,27 @@ class Main(Process):
 
 	def transport_act(self, offset_event, status):
 		print(f"event: {offset_event[0]}")
-		# print(offset_event[0] in Notes.all_notes)
-		# if offset_event[0] in Notes.all_notes:
-			# Keys.decide(self, offset_event[0], data)
-		# else:
-			# Action.call_func(offset_event[status])
 		Action.call_func(offset_event[status])
 		self.event.handled = True
 
 	def set_track(data):
-		Action.track_number = data["track"]
+		# Action.track_number = data["track"]
+		# if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
+		# 	num_tracks = cl["defaults"]["mixer_tracks"]
+		# 	n, d = divmod(mixer.trackNumber(), num_tracks)
+		# 	if d == 0:
+		# 		mult = (mixer.trackNumber() - 1) // num_tracks
+		# 	else:
+		# 		mult = mixer.trackNumber() // num_tracks
 
+		# 	track_offset = mult * cl["defaults"]["mixer_tracks"]
+		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
+			num_tracks = cl["defaults"]["mixer_tracks"]
+			# this catches an issue when the selected track / mixer_tracks has 0 remainder
+			mult = (mixer.trackNumber() - 1) // num_tracks if mixer.trackNumber() > 1 else 0
+			track_offset = mult * num_tracks
+		else:
+			track_offset = 0
+		Action.track_number = data["track"] + track_offset 
+		# print(f"Action.track_num: {Action.track_number}")
 

@@ -633,11 +633,46 @@
 # }
 
 cl = {
+
+"leds": {   
+            '1': {
+                'channel': 1, 
+                'midi': [176, 42, 0, 176], 
+                'actions': ['stop', ''], 
+                'toggle': 0, 
+                'track': 0 }, 
+            '2': {
+                'channel': 1, 'midi': [176, 41, 0, 176], 
+                'actions': ['start', ''], 'toggle': 0, 'track': 0 }, 
+            '3': {
+                'channel': 1, 'midi': [176, 45, 0, 176], 
+                'actions': ['record', ''], 'toggle': 0, 'track': 0 }, 
+            },
+
+
     "jog_wheel": {},
 
+    "defaults": { 
+        "octaves": 5, 
+        "sequence_length": 16, 
+        "seq_mult": 1, 
+        "plugin_control": 1, 
+        "mixer_tracks": 8, 
+        "Keyboard": 0, 
+        "Sequencer": 0, 
+        "keyboard_count": 5, 
+        "modes": ["Buttons", "Keyboard", "Sequencer", ], 
+        "levels_control_parameter": 1, "colors": [], 
+        "root": "C", 
+        "scale": "Major", 
+        "windows": [4, 0, 2, 1, 3, ] 
+    },
 
-
-    "defaults": { "octaves": 5, "sequence_length": 16, "seq_mult": 1, "plugin_control": 1, "mixer_tracks": 1, "Keyboard": 0, "Sequencer": 0, "keyboard_count": 5, "modes": ["Buttons", "Keyboard", "Sequencer", ], "levels_control_parameter": 1, "colors": [], "root": "C", "scale": "Major", "windows": [4, 0, 2, 1, 3, ] },
+    # "leds": {
+    #     "play": [176, 0, 41],
+    #     "stop": [176, 0, 42],
+    #     "record": [176, 0, 45],
+    # },
 
     "encoders": {
         "1": {
@@ -758,14 +793,14 @@ cl = {
         "17": {
             "channel": 1,
             "midi": [176, 58, 0, 176],
-            "actions": ["octave_up", "solo"],
+            "actions": ["rand_pattern", "solo"],
             "toggle": 0,
             "track": 0,
         },
         "18": {
             "channel": 1,
             "midi": [176, 59, 0, 176],
-            "actions": ["octave_up", "solo"],
+            "actions": ["increment_scale", "solo"],
             "toggle": 0,
             "track": 0,
         },
@@ -786,7 +821,7 @@ cl = {
         "21": {
             "channel": 1,
             "midi": [176, 61, 0, 176],
-            "actions": ["left", "solo"],
+            "actions": ["left", "shift"],
             "toggle": 0,
             "track": 0,
         },
@@ -816,7 +851,7 @@ cl = {
             "midi": [176, 42, 0, 176],
             "actions": ["stop", "solo"],
             "toggle": 0,
-            "track": 0,
+            "track": 0  ,
         },
         "26": {
             "channel": 1,
@@ -828,9 +863,9 @@ cl = {
         "27": {
             "channel": 1,
             "midi": [176, 45, 0, 176],
-            "actions": ["record", "solo"],
+            "actions": ["trig_clip", "solo"],
             "toggle": 0,
-            "track": 0,
+            "track": 1,
         },
         "33": {
             "channel": 1,
@@ -1001,7 +1036,123 @@ cl = {
             "track": 8,
         },
     },
-    # "keyboard": {
+
+    # "performance": {"33": {     "channel": 1,     "midi": [176, 32, 0, 176],     "actions": ["trig_clip", 1],     "toggle": 0,     "track": 0, }, "34": {     "channel": 1,     "midi": [176, 33, 0, 176],
+    #         "actions": ["trig_clip", 1],
+    #         "toggle": 0,
+    #         "track": 1,
+    #     },
+    #     "35": {
+    #         "channel": 1,
+    #         "midi": [176, 34, 0, 176],
+    #         "actions": ["trig_clip", 1],
+    #         "toggle": 0,
+    #         "track": 2,
+    #     },
+    #     "36": {
+    #         "channel": 1,
+    #         "midi": [176, 35, 0, 176],
+    #         "actions": ["trig_clip", 1],
+    #         "toggle": 0,
+    #         "track": 3,
+    #     },
+    #     "37": {
+    #         "channel": 1,
+    #         "midi": [176, 36, 0, 176],
+    #         "actions": ["trig_clip", 1],
+    #         "toggle": 0,
+    #         "track": 4,
+    #     },
+    #     "38": {
+    #         "channel": 1,
+    #         "midi": [176, 37, 0, 176],
+    #         "actions": ["trig_clip", 1],
+    #         "toggle": 0,
+    #         "track": 5,
+    #     },
+    #     "41": {
+    #         "channel": 1,
+    #         "midi": [176, 48, 0, 176],
+    #         "actions": ["trig_clip", 2],
+    #         "toggle": 0,
+    #         "track": 0,
+    #     },
+    #     "42": {
+    #         "channel": 1,
+    #         "midi": [176, 49, 0, 176],
+    #         "actions": ["trig_clip", 2],
+    #         "toggle": 0,
+    #         "track": 1,
+    #     },
+    #     "43": {
+    #         "channel": 1,
+    #         "midi": [176, 50, 0, 176],
+    #         "actions": ["trig_clip", 2],
+    #         "toggle": 0,
+    #         "track": 2,
+    #     },
+    #     "44": {
+    #         "channel": 1,
+    #         "midi": [176, 51, 0, 176],
+    #         "actions": ["trig_clip", 2],
+    #         "toggle": 0,
+    #         "track": 3,
+    #     },
+    #     "45": {
+    #         "channel": 1,
+    #         "midi": [176, 52, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 4,
+    #     },
+    #     "46": {
+    #         "channel": 1,
+    #         "midi": [176, 53, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 5,
+    #     },
+    #     "49": {
+    #         "channel": 1,
+    #         "midi": [176, 64, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 0,
+    #     },
+    #     "50": {
+    #         "channel": 1,
+    #         "midi": [176, 65, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 1,
+    #     },
+    #     "51": {
+    #         "channel": 1,
+    #         "midi": [176, 66, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 2,
+    #     },
+    #     "52": {
+    #         "channel": 1,
+    #         "midi": [176, 67, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 3,
+    #     },
+    #     "53": {
+    #         "channel": 1,
+    #         "midi": [176, 68, 0, 176],
+    #         "actions": ["trig_clip", 3],
+    #         "toggle": 0,
+    #         "track": 4,
+    #     },    
+    # },
+
+"performance": { '1': {'channel': 1, 'midi': [176, 32, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 0 }, '2': {'channel': 1, 'midi': [176, 33, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 1 }, '3': {'channel': 1, 'midi': [176, 34, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 2 }, '4': {'channel': 1, 'midi': [176, 35, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 3 }, '5': {'channel': 1, 'midi': [176, 36, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 0 }, '6': {'channel': 1, 'midi': [176, 37, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 1 }, '7': {'channel': 1, 'midi': [176, 38, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 2 }, '8': {'channel': 1, 'midi': [176, 39, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 3 }, '9': {'channel': 1, 'midi': [176, 48, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 0 }, '10': {'channel': 1, 'midi': [176, 49, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 1 }, '11': {'channel': 1, 'midi': [176, 50, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 2 }, '12': {'channel': 1, 'midi': [176, 51, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 3 }, '13': {'channel': 1, 'midi': [176, 52, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 0 }, '14': {'channel': 1, 'midi': [176, 53, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 1 }, '15': {'channel': 1, 'midi': [176, 54, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 2 }, '16': {'channel': 1, 'midi': [176, 55, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 3 }, '17': {'channel': 1, 'midi': [176, 64, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 0 }, '18': {'channel': 1, 'midi': [176, 65, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 1 }, '19': {'channel': 1, 'midi': [176, 66, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 2 }, '20': {'channel': 1, 'midi': [176, 67, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 3 }, '21': {'channel': 1, 'midi': [176, 68, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 0 }, '22': {'channel': 1, 'midi': [176, 69, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 1 }, '23': {'channel': 1, 'midi': [176, 70, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 2 }, '24': {'channel': 1, 'midi': [176, 71, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 3 }, },
+
+
+ # "keyboard": {
     #     "73": {
     #         "channel": 1,
     #         "midi": [176, 49, 0, 176],
@@ -1117,296 +1268,296 @@ cl = {
     # },
 
     "keyboard": { 
-            '1':     
-                {'channel': 1, 
-                'midi': [176, 33, 0, 176], 
-                'actions': ['C#', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '2':
-                {'channel': 1, 
-                'midi': [176, 35, 0, 176], 
-                'actions': ['D#', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '3':
-                {'channel': 1, 
-                'midi': [176, 38, 0, 176], 
-                'actions': ['F#', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '4':
-                {'channel': 1, 
-                'midi': [176, 48, 0, 176], 
-                'actions': ['G#', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '5':
-                {'channel': 1, 
-                'midi': [176, 50, 0, 176], 
-                'actions': ['A#', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '6':
-                {'channel': 1, 
-                'midi': [176, 32, 0, 176], 
-                'actions': ['C', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '7':
-                {'channel': 1, 
-                'midi': [176, 34, 0, 176], 
-                'actions': ['D', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '8':
-                {'channel': 1, 
-                'midi': [176, 36, 0, 176], 
-                'actions': ['E', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '9':
-                {'channel': 1, 
-                'midi': [176, 37, 0, 176], 
-                'actions': ['F', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '10':
-                {'channel': 1, 
-                'midi': [176, 39, 0, 176], 
-                'actions': ['G', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '11':
-                {'channel': 1, 
-                'midi': [176, 49, 0, 176], 
-                'actions': ['A', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '12':
-                {'channel': 1, 
-                'midi': [176, 51, 0, 176], 
-                'actions': ['B', ''], 
-                'toggle': 0, 
-                'track': 0 }, 
-            '13':
-                {'channel': 1, 
-                'midi': [176, 53, 0, 176], 
-                'actions': ['C#', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '14':
-                {'channel': 1, 
-                'midi': [176, 55, 0, 176], 
-                'actions': ['D#', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '15':
-                {'channel': 1, 
-                'midi': [176, 66, 0, 176], 
-                'actions': ['F#', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '16':
-                {'channel': 1, 
-                'midi': [176, 68, 0, 176], 
-                'actions': ['G#', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '17':
-                {'channel': 1, 
-                'midi': [176, 70, 0, 176], 
-                'actions': ['A#', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '18':
-                {'channel': 1, 
-                'midi': [176, 52, 0, 176], 
-                'actions': ['C', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '19':
-                {'channel': 1, 
-                'midi': [176, 54, 0, 176], 
-                'actions': ['D', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '20':
-                {'channel': 1, 
-                'midi': [176, 64, 0, 176], 
-                'actions': ['E', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '21':
-                {'channel': 1, 
-                'midi': [176, 65, 0, 176], 
-                'actions': ['F', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '22':
-                {'channel': 1, 
-                'midi': [176, 67, 0, 176], 
-                'actions': ['G', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '23':
-                {'channel': 1, 
-                'midi': [176, 69, 0, 176], 
-                'actions': ['A', ''], 
-                'toggle': 0, 
-                'track': 1 }, 
-            '24':
-                {'channel': 1, 
-                'midi': [176, 71, 0, 176], 
-                'actions': ['B', ''], 
-                'toggle': 0, 
-                'track': 1 },
+            "1":     
+                {"channel": 1, 
+                "midi": [176, 33, 0, 176], 
+                "actions": ["C#", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "2":
+                {"channel": 1, 
+                "midi": [176, 35, 0, 176], 
+                "actions": ["D#", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "3":
+                {"channel": 1, 
+                "midi": [176, 38, 0, 176], 
+                "actions": ["F#", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "4":
+                {"channel": 1, 
+                "midi": [176, 48, 0, 176], 
+                "actions": ["G#", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "5":
+                {"channel": 1, 
+                "midi": [176, 50, 0, 176], 
+                "actions": ["A#", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "6":
+                {"channel": 1, 
+                "midi": [176, 32, 0, 176], 
+                "actions": ["C", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "7":
+                {"channel": 1, 
+                "midi": [176, 34, 0, 176], 
+                "actions": ["D", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "8":
+                {"channel": 1, 
+                "midi": [176, 36, 0, 176], 
+                "actions": ["E", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "9":
+                {"channel": 1, 
+                "midi": [176, 37, 0, 176], 
+                "actions": ["F", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "10":
+                {"channel": 1, 
+                "midi": [176, 39, 0, 176], 
+                "actions": ["G", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "11":
+                {"channel": 1, 
+                "midi": [176, 49, 0, 176], 
+                "actions": ["A", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "12":
+                {"channel": 1, 
+                "midi": [176, 51, 0, 176], 
+                "actions": ["B", ""], 
+                "toggle": 0, 
+                "track": 0 }, 
+            "13":
+                {"channel": 1, 
+                "midi": [176, 53, 0, 176], 
+                "actions": ["C#", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "14":
+                {"channel": 1, 
+                "midi": [176, 55, 0, 176], 
+                "actions": ["D#", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "15":
+                {"channel": 1, 
+                "midi": [176, 66, 0, 176], 
+                "actions": ["F#", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "16":
+                {"channel": 1, 
+                "midi": [176, 68, 0, 176], 
+                "actions": ["G#", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "17":
+                {"channel": 1, 
+                "midi": [176, 70, 0, 176], 
+                "actions": ["A#", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "18":
+                {"channel": 1, 
+                "midi": [176, 52, 0, 176], 
+                "actions": ["C", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "19":
+                {"channel": 1, 
+                "midi": [176, 54, 0, 176], 
+                "actions": ["D", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "20":
+                {"channel": 1, 
+                "midi": [176, 64, 0, 176], 
+                "actions": ["E", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "21":
+                {"channel": 1, 
+                "midi": [176, 65, 0, 176], 
+                "actions": ["F", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "22":
+                {"channel": 1, 
+                "midi": [176, 67, 0, 176], 
+                "actions": ["G", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "23":
+                {"channel": 1, 
+                "midi": [176, 69, 0, 176], 
+                "actions": ["A", ""], 
+                "toggle": 0, 
+                "track": 1 }, 
+            "24":
+                {"channel": 1, 
+                "midi": [176, 71, 0, 176], 
+                "actions": ["B", ""], 
+                "toggle": 0, 
+                "track": 1 },
             },  
     "sequencer": { 
-        '1': {
-            'channel': 1, 
-            'midi': [176, 32, 0, 176], 
-            'actions': ['0', '0'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '2': {
-            'channel': 1, 
-            'midi': [176, 33, 0, 176], 
-            'actions': ['1', '1'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '3': {
-            'channel': 1, 
-            'midi': [176, 34, 0, 176], 
-            'actions': ['2', '2'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '4': {
-            'channel': 1, 
-            'midi': [176, 35, 0, 176], 
-            'actions': ['3', '3'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '5': {
-            'channel': 1, 
-            'midi': [176, 36, 0, 176], 
-            'actions': ['4', '4'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '6': {
-            'channel': 1, 
-            'midi': [176, 37, 0, 176], 
-            'actions': ['5', '5'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '7': {
-            'channel': 1, 
-            'midi': [176, 38, 0, 176], 
-            'actions': ['6', '6'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '8': {
-            'channel': 1, 
-            'midi': [176, 39, 0, 176], 
-            'actions': ['7', '7'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '9': {
-            'channel': 1, 
-            'midi': [176, 48, 0, 176], 
-            'actions': ['8', '8'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '10': {
-            'channel': 1, 
-            'midi': [176, 49, 0, 176], 
-            'actions': ['9', '9'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '11': {
-            'channel': 1, 
-            'midi': [176, 50, 0, 176], 
-            'actions': ['10', '10'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '12': {
-            'channel': 1, 
-            'midi': [176, 51, 0, 176], 
-            'actions': ['11', '11'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '13': {
-            'channel': 1, 
-            'midi': [176, 52, 0, 176], 
-            'actions': ['12', '12'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '14': {
-            'channel': 1, 
-            'midi': [176, 53, 0, 176], 
-            'actions': ['13', '13'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '15': {
-            'channel': 1, 
-            'midi': [176, 54, 0, 176], 
-            'actions': ['14', '14'], 
-            'toggle': 0, 
-            'track': 0 }, 
-        '16': {
-            'channel': 1, 
-            'midi': [176, 55, 0, 176], 
-            'actions': ['15', '15'], 
-            'toggle':0, 
-            'track': 0 }, 
-        '17': {
-            'channel': 1, 
-            'midi': [176, 64, 0, 176], 
-            'actions': ['16', '16'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '18': {
-            'channel': 1, 
-            'midi': [176, 65, 0, 176], 
-            'actions': ['17', '17'], 
-            'toggle': 0, 
-            'track': 1}, 
-        '19': {
-            'channel': 1, 
-            'midi': [176, 66, 0, 176], 
-            'actions': ['18', '18'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '20': {
-            'channel': 1, 
-            'midi': [176, 67, 0, 176], 
-            'actions': ['19', '19'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '21': {
-            'channel': 1, 
-            'midi': [176, 68, 0, 176], 
-            'actions': ['20', '20'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '22': {
-            'channel': 1, 
-            'midi': [176, 69, 0, 176], 
-            'actions': ['21', '21'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '23': {
-            'channel': 1, 
-            'midi': [176, 70, 0, 176], 
-            'actions': ['22', '22'], 
-            'toggle': 0, 
-            'track': 1 }, 
-        '24': {
-            'channel': 1, 
-            'midi': [176, 71, 0, 176], 
-            'actions': ['23', '23'], 
-            'toggle': 0, 
-            'track': 1 }, },
+        "1": {
+            "channel": 1, 
+            "midi": [176, 32, 0, 176], 
+            "actions": ["0", "0"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "2": {
+            "channel": 1, 
+            "midi": [176, 33, 0, 176], 
+            "actions": ["1", "1"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "3": {
+            "channel": 1, 
+            "midi": [176, 34, 0, 176], 
+            "actions": ["2", "2"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "4": {
+            "channel": 1, 
+            "midi": [176, 35, 0, 176], 
+            "actions": ["3", "3"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "5": {
+            "channel": 1, 
+            "midi": [176, 36, 0, 176], 
+            "actions": ["4", "4"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "6": {
+            "channel": 1, 
+            "midi": [176, 37, 0, 176], 
+            "actions": ["5", "5"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "7": {
+            "channel": 1, 
+            "midi": [176, 38, 0, 176], 
+            "actions": ["6", "6"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "8": {
+            "channel": 1, 
+            "midi": [176, 39, 0, 176], 
+            "actions": ["7", "7"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "9": {
+            "channel": 1, 
+            "midi": [176, 48, 0, 176], 
+            "actions": ["8", "8"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "10": {
+            "channel": 1, 
+            "midi": [176, 49, 0, 176], 
+            "actions": ["9", "9"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "11": {
+            "channel": 1, 
+            "midi": [176, 50, 0, 176], 
+            "actions": ["10", "10"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "12": {
+            "channel": 1, 
+            "midi": [176, 51, 0, 176], 
+            "actions": ["11", "11"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "13": {
+            "channel": 1, 
+            "midi": [176, 52, 0, 176], 
+            "actions": ["12", "12"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "14": {
+            "channel": 1, 
+            "midi": [176, 53, 0, 176], 
+            "actions": ["13", "13"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "15": {
+            "channel": 1, 
+            "midi": [176, 54, 0, 176], 
+            "actions": ["14", "14"], 
+            "toggle": 0, 
+            "track": 0 }, 
+        "16": {
+            "channel": 1, 
+            "midi": [176, 55, 0, 176], 
+            "actions": ["15", "15"], 
+            "toggle":0, 
+            "track": 0 }, 
+        "17": {
+            "channel": 1, 
+            "midi": [176, 64, 0, 176], 
+            "actions": ["16", "16"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "18": {
+            "channel": 1, 
+            "midi": [176, 65, 0, 176], 
+            "actions": ["17", "17"], 
+            "toggle": 0, 
+            "track": 1}, 
+        "19": {
+            "channel": 1, 
+            "midi": [176, 66, 0, 176], 
+            "actions": ["18", "18"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "20": {
+            "channel": 1, 
+            "midi": [176, 67, 0, 176], 
+            "actions": ["19", "19"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "21": {
+            "channel": 1, 
+            "midi": [176, 68, 0, 176], 
+            "actions": ["20", "20"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "22": {
+            "channel": 1, 
+            "midi": [176, 69, 0, 176], 
+            "actions": ["21", "21"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "23": {
+            "channel": 1, 
+            "midi": [176, 70, 0, 176], 
+            "actions": ["22", "22"], 
+            "toggle": 0, 
+            "track": 1 }, 
+        "24": {
+            "channel": 1, 
+            "midi": [176, 71, 0, 176], 
+            "actions": ["23", "23"], 
+            "toggle": 0, 
+            "track": 1 }, },
 
     # "seque    ncer": {
     #     "57": {
@@ -1523,8 +1674,6 @@ cl = {
     #     },
 
     # },
-
-
 }
 
 

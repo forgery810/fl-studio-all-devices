@@ -38,6 +38,7 @@ class Action():
 	shift_status = 0
 	selected_step = 0
 	track_number = -1
+	performance_row = -1
 	# offset_iter = 0
 	# pitch_value = 0
 
@@ -373,10 +374,17 @@ class Action():
 			playlist.setTrackColor(ModWheel.get_pl_mod_value(), next(Action.c))
 
 	def trig_clip():
-		playlist.triggerLiveClip(1, 1, midi.TLC_MuteOthers | midi.TLC_Fill)
-		print(playlist.getLiveStatus(1))
+		print(f"row track: {Action.performance_row}, {Action.track_number}")
+		# turn_off = [2, 4]
+		if playlist.getLiveBlockStatus(Action.performance_row, Action.track_number, 2) == 2: 
+			print('!=0')
+			playlist.triggerLiveClip(Action.performance_row, -1, midi.TLC_MuteOthers | midi.TLC_Fill)
+		else:
+			print('-==')
+			playlist.triggerLiveClip(Action.performance_row, Action.track_number, midi.TLC_MuteOthers | midi.TLC_Fill)
+		# print(f"glbs: {playlist.getLiveBlockStatus(Action.performance_row, Action.track_number, 2)}")
 
-	def rand_pat():
+	def rand_trigs():
 			"""Function clears pattern and for each step, generates a random number. The number is checked"""
 			
 			for i in range(patterns.getPatternLength(patterns.patternNumber())): 
@@ -403,6 +411,10 @@ class Action():
 			octave = int(Utility.mapvalues(Utility.num_gen(), lower, upper, 0, 65535)) * 12
 			note = interval + octave
 			channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), i, 0, note + root, 1)		
+
+	def rand_pattern():
+		Action.rand_trigs()
+		Action.rand_notes()
 
 	def shift():
 		if Action.shift_status == 0:
@@ -467,17 +479,14 @@ class Action():
 			channels.setStepParameterByIndex(c, p, s, pi, data2, 1)
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
-
 	def mixer_solo():
 		mixer.soloTrack(Action.track_number)
 
 	def mixer_record():
-		mixer.armTrack(Action.track_number);
+		mixer.armTrack(Action.track_number)
 
 	def mixer_mute():
 		mixer.muteTrack(Action.track_number)
-
-
 
 class EncoderAction(Action):
 
@@ -565,10 +574,10 @@ class EncoderAction(Action):
 		Action.jog_wheel_down()
 
 	def mixer_level(d2):
-		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
+		mixer.setTrackVolume(Action.track_number, d2/127, True)
 
 	def mixer_pan(d2):
-		mixer.setTrackPan(EncoderAction.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
+		mixer.setTrackPan(Action.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
 
 	def nothing(d2):
 		pass

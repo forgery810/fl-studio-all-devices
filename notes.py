@@ -9,9 +9,8 @@ class Notes():
 	upper_limit = -25
 	lower_limit = 25
 	note_list = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-	all_notes = note_list * cl["defaults"]["keyboard_count"]
+	# all_notes = note_list * cl["defaults"]["keyboard_count"]
 	all_notes = []
-	print(all_notes)
 	for i in range(0, cl["defaults"]["keyboard_count"]):
 		for n in note_list:
 			text = str(n) + str(i)
@@ -46,12 +45,20 @@ class Notes():
 
 class Scales(Notes):
 
-	major_scale = [0, 2, 4, 5, 7, 9, 11, 12,] 
-	natural_scale =[0, 2, 3, 5, 7, 8, 10, 12,] 
-	harmonic_scale = [0, 2, 3, 5, 7, 8, 11, 12,] 
-	dorian_scale = [0, 2, 3, 5, 7, 9, 10, 12, 14,] 
-	mixolydian_scale = [0, 2, 4, 5, 7, 9, 10, 12,] 
-	min_pent_scale = [0, 3, 5, 7, 10, 12, 15, 17,] 
+	# major_scale = [0, 2, 4, 5, 7, 9, 11, 12, ] 
+	# natural_scale =[0, 2, 3, 5, 7, 8, 10, 12,] 
+	# harmonic_scale = [0, 2, 3, 5, 7, 8, 11, 12,] 
+	# dorian_scale = [0, 2, 3, 5, 7, 9, 10, 12, 14,] 
+	# mixolydian_scale = [0, 2, 4, 5, 7, 9, 10, 12,] 
+	# min_pent_scale = [0, 3, 5, 7, 10, 12, 15, 17,] 
+	#    		   c  c# d  d# e  f  f#  G   G#  A   A#   B  C
+	major_scale = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23]
+	natural_scale =[0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19, 20, 22]
+	harmonic_scale = [0, 2, 3, 5, 7, 8, 11, 12, 14, 15, 17, 19, 20, 23]
+	dorian_scale = [0, 2, 3, 5, 7, 9, 10, 12, 14, 15, 17, 19, 21, 22]
+	mixolydian_scale = [0, 2, 4, 5, 7, 9, 10, 12, 14, 16, 17, 19, 21, 22]
+	min_pent_scale = [0, 3, 5, 7, 10, 12, 15, 17, 19, 22, 24, 27, 29, 31]
+
 	chromatic_scale = [i for i in range(0, 145)]
 	scales = [major_scale, natural_scale, harmonic_scale, dorian_scale, mixolydian_scale, min_pent_scale, chromatic_scale]
 	scale_names = ["Major", "Natural Minor", "Harmonic Minor", "Dorian", "Mixolydian", "Minor Pentatonic", "Chromatic"]
