@@ -31,6 +31,7 @@ class Process(Dispatch):
 		data_1 = self.event.data1
 		data_2 = self.event.data2
 		midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
+		# print(d.buttonData.get(midi_chan, {}).get(midi_id))
 		if playlist.getPerformanceModeState() and d.performanceData.get(midi_chan, {}).get(midi_id).get(data_1) and ui.getFocused(widPlaylist):
 			print('performance')
 			if data_2 > 0:
@@ -38,22 +39,25 @@ class Process(Dispatch):
 				Main.set_track(d.performanceData[midi_chan][midi_id][data_1])
 				Action.trig_clip()
 				# Main.transport_act(self, d.performanceData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif d.keyboardData.get(midi_id, {}).get(data_1) and Modes.mode_active('Keyboard'):
+		elif d.keyboardData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Keyboard'):
 				Keys.decide(self, d.keyboardData[midi_id][data_1])
-		elif d.sequencerData.get(midi_id, {}).get(data_1) and Modes.mode_active('Sequencer'):
+		elif d.sequencerData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Sequencer'):
 			if data_2 > 0 or d.sequencerData.get(midi_id, {}).get(data_1)["toggle"]:
 				Sequencer.step_pressed(self, d.sequencerData[midi_id][data_1])
-		elif d.buttonData.get(midi_chan, {}).get(midi_id).get(data_1):	
-				Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
-				Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif d.encoderData.get(midi_chan, {}).get(midi_id).get(data_1):
-			Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
-			Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
-		elif d.jogData.get(midi_chan, {}).get(midi_id).get(data_1):
-			if (d.jogData[midi_id].get(data_1)):
-				Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
+		elif d.buttonData.get(midi_chan, {}).get(midi_id) is not None:
+			if d.buttonData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:	
+				if data_2 > 0:
+					Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
+					Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		elif d.encoderData.get(midi_chan, {}).get(midi_id) is not None:
+			if d.encoderData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
+				Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
+				Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
+		elif d.jogData.get(midi_chan, {}).get(midi_id) is not None:
+			if d.jogData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
+				if (d.jogData[midi_id].get(data_1)):
+					Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
 		else:
-
 			self.event.handled = Config.PREVENT_PASSTHROUGH
 			print('not set')
 

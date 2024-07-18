@@ -2,6 +2,7 @@ from data import ledData as l
 import data as d
 import transport
 import device
+import midi
 
 class Leds():
 	assigned = False
@@ -19,7 +20,7 @@ class Leds():
 		return Leds.assigned
 
 	def check_event_leds(event):
-		if event == Leds.event_numbers["transport"]:
+		if event == midi.HW_Dirty_LEDs:
 			if transport.isPlaying():
 				print(d.ledData["start"])
 				device.midiOutMsg(*d.ledData["start"], 127)
@@ -32,3 +33,6 @@ class Leds():
 				device.midiOutMsg(*d.ledData["record"], 127)
 			else:
 				device.midiOutMsg(*d.ledData["record"], 0)		
+
+	def all_off():
+		device.midiOutMsg(*d.ledData["stop"], 0)

@@ -16,7 +16,7 @@ from modes import Modes
 from notes import Notes
 import data as d
 from config import Config
-from config_layout import cl  
+from config_layout3 import cl  
 import plugindata as plg
 
 def OnInit():
@@ -25,14 +25,14 @@ def OnInit():
 	AssignLayoutData(cl["buttons"], cl["keyboard"], cl["sequencer"], cl["encoders"], cl["jog_wheel"], cl["defaults"], cl["performance"])
 	AssignLeds(cl["leds"])
 	Leds.led_setup()
+	print(device.getName())
+	
 	if device.isAssigned():		
 		# AssignLayoutData(cl["buttons"], cl["keyboard"], cl["sequencer"], cl["encoders"], cl["jog_wheel"], cl["defaults"])
 		print("Assigned")
-		print(device.getName())
 		print(f"Port Number: {device.getPortNumber()}")
 	else:
-		print(device.getName())
-		print("Not assigned. In MIDI settings, set the Input and Output Ports to the same number for this device.")
+		print("Not assigned. In the MIDI settings, set the Input and Output Ports to the same number for this device.")
 
 def  OnMidiMsg(event):
 	"""Function called on every midi message sent by controller"""
@@ -44,17 +44,13 @@ def  OnMidiMsg(event):
 	p.channel = channels.selectedChannel()
 	p.track = mixer.trackNumber()
 	p.pattern = patterns.patternNumber()
-	# p.random_offset = 63
 	p.d2 = event.data2
 	p.triage()
 
 def OnRefresh(event):
-	print(f"Refresh Event: {event}")
+	# print(f"Refresh Event: {event}")
 	if Leds.leds_assigned():
 		Leds.check_event_leds(event)
-
-
-		
 
 p = Process()
 
@@ -74,33 +70,48 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	#     }
 	#     for k, v in bt.items()
 	# }
-	d.buttonData = {
-		v['channel']: 
-			{v['midi'][0]: {
-			}
-		} for k, v, in bt.items()
-	}
+	# d.buttonData = {
+	# 	v['channel']: 
+	# 		{v['midi'][0]: {
+	# 		}
+	# 	} for k, v, in bt.items()
+	# }
 	# for k, v in bt.items():
 	# 	d.buttonData[v['channel']] = {}
-	# for k, v in bt.items():
-	# 	d.buttonData[v['channel']][v['midi'][0]] = {}
 	for k, v in bt.items():
-		d.buttonData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
+		d.buttonData[v['channel']] = {}	
 	for k, v in bt.items():
-		d.buttonData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
+		d.buttonData[v['channel']][v['midi'][0]] = {
+
+		}	
+	for k, v in bt.items():
+		d.buttonData[v['channel']][v['midi'][0]][v['midi'][1]] = {
 			'actions': v['actions'],
 			'channel': v['channel'],
 			'toggle': v['toggle'],
 			'release': v['midi'][3],
 			'track': v['track']
-			}
+		}	
+	print(d.buttonData)
+	# for k, v in bt.items():
+	# 	d.buttonData[v['channel']][v['midi'][0]] = {}
+	# for k, v in bt.items():
+	# 	d.buttonData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
+	# for k, v in bt.items():
+	# 	d.buttonData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
+	# 		'actions': v['actions'],
+	# 		'channel': v['channel'],
+	# 		'toggle': v['toggle'],
+	# 		'release': v['midi'][3],
+	# 		'track': v['track']
+	# 		}
 	d.keyboardData = {
 		v['channel']: 
 			{v['midi'][0]: {
 			}
-		} for k, v, in bt.items()
+		} for k, v, in kb.items()
 	}
-	for k, v in bt.items():
+	for k, v in kb.items():
 		d.keyboardData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
 	# 	d.buttonData[v['midi'][0]] = {}
 	# for k, v in bt.items():
@@ -114,7 +125,7 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	# for v in kb.values():
 	# 	d.keyboardData[v['midi'][0]] = {}
 	# 	d.keyboardData[v['midi'][3]] = {}
-	for k, v in kb.items():
+	for k, v in sq.items():
 		d.keyboardData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
 			'actions': v['actions'],
 			'channel': v['channel'],
@@ -135,7 +146,7 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			}
 		} for k, v, in bt.items()
 	}
-	for k, v in bt.items():
+	for k, v in sq.items():
 		d.sequencerData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
 	# for k, v in sq.items():
 	# 	d.sequencerData[v['midi'][0]] = {}
@@ -161,7 +172,7 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 		v['channel']: 
 			{v['midi'][0]: {
 			}
-		} for k, v, in bt.items()
+		} for k, v, in en.items()
 	}
 	for k, v in en.items():
 		plg.knob_num.append(v['midi'][1])
@@ -172,24 +183,24 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			'release': v['midi'][3],
 			'track': v['track']
 			}
-	d.jogData = {
-		v['channel']: 
-			{v['midi'][0]: {
-			}
-		} for k, v, in bt.items()
-	}
+	# d.jogData = {
+	# 	v['channel']: 
+	# 		{v['midi'][0]: {
+	# 		}
+	# 	} for k, v, in jw.items()
+	# }
+	# # for k, v in jw.items():
+	# # 	d.jogData[v['midi'][0]] = {}
+	# # 	d.jogData[v['midi'][0]][v['midi'][1]] = {} 
 	# for k, v in jw.items():
-	# 	d.jogData[v['midi'][0]] = {}
-	# 	d.jogData[v['midi'][0]][v['midi'][1]] = {} 
-	for k, v in jw.items():
-		d.jogData[v['channel']][v['midi'][0]][v['midi'][1]][v['midi'][2]] = { 
-			'actions': v['actions'],
-			'channel': v['channel'],
-			'toggle': v['toggle'],
-			'release': v['midi'][3],
-			'midi_2': v['midi'][2],
-			'track': v['track']
-			}
+	# 	d.jogData[v['channel']][v['midi'][0]][v['midi'][1]][v['midi'][2]] = { 
+	# 		'actions': v['actions'],
+	# 		'channel': v['channel'],
+	# 		'toggle': v['toggle'],
+	# 		'release': v['midi'][3],
+	# 		'midi_2': v['midi'][2],
+	# 		'track': v['track']
+	# 		}
 	if cl["defaults"]["Keyboard"]:
 		Modes.remove_mode("Keyboard")
 	if cl["defaults"]["Sequencer"]:
@@ -216,13 +227,13 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			'release': v['midi'][3],
 			'track': v['track']
 			}
-	# print(d.encoderData)
-	# print(d.sequencerData)
-	# print(d.keyboardData)
-	# print(d.performanceData)
+	print(d.encoderData)
+	print(d.sequencerData)
+	print(d.keyboardData)
+	print(d.performanceData)
 	# print(d.defaults)
-	# print(d.buttonData)
-	# print(Modes.modes)
+	print(d.buttonData)
+	print(Modes.modes)
 
 
 def AssignLeds(led):
@@ -232,4 +243,5 @@ def AssignLeds(led):
 		] for k, v, in led.items()
 	}
 	
-
+def OnDeInit():
+	Leds.all_off()
