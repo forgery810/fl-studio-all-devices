@@ -12,7 +12,7 @@ from utility import Utility
 import midi
 import data as d
 from config import Config
-from config_layout import cl
+from config_layout3 import cl
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
@@ -31,35 +31,67 @@ class Process(Dispatch):
 		data_1 = self.event.data1
 		data_2 = self.event.data2
 		midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
-		# print(d.buttonData.get(midi_chan, {}).get(midi_id))
-		if playlist.getPerformanceModeState() and d.performanceData.get(midi_chan, {}).get(midi_id).get(data_1) and ui.getFocused(widPlaylist):
-			print('performance')
+		midi_pair = [midi_id, data_1, midi_chan]
+
+		if midi_pair in d.performanceData["midi_pairs"] and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist):
+			print('performance') 
 			if data_2 > 0:
 				Action.performance_row = int(d.performanceData[midi_chan][midi_id][data_1]["actions"][0])
 				Main.set_track(d.performanceData[midi_chan][midi_id][data_1])
 				Action.trig_clip()
+				self.event.handled = True
 				# Main.transport_act(self, d.performanceData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif d.keyboardData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Keyboard'):
-				Keys.decide(self, d.keyboardData[midi_id][data_1])
-		elif d.sequencerData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Sequencer'):
-			if data_2 > 0 or d.sequencerData.get(midi_id, {}).get(data_1)["toggle"]:
-				Sequencer.step_pressed(self, d.sequencerData[midi_id][data_1])
-		elif d.buttonData.get(midi_chan, {}).get(midi_id) is not None:
-			if d.buttonData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:	
-				if data_2 > 0:
-					Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
-					Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif d.encoderData.get(midi_chan, {}).get(midi_id) is not None:
-			if d.encoderData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
-				Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
-				Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
-		elif d.jogData.get(midi_chan, {}).get(midi_id) is not None:
-			if d.jogData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
-				if (d.jogData[midi_id].get(data_1)):
-					Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
+		elif midi_pair in d.keyboardData["midi_pairs"]and Modes.mode_active('Keyboard'):
+			Keys.decide(self, d.keyboardData[midi_chan][midi_id][data_1])
+		elif midi_pair in d.sequencerData["midi_pairs"]and Modes.mode_active('Sequencer'):
+			Sequencer.step_pressed(self, d.sequencerData[midi_chan][midi_id][data_1])
+		elif midi_pair in d.buttonData["midi_pairs"]:
+			if data_2 > 0:
+				Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
+				Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		elif midi_pair in d.encoderData["midi_pairs"]:
+			Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
+			Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
+		elif midi_pair in d.jogData["midi_pairs"]:
+				Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
 		else:
 			self.event.handled = Config.PREVENT_PASSTHROUGH
 			print('not set')
+
+
+
+		# if playlist.getPerformanceModeState() and d.performanceData.get(midi_chan, {}).get(midi_id).get(data_1) and ui.getFocused(widPlaylist):
+		# 	print('performance') 
+		# 	if data_2 > 0:
+		# 		Action.performance_row = int(d.performanceData[midi_chan][midi_id][data_1]["actions"][0])
+		# 		Main.set_track(d.performanceData[midi_chan][midi_id][data_1])
+		# 		Action.trig_clip()
+		# 		# Main.transport_act(self, d.performanceData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		# elif d.keyboardData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Keyboard'):
+		# 	print('keyboard')
+		# 	Keys.decide(self, d.keyboardData[midi_id][data_1])
+		# elif d.sequencerData.get(midi_id, {}).get(data_1) is not None and Modes.mode_active('Sequencer'):
+		# 	print('seq')
+		# 	if data_2 > 0 or d.sequencerData.get(midi_id, {}).get(data_1)["toggle"]:
+		# 		Sequencer.step_pressed(self, d.sequencerData[midi_id][data_1])
+		# elif d.buttonData.get(midi_chan, {}).get(midi_id) is not None:
+		# 	print('button')
+		# 	if d.buttonData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:	
+		# 		if data_2 > 0:
+		# 			Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
+		# 			Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
+		# elif d.encoderData.get(midi_chan, {}).get(midi_id) is not None:
+		# 	if d.encoderData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
+		# 		Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
+		# 		Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
+		# elif d.jogData.get(midi_chan, {}).get(midi_id) is not None:
+		# 	if d.jogData.get(midi_chan, {}).get(midi_id).get(data_1) is not None:
+		# 		if (d.jogData[midi_id].get(data_1)):
+		# 			Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
+		# else:
+		# 	self.event.handled = Config.PREVENT_PASSTHROUGH
+		# 	print('not set')
+
 
 class Keys(Process):
 
@@ -79,27 +111,47 @@ class Keys(Process):
 		channels.midiNoteOn(channels.selectedChannel(), Keys.notes.index(data) + 36, self.event.data2)
 
 class Sequencer(Process):
+	# def step_pressed(self, data):
+	# 		print(data)
+	# 		# seq_len = cl["defaults"]["sequence_length"]
+	# 		s = int(data["actions"][0])
+	# 		track = data["track"]
+	# 		# step_num = (cl["defaults"]["sequence_length"] % s)
+	# 		step_num = Sequencer.get_step(s, cl["defaults"]["sequence_length"])
+	# 		# step_num = 0 if s == 0 else (cl["defaults"]["sequence_length"] % s)
+	# 				# step_num = int(data["actions"][0]) - (cl["defaults"]["sequence_length"] * track)
+	# 		print(step_num)
+	# 		# if cl["defaults"]["seq_mult"]:
+	# 		chan = Sequencer.get_seq_channel(track)
+	# 		# else:
+	# 		# 	chan = channels.selectedChannel()
+	# 		if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
+	# 			Action.selected_step = step_num
+	# 			self.event.handled = True
+	# 		else:
+	# 			# step = step_num % cl["defaults"]["sequence_multiple"][1]
+	# 			Sequencer.set_step(self, step_num, chan) 
+
+
 
 	def step_pressed(self, data):
-		print(data)
-		# seq_len = cl["defaults"]["sequence_length"]
-		s = int(data["actions"][0])
-		track = data["track"]
-		# step_num = (cl["defaults"]["sequence_length"] % s)
-		step_num = Sequencer.get_step(s, cl["defaults"]["sequence_length"])
-		# step_num = 0 if s == 0 else (cl["defaults"]["sequence_length"] % s)
-				# step_num = int(data["actions"][0]) - (cl["defaults"]["sequence_length"] * track)
-		print(step_num)
-		# if cl["defaults"]["seq_mult"]:
-		chan = Sequencer.get_seq_channel(track)
-		# else:
-		# 	chan = channels.selectedChannel()
-		if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
-			Action.selected_step = step_num
-			self.event.handled = True
+		act = data["actions"][Action.shift_status] 
+		if act.isdigit():
+			track = int(act) // cl["defaults"]["sequence_length"]
+			# print(f"track: {track}")
+			# print(int(act))
+			step_num = Sequencer.get_step(int(act), cl["defaults"]["sequence_length"])
+			chan = Sequencer.get_seq_channel(track, step_num)
+
+			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
+				Action.selected_step = step_num
+				self.event.handled = True
+			else:
+				Sequencer.set_step(self, step_num, chan) 
 		else:
-			# step = step_num % cl["defaults"]["sequence_multiple"][1]
-			Sequencer.set_step(self, step_num, chan) 
+			track = data["track"]
+			Main.set_track(data)
+			Main.transport_act(self, data["actions"], Action.shift_status)
 
 	def get_step(input, len):
 		if input == 0:
@@ -109,6 +161,8 @@ class Sequencer(Process):
 
 
 	def set_step(self, step, chan):
+		print(f"step: {step}")
+		print(f"chan: {chan}")
 		if channels.getGridBit(chan, step) == 0:						
 			channels.setGridBit(chan, step, 1)
 			self.event.handled = True
@@ -116,7 +170,7 @@ class Sequencer(Process):
 			channels.setGridBit(chan, step, 0)
 			self.event.handled = True
 
-	def get_seq_channel(track):
+	def get_seq_channel(track, step):
 			# offset = int(step_num / cl["defaults"]["sequence_length"])
 			chan = channels.selectedChannel() + track
 			return chan
@@ -126,11 +180,11 @@ class Encoder(Process):
 	def set(self, data):
 		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
-		else:			
+		else:		
 			EncoderAction.call_func(data['actions'][Action.shift_status], self.event.data2)
 
 	def set_data(d):
-		if Config.FOLLOW_TRACK and  mixer.trackNumber() != 0:
+		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
 			track_offset = cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
 		else:
 			track_offset = 0
@@ -169,7 +223,7 @@ class Encoder(Process):
 class Main(Process):	
 
 	def transport_act(self, offset_event, status):
-		print(f"event: {offset_event[0]}")
+		print(f"event: {offset_event[status]}")
 		Action.call_func(offset_event[status])
 		self.event.handled = True
 
@@ -192,5 +246,6 @@ class Main(Process):
 		else:
 			track_offset = 0
 		Action.track_number = data["track"] + track_offset 
-		# print(f"Action.track_num: {Action.track_number}")
+		Action.track_original = data["track"]
+		# print(f"Action.track_original: {Action.track_original}")
 

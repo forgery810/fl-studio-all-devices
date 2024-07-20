@@ -12,7 +12,6 @@ class Leds():
 	}
 
 	def led_setup():
-		print(d.ledData)
 		if d.ledData:
 			Leds.assigned = True 
 

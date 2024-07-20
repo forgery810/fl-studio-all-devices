@@ -21,3 +21,7 @@ class Config:
 		set each button/knob to pass when linking is desired and leaving this True but
 		the option is here"""
 
+
+	PATTERN_CHANGE_WAIT = True
+
+

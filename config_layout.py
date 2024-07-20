@@ -1,4 +1,6 @@
 cl = {
+	"name": "Alesis",
+	
     "leds": {
         "1": {
             "channel": 1,

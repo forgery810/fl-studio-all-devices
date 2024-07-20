@@ -38,7 +38,10 @@ class Action():
 	shift_status = 0
 	selected_step = 0
 	track_number = -1
+	track_original = -1
 	performance_row = -1
+	old_pattern_number = 2
+	new_pattern_number = 2
 	# offset_iter = 0
 	# pitch_value = 0
 
@@ -127,7 +130,6 @@ class Action():
 	# 	return transport.setSongPos(position)
 
 	def record():
-		# Utility.define_message('Record')
 		return transport.record()
 
 	def song_pat():
@@ -460,9 +462,6 @@ class Action():
 			param = 6
 		return param
 
-	def set_step_parameter(data2):
-		Action.parameter_index = Action.get_param_from_range(data2)
-		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def set_parameter_value(data2):
 
@@ -488,9 +487,21 @@ class Action():
 	def mixer_mute():
 		mixer.muteTrack(Action.track_number)
 
-class EncoderAction(Action):
+	def select_pattern():
+		"""is pattern_change_wait set, onupbeatindicator will trigger
+			change when new_pattern_number !- track_original"""
 
-	track_number = -1
+		if Config.PATTERN_CHANGE_WAIT and transport.isPlaying():
+			Action.new_pattern_number = Action.track_original
+		else:
+			patterns.jumpToPattern(Action.track_original)
+
+	def mute_channel():
+		chan = Action.track_original - 1
+		if Action.track_original <= channels.channelCount():
+			channels.muteChannel(chan)
+
+class EncoderAction(Action):
 
 	def call_func(f, d2):
 		method = getattr(EncoderAction, f)
@@ -506,7 +517,8 @@ class EncoderAction(Action):
 		Action.set_random_max_octave(d2)
 
 	def set_step_parameter(d2):
-		Action.set_step_parameter(d2)
+		Action.parameter_index = Action.get_param_from_range(data2)
+		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def set_random_offset(d2):
 		Action.set_random_offset(d2)
@@ -550,15 +562,13 @@ class EncoderAction(Action):
 		ui.setHintMsg(f"Step: {step + 1}")				
 		return step
 
-
 	def scroll(d2):
-		print(d2)
 		if ui.getFocused(0):
 			mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, 64, 0, 127)))
 			ui.scrollWindow(midi.widMixer, mixer.trackNumber())
 
 		elif ui.getFocused(1):
-			channels.selectOneChannel(int(round(Utility.mapvalues(d2, channels.channelCount()-1, 0, 0, 127), 0)))			
+			channels.selectOneChannel(int(round(Utility.mapvalues(d2, 0, channels.channelCount()-1, 0, 127), 0)))			
 
 		elif ui.getFocused(2):
 			playlist.deselectAll()
@@ -581,3 +591,4 @@ class EncoderAction(Action):
 
 	def nothing(d2):
 		pass
+
