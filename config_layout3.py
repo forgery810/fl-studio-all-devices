@@ -1,16 +1,44 @@
 cl = {
     "name": "Alesis",
-    "leds": {},
 
+"leds": {
+    "seq_leds": {
+                0:  [144, 0, 36, ], 
+                1:  [144, 0, 37, ], 
+                2:  [144, 0, 38, ], 
+                3:  [144, 0, 39, ], 
+                4:  [144, 0, 40, ],
+                5:  [144, 0, 41, ], 
+                6:  [144, 0, 42, ], 
+                7:  [144, 0, 43, ], 
+                8:  [144, 0, 44, ], 
+                9:  [144, 0, 45, ],
+                10: [144, 0, 46, ], 
+                11: [144, 0, 47, ], 
+                12: [144, 0, 48, ], 
+                13: [144, 0, 49, ],
+                14: [144, 0, 50, ], 
+                15: [144, 0, 51, ], }, "transport_leds": {}, },
       "jog_wheel": {
-          '91': {'channel': 1, 'midi': [176, 60, 1, 176], 'actions': ['jog_wheel_up', ''], 'toggle': 0, 'track': 0},
-          '92': {'channel': 1, 'midi': [176, 60, 65, 176], 'actions': ['jog_wheel_down', ''], 'toggle': 0, 'track': 0}, 
+          '91': {'channel': 1, 'midi': [176, 60, 1, 176], 'actions': ['jog_wheel_down', ''], 'toggle': 0, 'track': 0},
+          '92': {'channel': 1, 'midi': [176, 60, 65, 176], 'actions': ['jog_wheel_up', ''], 'toggle': 0, 'track': 0}, 
                  },
 
-      "defaults": {"octaves": 5, "sequence_length": 16, "seq_mult": 0, "plugin_control": 1,
-                   "mixer_tracks": 1, "Keyboard": 0, "Sequencer": 0, "keyboard_count": 5,
-                   "modes": ["Buttons", "Keyboard", "Sequencer", ], "levels_control_parameter": 1, "colors": [],
-                   "root": "C", "scale": "Major", "windows": [4, 0, 2, 1, 3, ]},
+      "defaults": { "octaves": 5, 
+                    "sequence_length": 16, 
+                    "seq_mult": 0, 
+                    "plugin_control": 1,
+                    "mixer_tracks": 1, 
+                    "Keyboard": 0, 
+                    "Sequencer": 0, 
+                    "keyboard_count": 5,
+                    "modes": ["Buttons", "Keyboard", "Sequencer", ], 
+                    "levels_control_parameter": 1, 
+                    "colors": [],
+                    "root": "C", 
+                    "scale": "Natural Minor", 
+                    "windows": [4, 0, 2, 1, 3, ]
+                    },
 
       "encoders": {
           '13': {'channel': 1, 'midi': [176, 14, 3, 176], 'actions': ['selected_level', 'selected_level'], 'toggle': 0, 'track': 0},
@@ -26,7 +54,7 @@ cl = {
 
       "buttons": {
           '1':  {'channel': 1, 'midi': [176, 24, 0, 176], 'actions': ['change_mode', 'solo'], 'toggle': 0, 'track': 0},
-          '2':  {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['select_pattern', 'solo'], 'toggle': 0, 'track': 4},
+          '2':  {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['mixer_mute', 'solo'], 'toggle': 0, 'track': 4},
           '3':  {'channel': 1, 'midi': [176, 26, 0, 176], 'actions': ['up', 'solo'], 'toggle': 0, 'track': 0},
           '4':  {'channel': 1, 'midi': [176, 27, 0, 176], 'actions': ['enter', 'solo'], 'toggle': 0, 'track': 0},
           '5':  {'channel': 1, 'midi': [176, 28, 0, 176], 'actions': ['rotate_set_windows', 'solo'], 'toggle': 0, 'track': 0},

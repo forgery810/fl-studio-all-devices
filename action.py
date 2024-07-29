@@ -13,12 +13,13 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-from config_layout import cl
+from config_layout3 import cl
 import data 
 from config import Config 
 from utility import Utility
 from notes import Notes, Scales 
-from modes import Modes 
+from modes import Modes
+from leds import Leds 
 
 class Action():
 
@@ -58,16 +59,11 @@ class Action():
 		return shift.back()
 
 	def change_mode():
-		Modes.current_mode += 1
-		if (Modes.current_mode >= len(Modes.modes)):
-			Modes.current_mode = 0
+		Modes.set_mode()
 		ui.setHintMsg(Modes.modes[Modes.current_mode])
 
 	def get_mode():
-		return cl["default"]["modes"][Action.current_mode]
-
-	def standard_mode():
-		device.midiOutMsg(0xB0, 0x00, 0x7F, 0x00)
+		return cl["default"]["modes"][Modes.current_mode]
 
 	def channel_mixer():
 		if ui.getFocused(midi.widMixer):
@@ -112,6 +108,7 @@ class Action():
 		return mixer.setRouteTo(mixer.trackNumber(), Action.get_mixer_route(), 1)
 
 	def start():
+		device.midiOutMsg(176, 1, 42, 127)
 		return transport.start()	
 
 	def step_parameters():
@@ -425,6 +422,7 @@ class Action():
 		elif Action.shift_status == 1:
 			Action.shift_status = 0
 			ui.setHintMsg('Shift Disabled')
+		Leds.check_shift(Action.shift_status)
 
 	def get_shift_status():
 		return Action.shift_status
@@ -493,7 +491,11 @@ class Action():
 
 		if Config.PATTERN_CHANGE_WAIT and transport.isPlaying():
 			Action.new_pattern_number = Action.track_original
+
+
 		else:
+			device.midiOutMsg(176, 1, 50, 80)
+
 			patterns.jumpToPattern(Action.track_original)
 
 	def mute_channel():
@@ -584,10 +586,10 @@ class EncoderAction(Action):
 		Action.jog_wheel_down()
 
 	def mixer_level(d2):
-		mixer.setTrackVolume(Action.track_number, d2/127, True)
+		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
 
 	def mixer_pan(d2):
-		mixer.setTrackPan(Action.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
+		mixer.setTrackPan(EncoderAction.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
 
 	def nothing(d2):
 		pass

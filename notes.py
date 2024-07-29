@@ -1,7 +1,7 @@
 
 import ui
 from utility import Utility
-from config_layout import cl
+from config_layout3 import cl
 
 class Notes():
 	something = 2
@@ -63,10 +63,12 @@ class Scales(Notes):
 	scales = [major_scale, natural_scale, harmonic_scale, dorian_scale, mixolydian_scale, min_pent_scale, chromatic_scale]
 	scale_names = ["Major", "Natural Minor", "Harmonic Minor", "Dorian", "Mixolydian", "Minor Pentatonic", "Chromatic"]
 	scale_choice = scale_names.index(cl["defaults"]["scale"])
-	print(scale_choice)
 
 	def set_scale(data_two):
 		Scales.scale_choice = data_two
+
+	def set_scale_by_name(name):
+		Scales.scale_choice = Scales.scale_names.index(name)
 
 	def increment_scale():
 		Scales.scale_choice += 1
@@ -74,6 +76,7 @@ class Scales(Notes):
 			Scales.scale_choice = 0
 
 	def get_scale_choice():
+		print(Scales.scale_choice)
 		return Scales.scale_choice
 
 	def scale_message(data_two):

@@ -1,4 +1,5 @@
-import config_layout 
+# import config_layout 
+from leds import Leds
 
 class Modes():
 
@@ -8,6 +9,20 @@ class Modes():
 	# seq_status = 'Pattern A'
 	modes = [ 'Sequencer', 'Keyboard', 'Buttons']
 	layer_count = 0
+	sequence_leds = False
+	transport_leds = False
+
+	def set_transport_leds(b):
+		Modes.transport_leds = b
+
+	def get_transport_leds():
+		return Modes.transport_leds
+
+	def set_seq_leds(b):
+		Modes.sequence_leds = b
+
+	def get_sequence_leds():
+		return Modes.sequence_leds
 
 	def set_layer(self, val):
 
@@ -16,7 +31,12 @@ class Modes():
 			Modes.layer_count = 2
 		elif Modes.layer_count > 2:
 			Modes.layer_count = 0
-		Modes.set_leds(self)
+
+	def set_mode():
+		Modes.current_mode += 1
+		if (Modes.current_mode >= len(Modes.modes)):
+			Modes.current_mode = 0
+		Leds.set_current_mode(Modes.modes[Modes.current_mode])
 
 	def get_layer():
 		return Modes.layer_count
@@ -36,8 +56,8 @@ class Modes():
 			Modes.seq_status = next(Mode.seq)
 			ui.setHintMsg(f'Seq Mode: {Mode.seq_status}')
 
-	def get_seq_status():
-		return Mode.seq_status
+	# def get_seq_status():
+	# 	return Mode.seq_status
 
 	@classmethod
 	def remove_mode(cls, m):

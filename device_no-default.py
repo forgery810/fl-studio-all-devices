@@ -1,6 +1,6 @@
 # name=No Default 
 # Author: forgery810
-# VERSION = '0.1.5'
+# VERSION = '0.1.8'
 
 import device
 import channels
@@ -14,10 +14,10 @@ import transport
 from leds import Leds
 from process import Process, Dispatch, Main
 from modes import Modes
-from notes import Notes
+from notes import Notes, Scales
 import data as d
 from config import Config
-from config_layout3 import cl  
+from config_layout import cl  
 import plugindata as plg
 import time
 from action import Action
@@ -45,13 +45,9 @@ if Config.PATTERN_CHANGE_WAIT:
 				patterns.jumpToPattern(Action.track_original)
 				Action.new_pattern_number = patterns.patternNumber()
 
-
-
-
-def  OnMidiMsg(event):
+def OnMidiMsg(event):
 	"""Function called on every midi message sent by controller"""
 
-	# print(scriptData)
 	print(event.midiId, event.data1, event.data2, event.midiChan, event.midiChanEx, event.timestamp)
 
 	p.event = event
@@ -62,15 +58,18 @@ def  OnMidiMsg(event):
 	p.triage()
 
 def OnRefresh(event):
-	# print(f"Refresh Event: {event}")
+	print(f"Refresh Event: {event}")
 	if Leds.leds_assigned():
 		Leds.check_event_leds(event)
+	
+				# device.midiOutMsg(144, 0, s + 36, 0)						# turn step leds off
+			# elif channels.getGridBit(channels.selectedChannel(), s) == 1:
+				# device.midiOutMsg(144, 0, s + 36, 127)				
 
 p = Process()
 
 def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	"""converts dict from config_layout to one that is easier for processing"""
-
 	for v in bt.values():
 		d.buttonData[v['channel']] = {}	
 	for v in bt.values():
@@ -133,7 +132,7 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			'actions': v['actions'],
 			'channel': v['channel'],
 			'toggle': v['toggle'],
-			'release': v['midi'][3],
+			# 'release': v['midi'][3],
 			'track': v['track']
 		}
 
@@ -147,152 +146,63 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			'actions': v['actions'],
 			'channel': v['channel'],
 			'toggle': v['toggle'],
-			'release': v['midi'][3],
+			# 'release': v['midi'][3],
 			'track': v['track']
 		}
 
 	for v in jw.values():
 		d.jogData[v['channel']] = {}	
 	for v in jw.values():
-		d.jogData[v['channel']][v['midi'][0]] = {}	
+		if Config.JOGWHEEL_USES_SAME_MIDI_CC:
+			d.jogData[v['channel']][v['midi'][2]] = {}	
+		else:
+			d.jogData[v['channel']][v['midi'][0]] = {}	
 	for v in jw.values():
-		d.jogData['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])	
-		d.jogData[v['channel']][v['midi'][0]][v['midi'][1]] = {
-			'actions': v['actions'],
-			'channel': v['channel'],
-			'toggle': v['toggle'],
-			'release': v['midi'][3],
-			'track': v['track']
-		}
-	print(d.encoderData)
-	# print(d.sequencerData)
-	# print(d.keyboardData)
-	# print(d.performanceData)
-	# # print(d.defaults)
-	# print(d.buttonData)
-	# print(Modes.modes)
+		d.jogData['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])
+		if Config.JOGWHEEL_USES_SAME_MIDI_CC:
+			d.jogData[v['channel']][v['midi'][2]][v['midi'][1]] = {
+				'actions': v['actions'],
+				'channel': v['channel'],
+				'toggle': v['toggle'],
+				'release': v['midi'][3],
+				'track': v['track']
+			}
+		else:	
+			d.jogData[v['channel']][v['midi'][0]][v['midi'][1]] = {
+				'actions': v['actions'],
+				'channel': v['channel'],
+				'toggle': v['toggle'],
+				'release': v['midi'][3],
+				'track': v['track']
+			}
 
-
-
-
-
-
-	# d.keyboardData = {
-	# 	v['channel']: 
-	# 		{v['midi'][0]: {
-	# 		}
-	# 	} for k, v, in kb.items()
-	# }
-	# for k, v in kb.items():
-	# 	d.keyboardData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
-
-	# for k, v in kb.items():
-	# 	d.keyboardData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
-	# 	d.keyboardData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
-	# d.sequencerData = {
-	# 	v['channel']: 
-	# 		{v['midi'][0]: {
-	# 		}
-	# 	} for k, v, in bt.items()
-	# }
-	# for k, v in sq.items():
-	# 	d.sequencerData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
-	# # for k, v in sq.items():
-	# # 	d.sequencerData[v['midi'][0]] = {}
-	# # 	d.sequencerData[v['midi'][3]] = {}
-	# for k, v in sq.items():
-	# 	d.sequencerData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
-	# 	d.sequencerData[v['channel']][v['midi'][3]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
-	# # for k, v in en.items():
-	# # 	d.encoderData[v['midi'][0]] = {}
-	# d.encoderData = {
-	# 	v['channel']: 
-	# 		{v['midi'][0]: {
-	# 		}
-	# 	} for k, v, in en.items()
-	# }
-	# for k, v in en.items():
-	# 	plg.knob_num.append(v['midi'][1])
-	# 	d.encoderData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
-	# # d.jogData = {
-	# # 	v['channel']: 
-	# # 		{v['midi'][0]: {
-	# # 		}
-	# # 	} for k, v, in jw.items()
-	# # }
-	# # # for k, v in jw.items():
-	# # # 	d.jogData[v['midi'][0]] = {}
-	# # # 	d.jogData[v['midi'][0]][v['midi'][1]] = {} 
-	# # for k, v in jw.items():
-	# # 	d.jogData[v['channel']][v['midi'][0]][v['midi'][1]][v['midi'][2]] = { 
-	# # 		'actions': v['actions'],
-	# # 		'channel': v['channel'],
-	# # 		'toggle': v['toggle'],
-	# # 		'release': v['midi'][3],
-	# # 		'midi_2': v['midi'][2],
-	# # 		'track': v['track']
-	# # 		}
 	if cl["defaults"]["Keyboard"]:
 		Modes.remove_mode("Keyboard")
 	if cl["defaults"]["Sequencer"]:
 		Modes.remove_mode("Sequencer")	
 	plg.knob_num = sorted(set(plg.knob_num))
+	# Scales.set_scale_by_name(cl["defaults"]["scale"])
 
-	# d.performanceData = {
-	# 	v['channel']: 
-	# 		{v['midi'][0]: {
-	# 		}
-	# 	} for k, v, in pf.items()
-	# }
-
-	# for k, v in pf.items():
-	# 	d.performanceData[v['channel']][v['midi'][0]][v['midi'][1]] = {}
-	# for k, v in pf.items():
-	# 	d.performanceData[v['channel']][v['midi'][0]][v['midi'][1]] = { 
-	# 		'actions': v['actions'],
-	# 		'channel': v['channel'],
-	# 		'toggle': v['toggle'],
-	# 		'release': v['midi'][3],
-	# 		'track': v['track']
-	# 		}
+	# print(d.encoderData)
+	# print(d.buttonData)
+	# print(d.sequencerData)
+	# print(d.keyboardData)
+	# print(d.performanceData)
+	# print(d.defaults)
+	# print(d.jogData)
+	# print(Modes.modes)
 
 
 def AssignLeds(led):
-	d.ledData = {
-		v['actions'][0]: 
-			[v['midi'][0], v['channel']- 1, v['midi'][1]
-		] for k, v, in led.items()
-	}
+	if cl["leds"]["transport_leds"]:
+		print('leds present')
+		d.ledData["transport"] = cl["leds"]["transport_leds"]
+		Modes.set_transport_leds(True)
+
+	if cl["leds"]["seq_leds"]:
+		Modes.set_seq_leds(True)
+		d.ledData["seq"] = cl["leds"]["seq_leds"]
 	
 def OnDeInit():
-	Leds.all_off()
+	print('OnDeInit')
+	# Leds.all_off()

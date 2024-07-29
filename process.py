@@ -32,7 +32,6 @@ class Process(Dispatch):
 		data_2 = self.event.data2
 		midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
 		midi_pair = [midi_id, data_1, midi_chan]
-
 		if midi_pair in d.performanceData["midi_pairs"] and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist):
 			print('performance') 
 			if data_2 > 0:
@@ -44,16 +43,19 @@ class Process(Dispatch):
 		elif midi_pair in d.keyboardData["midi_pairs"]and Modes.mode_active('Keyboard'):
 			Keys.decide(self, d.keyboardData[midi_chan][midi_id][data_1])
 		elif midi_pair in d.sequencerData["midi_pairs"]and Modes.mode_active('Sequencer'):
-			Sequencer.step_pressed(self, d.sequencerData[midi_chan][midi_id][data_1])
+			if data_2 > 0:
+				Sequencer.step_pressed(self, d.sequencerData[midi_chan][midi_id][data_1])
 		elif midi_pair in d.buttonData["midi_pairs"]:
 			if data_2 > 0:
+				print("button")
 				Main.set_track(d.buttonData[midi_chan][midi_id][data_1])
 				Main.transport_act(self, d.buttonData[midi_chan][midi_id][data_1]["actions"], Action.shift_status)
 		elif midi_pair in d.encoderData["midi_pairs"]:
 			Main.set_track(d.encoderData[midi_chan][midi_id][data_1])
 			Encoder.set(self, d.encoderData[midi_chan][midi_id][data_1])
 		elif midi_pair in d.jogData["midi_pairs"]:
-				Encoder.jogWheel(self, d.jogData[midi_chan][midi_id].get(data_1))
+			print('jogwheel')
+			Encoder.jogWheel(self, d.jogData[midi_chan])
 		else:
 			self.event.handled = Config.PREVENT_PASSTHROUGH
 			print('not set')
@@ -111,27 +113,6 @@ class Keys(Process):
 		channels.midiNoteOn(channels.selectedChannel(), Keys.notes.index(data) + 36, self.event.data2)
 
 class Sequencer(Process):
-	# def step_pressed(self, data):
-	# 		print(data)
-	# 		# seq_len = cl["defaults"]["sequence_length"]
-	# 		s = int(data["actions"][0])
-	# 		track = data["track"]
-	# 		# step_num = (cl["defaults"]["sequence_length"] % s)
-	# 		step_num = Sequencer.get_step(s, cl["defaults"]["sequence_length"])
-	# 		# step_num = 0 if s == 0 else (cl["defaults"]["sequence_length"] % s)
-	# 				# step_num = int(data["actions"][0]) - (cl["defaults"]["sequence_length"] * track)
-	# 		print(step_num)
-	# 		# if cl["defaults"]["seq_mult"]:
-	# 		chan = Sequencer.get_seq_channel(track)
-	# 		# else:
-	# 		# 	chan = channels.selectedChannel()
-	# 		if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
-	# 			Action.selected_step = step_num
-	# 			self.event.handled = True
-	# 		else:
-	# 			# step = step_num % cl["defaults"]["sequence_multiple"][1]
-	# 			Sequencer.set_step(self, step_num, chan) 
-
 
 
 	def step_pressed(self, data):
@@ -158,8 +139,7 @@ class Sequencer(Process):
 			return 0
 		else:
 			return input % len
-
-
+			
 	def set_step(self, step, chan):
 		print(f"step: {step}")
 		print(f"chan: {chan}")
@@ -174,6 +154,30 @@ class Sequencer(Process):
 			# offset = int(step_num / cl["defaults"]["sequence_length"])
 			chan = channels.selectedChannel() + track
 			return chan
+
+	# def step_pressed(self, data):
+	# 		print(data)
+	# 		# seq_len = cl["defaults"]["sequence_length"]
+	# 		s = int(data["actions"][0])
+	# 		track = data["track"]
+	# 		# step_num = (cl["defaults"]["sequence_length"] % s)
+	# 		step_num = Sequencer.get_step(s, cl["defaults"]["sequence_length"])
+	# 		# step_num = 0 if s == 0 else (cl["defaults"]["sequence_length"] % s)
+	# 				# step_num = int(data["actions"][0]) - (cl["defaults"]["sequence_length"] * track)
+	# 		print(step_num)
+	# 		# if cl["defaults"]["seq_mult"]:
+	# 		chan = Sequencer.get_seq_channel(track)
+	# 		# else:
+	# 		# 	chan = channels.selectedChannel()
+	# 		if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
+	# 			Action.selected_step = step_num
+	# 			self.event.handled = True
+	# 		else:
+	# 			# step = step_num % cl["defaults"]["sequence_multiple"][1]
+	# 			Sequencer.set_step(self, step_num, chan) 
+
+
+
 
 class Encoder(Process):
 
@@ -198,7 +202,6 @@ class Encoder(Process):
 			param_value =  self.event.data2/127 #Utility.level_adjust(self.event.data2, plugins.getParamValue(param, channels.selectedChannel()), .025)		                                                                           																		
 			plugins.setParamValue(param_value, param, channels.selectedChannel())
 			self.event.handled = True
-	
 		else:	
 			param = self.event.data1 - 15
 			# param_value =  Utility.level_adjust(self.event.data2, plugins.getParamValue(param, channels.selectedChannel()), .025)	
@@ -206,8 +209,13 @@ class Encoder(Process):
 			self.event.handled = True
 
 	def jogWheel(self, data):
-		if data.get(self.event.data2):
-			Main.transport_act(self, data[self.event.data2]['actions'], 0, 0)
+		print(f"d: {data}")
+		# if data.get(self.event.data2):
+		if Config.JOGWHEEL_USES_SAME_MIDI_CC:
+			Main.transport_act(self, data[self.event.data2][self.event.data1]['actions'], 0)
+		else:
+			# print(data[self.event.midiId][self.event.data1]['actions'])
+			Main.transport_act(self, data[self.event.midiId][self.event.data1]['actions'], 0)
 
 
 	def channel_link(cc):
