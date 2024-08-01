@@ -13,7 +13,7 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-from config_layout3 import cl
+from config_layout import cl
 import data 
 from config import Config 
 from utility import Utility
@@ -460,7 +460,6 @@ class Action():
 			param = 6
 		return param
 
-
 	def set_parameter_value(data2):
 
 		c = channels.selectedChannel()
@@ -475,6 +474,18 @@ class Action():
 		else:
 			channels.setStepParameterByIndex(c, p, s, pi, data2, 1)
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
+
+	def zoom_in_horz():
+		ui.horZoom(1)
+
+	def zoom_out_horz():
+		ui.horZoom(-1)
+
+	def zoom_in_vert():
+		ui.verZoom(1)
+
+	def zoom_out_vert():
+		ui.verZoom(-1)
 
 	def mixer_solo():
 		mixer.soloTrack(Action.track_number)
@@ -586,6 +597,7 @@ class EncoderAction(Action):
 		Action.jog_wheel_down()
 
 	def mixer_level(d2):
+		# print(f"track_number: {EncoderAction.track_number}")
 		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
 
 	def mixer_pan(d2):

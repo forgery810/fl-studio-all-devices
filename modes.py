@@ -7,7 +7,7 @@ class Modes():
 	# seq_modes = ['Pattern B', 'Pattern A']
 	# seq = itertools.cycle(seq_modes)
 	# seq_status = 'Pattern A'
-	modes = [ 'Sequencer', 'Keyboard', 'Buttons']
+	modes = [  'Buttons', 'Sequencer', 'Keyboard']
 	layer_count = 0
 	sequence_leds = False
 	transport_leds = False
@@ -36,7 +36,9 @@ class Modes():
 		Modes.current_mode += 1
 		if (Modes.current_mode >= len(Modes.modes)):
 			Modes.current_mode = 0
-		Leds.set_current_mode(Modes.modes[Modes.current_mode])
+			# Change to mode_assigned()
+		# if Leds.leds_assigned():
+		# 	Leds.set_current_mode(Modes.modes[Modes.current_mode])
 
 	def get_layer():
 		return Modes.layer_count

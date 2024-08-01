@@ -1,14 +1,14 @@
-from data import ledData as l
-import data as d
+# from data import dledData as l
+from data import d
 import transport
 import device
 import midi
 import channels
-from config_layout3 import cl
+from config_layout import cl
 from config import Config
 
 class Leds():
-	assigned = False
+	assigned = True
 
 	events = {
 		"transport": [256, 260],
@@ -16,12 +16,13 @@ class Leds():
 	}
 
 	def led_setup():
-		if d.ledData:
+		if d["ledData"]:
+			# print(f"d.ledData: {bool(d["ledData"])}")
 			Leds.assigned = True 
 				# turn step leds off
 
 	def check_shift(shift):
-		if cl.get("leds", {}).get("transport_leds", {}).get("shift"):
+		if cl.get("leds", {}).get("shift"):
 			if shift:
 				print('shift present')
 				device.midiOutMsg(*cl["leds"]["transport_leds"]["shift"], 127)
@@ -51,7 +52,6 @@ class Leds():
 			else:
 				device.midiOutMsg(*cl["leds"]["transport_leds"]["record"], 0)
 
-
 	def set_sequence():
 		for k, v in cl["leds"]["seq_leds"].items():
 			print(cl["leds"]["seq_leds"][k])
@@ -73,4 +73,4 @@ class Leds():
 
 
 	def all_off():
-		device.midiOutMsg(*d.ledData["stop"], 0)
+		device.midiOutMsg(*d["ledData"]["stop"], 0)
