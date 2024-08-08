@@ -1,1052 +1,3322 @@
-# cl = { "name": "MIDIIN2 (ATM SQ)", 
-
-# # "leds": { "seq_leds": { 0: [ 144, 10, 36, ], 1: [ 144, 10, 37, ], 2: [ 144, 10, 38, ], 3: [ 144, 10, 39, ], 4: [ 144, 10, 40, ], 5: [ 144, 10, 41, ], 6: [ 144, 10, 42, ], 7: [ 144, 10, 43, ], 8: [ 144, 10, 44, ], 9: [ 144, 10, 45, ], 10: [ 144, 10, 46, ], 11: [ 144, 10, 47, ], 12: [ 144, 10, 48, ], 13: [ 144, 10, 49, ], 14: [ 144, 10, 50, ], 15: [ 144, 10, 51, ], }, "transport_leds": {}, },
-# "leds":{"seq_leds":{}, "transport_leds": {}},
-# "jog_wheel": { '34': {'channel': 1, 'midi': [144, 99, 0, 144], 'actions': ['jog_wheel_up', 'jog_wheel_up'], 'toggle': 0, 'track': 0 }, '35': {'channel': 1, 'midi': [144, 98, 0, 144], 'actions': ['jog_wheel_up', 'jog_wheel_up'], 'toggle': 0, 'track': 0 }, },
-
-# "defaults": { "octaves": 5, "sequence_length": 16, "plugin_control": 1, "mixer_tracks": 1, "Keyboard": 0, "Sequencer": 0, "keyboard_count": 5, "modes": ["Buttons", "Keyboard", "Sequencer", ], "levels_control_parameter": 1, "colors": [], "root": "C", "scale": "Major", "windows": [4, 0, 2, 1, 3, ] },
-
-# "encoders": { '25': {'channel': 1, 'midi': [176, 21, 0, 176], 'actions': ['set_random_max_octave', 'mixer_level'], 'toggle': 0, 'track': 1 }, '26': {'channel': 1, 'midi': [176, 22, 0, 176], 'actions': ['set_random_min_octave', 'mixer_level'], 'toggle': 0, 'track': 2 }, '27': {'channel': 1, 'midi': [176, 23, 0, 176], 'actions': ['set_random_offset', 'mixer_level'], 'toggle': 0, 'track': 3 }, '28': {'channel': 1, 'midi': [176, 24, 0, 176], 'actions': ['pass', 'mixer_level'], 'toggle': 0, 'track': 4 }, '29': {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['selected_level', 'mixer_level'], 'toggle': 0, 'track': 5 }, '30': {'channel': 1, 'midi': [176, 26, 0, 176], 'actions': ['selected_pan', 'mixer_level'], 'toggle': 0, 'track': 6 }, '31': {'channel': 1, 'midi': [176, 27, 0, 176], 'actions': ['set_efx_track', 'mixer_level'], 'toggle': 0, 'track': 7 }, '32': {'channel': 1, 'midi': [176, 28, 0, 176], 'actions': ['selected_level', 'mixer_level'], 'toggle': 0, 'track': 8 }, '33': {'channel': 1, 'midi': [176, 1, 42, 176], 'actions': ['scroll', 'scroll'], 'toggle': 0, 'track': 1 }, },
-
-# "buttons": { '1': {'channel': 1, 'midi': [176, 24, 0, 176], 'actions': ['shift', 'shift'], 'toggle': 0, 'track': 0 }, '2': {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['increment_scale', 'change_color'], 'toggle': 0, 'track': 0 }, '3': {'channel': 1, 'midi': [176, 26, 0, 176], 'actions': ['quantize', 'loop_record'], 'toggle': 0, 'track': 0 }, '4': {'channel': 1, 'midi': [176, 27, 0, 176], 'actions': ['open_channel', 'open_plugins'], 'toggle': 0, 'track': 0 }, '5': {'channel': 1, 'midi': [176, 28, 0, 176], 'actions': ['change_mode', 'change_mode'], 'toggle': 0, 'track': 0 }, '6': {'channel': 1, 'midi': [176, 29, 0, 176], 'actions': ['enter', 'enter'], 'toggle': 0, 'track': 0 }, '7': {'channel': 1, 'midi': [176, 30, 0, 176], 'actions': ['rand_pattern', 'rand_trigs'], 'toggle': 0, 'track': 0 }, '8': {'channel': 1, 'midi': [176, 31, 0, 176], 'actions': ['rotate_set_windows', 'rotate_set_windows'], 'toggle': 0, 'track': 0 }, '9': {'channel': 1, 'midi': [144, 93, 0, 144], 'actions': ['stop', 'stop'], 'toggle': 0, 'track': 0 }, '10': {'channel': 1, 'midi': [144, 94, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '11': {'channel': 1, 'midi': [144, 95, 0, 144], 'actions': ['record', 'record'], 'toggle': 0, 'track': 0 }, '12': {'channel': 1, 'midi': [144, 89, 0, 144], 'actions': ['overdub', 'start'], 'toggle': 0, 'track': 0 }, '15': {'channel': 1, 'midi': [144, 81, 0, 144], 'actions': ['undo', 'song_pat'], 'toggle': 0, 'track': 0 }, '16': {'channel': 1, 'midi': [144, 86, 0, 144], 'actions': ['save', 'metronome'], 'toggle': 0, 'track': 0 }, '90': {'channel': 1, 'midi': [144, 8, 0, 144], 'actions': ['solo', 'solo'], 'toggle': 0, 'track': 0 }, '91': {'channel': 1, 'midi': [144, 16, 0, 144], 'actions': ['mute', 'mute'], 'toggle': 0, 'track': 0 }, '92': {'channel': 1, 'midi': [144, 0, 0, 144], 'actions': ['arm_track', 'arm_track'], 'toggle': 0, 'track': 0 }, '94': {'channel': 3, 'midi': [176, 24, 0, 176], 'actions': ['cut', 'paste'], 'toggle': 0, 'track': 0 }, '95': {'channel': 3, 'midi': [176, 25, 0, 176], 'actions': ['new_pattern', 'start'], 'toggle': 0, 'track': 0 }, '96': {'channel': 3, 'midi': [176, 26, 0, 176], 'actions': ['octave_up', 'start'], 'toggle': 0, 'track': 0 }, '97': {'channel': 3, 'midi': [176, 27, 0, 176], 'actions': ['pattern_down', 'next_pre_pat'], 'toggle': 0, 'track': 0 }, '98': {'channel': 3, 'midi': [176, 28, 0, 176], 'actions': ['pattern_up', 'nothing'], 'toggle': 0, 'track': 0 }, '99': {'channel': 3, 'midi': [176, 29, 0, 176], 'actions': ['set_root_note', 'set_root_note'], 'toggle': 0, 'track': 0 }, '100': {'channel': 1, 'midi': [144, 31, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '101': {'channel': 1, 'midi': [144, 98, 0, 144], 'actions': ['up', 'up'], 'toggle': 0, 'track': 0 }, '102': {'channel': 1, 'midi': [144, 24, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '103': {'channel': 1, 'midi': [144, 99, 0, 144], 'actions': ['down', 'down'], 'toggle': 0, 'track': 0 }, },
-
-# "keyboard": { '104': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 0 }, '105': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 0 }, '106': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 0 }, '107': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['G#', ''], 'toggle': 0, 'track': 0 }, '108': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['A#', ''], 'toggle': 0, 'track': 0 }, '109': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 0 }, '110': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 0 }, '111': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 0 }, '112': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 0 }, '113': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 0 }, '114': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['A', ''], 'toggle': 0, 'track': 0 }, '115': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['B', ''], 'toggle': 0, 'track': 0 }, '116': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 0 }, '117': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 0 }, '118': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 0 }, '119': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['G#', ''], 'toggle': 0, 'track': 0 }, '120': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['A#', ''], 'toggle': 0, 'track': 0 }, '121': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 0 }, '122': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 0 }, '123': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 0 }, '124': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 0 }, '125': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 0 }, '126': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['A', ''], 'toggle': 0, 'track': 0 }, '127': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['B', ''], 'toggle': 0, 'track': 0 }, '128': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 0 }, '129': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 0 }, '130': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 0 }, '133': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 0 }, '134': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 0 }, '135': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 0 }, '136': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 0 }, '137': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 0 }, },
-
-# "sequencer": { '68': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['0', '0'], 'toggle': 0, 'track': 1 }, '69': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['1', '1'], 'toggle': 0, 'track': 1 }, '70': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['2', '2'], 'toggle': 0, 'track': 1 }, '71': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['3', '3'], 'toggle': 0, 'track': 1 }, '72': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['4', '4'], 'toggle': 0, 'track': 1 }, '73': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['5', '5'], 'toggle': 0, 'track': 1 }, '74': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['6', '6'], 'toggle': 0, 'track': 1 }, '75': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['7', '7'], 'toggle': 0, 'track': 1 }, '76': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['8', '8'], 'toggle': 0, 'track': 1 }, '77': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['9', '9'], 'toggle': 0, 'track': 1 }, '78': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['10', '10'], 'toggle': 0, 'track': 1 }, '79': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['11', '11'], 'toggle': 0, 'track': 1 }, '80': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['12', '12'], 'toggle': 0, 'track': 1 }, '81': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['13', '13'], 'toggle': 0, 'track': 1 }, '82': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['14', '14'], 'toggle': 0, 'track': 1 }, '83': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['15', '15'], 'toggle': 0, 'track': 1 }, '84': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 1 }, '85': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 2 }, '86': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 3 }, '87': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 4 }, '88': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 5 }, '89': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 6 }, '90': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 7 }, '91': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 8 }, '92': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 9 }, '93': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 10 }, '94': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 11 }, '95': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 12 }, '96': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 13 }, '97': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 14 }, '98': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 15 }, '99': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 16 }, },
-
-# "performance": { '36': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 0 }, '37': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 1 }, '38': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 2 }, '39': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 3 }, '40': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 0 }, '41': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 1 }, '42': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 2 }, '43': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 3 }, '44': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 0 }, '45': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 1 }, '46': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 2 }, '47': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 3 }, '48': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 0 }, '49': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 1 }, '50': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 2 }, '51': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 3 }, '52': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 0 }, '53': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 1 }, '54': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 2 }, '55': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 3 }, '56': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 0 }, '57': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 1 }, '58': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 2 }, '59': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 3 }, '60': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 0 }, '61': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 1 }, '62': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 2 }, '63': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 3 }, '64': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 0 }, '65': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 1 }, '66': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 2 }, '67': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 3 }, }, }
-
-
-# cl = { "name": "nanoKONTROL2", 
-# 
-# "leds": { "seq_leds": { }, "transport_leds": {}, },
-# 
-# "jog_wheel": { '38': {'channel': 1, 'midi': [144, 99, 0, 144], 'actions': ['jog_wheel_up', 'jog_wheel_up'], 'toggle': 0, 'track': 0 }, '39': {'channel': 1, 'midi': [144, 98, 0, 144], 'actions': ['jog_wheel_up', 'jog_wheel_up'], 'toggle': 0, 'track': 0 }, },
-# 
-# "defaults": { "octaves": 5, "sequence_length": 16, "plugin_control": 1, "mixer_tracks": 1, "Keyboard": 0, "Sequencer": 0, "keyboard_count": 5, "modes": ["Buttons", "Keyboard", "Sequencer", ], "levels_control_parameter": 0, "colors": [], "windows": [4, 0, 2, 1, 3, ] },
-# 
-# "encoders": { '28': {'channel': 1, 'midi': [176, 21, 0, 176], 'actions': ['set_random_max_octave', 'mixer_level'], 'toggle': 0, 'track': 1 }, '29': {'channel': 1, 'midi': [176, 22, 0, 176], 'actions': ['set_random_min_octave', 'mixer_level'], 'toggle': 0, 'track': 2 }, '30': {'channel': 1, 'midi': [176, 23, 0, 176], 'actions': ['set_random_offset', 'mixer_level'], 'toggle': 0, 'track': 3 }, '31': {'channel': 1, 'midi': [176, 24, 0, 176], 'actions': ['pass', 'mixer_level'], 'toggle': 0, 'track': 4 }, '32': {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['selected_level', 'mixer_level'], 'toggle': 0, 'track': 5 }, '33': {'channel': 1, 'midi': [176, 26, 0, 176], 'actions': ['selected_pan', 'mixer_level'], 'toggle': 0, 'track': 6 }, '34': {'channel': 1, 'midi': [176, 27, 0, 176], 'actions': ['set_efx_track', 'mixer_level'], 'toggle': 0, 'track': 7 }, '35': {'channel': 1, 'midi': [176, 28, 0, 176], 'actions': ['selected_level', 'mixer_level'], 'toggle': 0, 'track': 8 }, '36': {'channel': 1, 'midi': [176, 1, 0, 176], 'actions': ['scroll', 'scroll'], 'toggle': 0, 'track': 1 }, },
-# 
-# "buttons": { '1': {'channel': 1, 'midi': [176, 24, 0, 176], 'actions': ['shift', 'shift'], 'toggle': 0, 'track': 0 }, '2': {'channel': 1, 'midi': [176, 25, 0, 176], 'actions': ['increment_scale', 'change_color'], 'toggle': 0, 'track': 0 }, '3': {'channel': 1, 'midi': [176, 26, 0, 176], 'actions': ['quantize', 'loop_record'], 'toggle': 0, 'track': 0 }, '4': {'channel': 1, 'midi': [176, 27, 0, 176], 'actions': ['open_channel', 'open_plugins'], 'toggle': 0, 'track': 0 }, '5': {'channel': 1, 'midi': [176, 28, 0, 176], 'actions': ['change_mode', 'change_mode'], 'toggle': 0, 'track': 0 }, '6': {'channel': 1, 'midi': [176, 29, 0, 176], 'actions': ['enter', 'enter'], 'toggle': 0, 'track': 0 }, '7': {'channel': 1, 'midi': [176, 30, 0, 176], 'actions': ['rand_pattern', 'rand_trigs'], 'toggle': 0, 'track': 0 }, '8': {'channel': 1, 'midi': [176, 31, 0, 176], 'actions': ['rotate_set_windows', 'rotate_set_windows'], 'toggle': 0, 'track': 0 }, '9': {'channel': 1, 'midi': [144, 93, 0, 144], 'actions': ['stop', 'stop'], 'toggle': 0, 'track': 0 }, '10': {'channel': 1, 'midi': [144, 94, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '11': {'channel': 1, 'midi': [144, 95, 0, 144], 'actions': ['record', 'record'], 'toggle': 0, 'track': 0 }, '12': {'channel': 1, 'midi': [144, 89, 0, 144], 'actions': ['overdub', 'start'], 'toggle': 0, 'track': 0 }, '13': {'channel': 1, 'midi': [144, 81, 0, 144], 'actions': ['undo', 'song_pat'], 'toggle': 0, 'track': 0 }, '14': {'channel': 1, 'midi': [144, 86, 0, 144], 'actions': ['save', 'metronome'], 'toggle': 0, 'track': 0 }, '15': {'channel': 1, 'midi': [144, 8, 0, 144], 'actions': ['solo', 'solo'], 'toggle': 0, 'track': 0 }, '16': {'channel': 1, 'midi': [144, 16, 0, 144], 'actions': ['mute', 'mute'], 'toggle': 0, 'track': 0 }, '17': {'channel': 1, 'midi': [144, 0, 0, 144], 'actions': ['arm_track', 'arm_track'], 'toggle': 0, 'track': 0 }, '18': {'channel': 3, 'midi': [176, 24, 0, 176], 'actions': ['cut', 'paste'], 'toggle': 0, 'track': 0 }, '19': {'channel': 3, 'midi': [176, 25, 0, 176], 'actions': ['new_pattern', 'start'], 'toggle': 0, 'track': 0 }, '20': {'channel': 3, 'midi': [176, 26, 0, 176], 'actions': ['octave_up', 'start'], 'toggle': 0, 'track': 0 }, '21': {'channel': 3, 'midi': [176, 27, 0, 176], 'actions': ['pattern_down', 'next_pre_pat'], 'toggle': 0, 'track': 0 }, '22': {'channel': 3, 'midi': [176, 28, 0, 176], 'actions': ['pattern_up', 'nothing'], 'toggle': 0, 'track': 0 }, '23': {'channel': 3, 'midi': [176, 29, 0, 176], 'actions': ['set_root_note', 'set_root_note'], 'toggle': 0, 'track': 0 }, '24': {'channel': 1, 'midi': [144, 31, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '25': {'channel': 1, 'midi': [144, 98, 0, 144], 'actions': ['up', 'up'], 'toggle': 0, 'track': 0 }, '26': {'channel': 1, 'midi': [144, 24, 0, 144], 'actions': ['start', 'start'], 'toggle': 0, 'track': 0 }, '27': {'channel': 1, 'midi': [144, 99, 0, 144], 'actions': ['down', 'down'], 'toggle': 0, 'track': 0 }, },
-# 
-# "keyboard": { '40': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 0 }, '41': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 0 }, '42': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 0 }, '43': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['G#', ''], 'toggle': 0, 'track': 0 }, '44': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['A#', ''], 'toggle': 0, 'track': 0 }, '45': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 0 }, '46': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 0 }, '47': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 0 }, '48': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 0 }, '49': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 0 }, '50': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['A', ''], 'toggle': 0, 'track': 0 }, '51': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['B', ''], 'toggle': 0, 'track': 0 }, '52': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 1 }, '53': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 1 }, '54': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 1 }, '55': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['G#', ''], 'toggle': 0, 'track': 1 }, '56': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['A#', ''], 'toggle': 0, 'track': 1 }, '57': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 1 }, '58': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 1 }, '59': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 1 }, '60': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 1 }, '61': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 1 }, '62': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['A', ''], 'toggle': 0, 'track': 1 }, '63': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['B', ''], 'toggle': 0, 'track': 1 }, '64': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['C#', ''], 'toggle': 0, 'track': 2 }, '65': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['D#', ''], 'toggle': 0, 'track': 2 }, '66': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['F#', ''], 'toggle': 0, 'track': 2 }, '69': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['C', ''], 'toggle': 0, 'track': 2 }, '70': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['D', ''], 'toggle': 0, 'track': 2 }, '71': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['E', ''], 'toggle': 0, 'track': 2 }, '72': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['F', ''], 'toggle': 0, 'track': 2 }, '73': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['G', ''], 'toggle': 0, 'track': 2 }, },
-# 
-# "sequencer": { '108': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['0', '0'], 'toggle': 0, 'track': 1 }, '109': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['1', '1'], 'toggle': 0, 'track': 1 }, '110': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['2', '2'], 'toggle': 0, 'track': 1 }, '111': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['3', '3'], 'toggle': 0, 'track': 1 }, '112': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['4', '4'], 'toggle': 0, 'track': 1 }, '113': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['5', '5'], 'toggle': 0, 'track': 1 }, '114': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['6', '6'], 'toggle': 0, 'track': 1 }, '115': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['7', '7'], 'toggle': 0, 'track': 1 }, '116': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['8', '8'], 'toggle': 0, 'track': 1 }, '117': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['9', '9'], 'toggle': 0, 'track': 1 }, '118': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['10', '10'], 'toggle': 0, 'track': 1 }, '119': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['11', '11'], 'toggle': 0, 'track': 1 }, '120': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['12', '12'], 'toggle': 0, 'track': 1 }, '121': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['13', '13'], 'toggle': 0, 'track': 1 }, '122': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['14', '14'], 'toggle': 0, 'track': 1 }, '123': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['15', '15'], 'toggle': 0, 'track': 1 }, '124': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 1 }, '125': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 2 }, '126': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 3 }, '127': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 4 }, '128': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 5 }, '129': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 6 }, '130': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 7 }, '131': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 8 }, '132': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 9 }, '133': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 10 }, '134': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 11 }, '135': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 12 }, '136': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 13 }, '137': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 14 }, '138': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 15 }, '139': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['select_pattern', 'mute_channel'], 'toggle': 0, 'track': 16 }, },
-# 
-# "performance": { '76': {'channel': 10, 'midi': [144, 52, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 0 }, '77': {'channel': 10, 'midi': [144, 53, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 1 }, '78': {'channel': 10, 'midi': [144, 54, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 2 }, '79': {'channel': 10, 'midi': [144, 55, 0, 128], 'actions': ['1', ''], 'toggle': 0, 'track': 3 }, '80': {'channel': 10, 'midi': [144, 36, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 0 }, '81': {'channel': 10, 'midi': [144, 37, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 1 }, '82': {'channel': 10, 'midi': [144, 38, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 2 }, '83': {'channel': 10, 'midi': [144, 39, 0, 128], 'actions': ['2', ''], 'toggle': 0, 'track': 3 }, '84': {'channel': 10, 'midi': [144, 56, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 0 }, '85': {'channel': 10, 'midi': [144, 57, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 1 }, '86': {'channel': 10, 'midi': [144, 58, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 2 }, '87': {'channel': 10, 'midi': [144, 59, 0, 128], 'actions': ['3', ''], 'toggle': 0, 'track': 3 }, '88': {'channel': 10, 'midi': [144, 40, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 0 }, '89': {'channel': 10, 'midi': [144, 41, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 1 }, '90': {'channel': 10, 'midi': [144, 42, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 2 }, '91': {'channel': 10, 'midi': [144, 43, 0, 128], 'actions': ['4', ''], 'toggle': 0, 'track': 3 }, '92': {'channel': 10, 'midi': [144, 60, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 0 }, '93': {'channel': 10, 'midi': [144, 61, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 1 }, '94': {'channel': 10, 'midi': [144, 62, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 2 }, '95': {'channel': 10, 'midi': [144, 63, 0, 128], 'actions': ['5', ''], 'toggle': 0, 'track': 3 }, '96': {'channel': 10, 'midi': [144, 44, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 0 }, '97': {'channel': 10, 'midi': [144, 45, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 1 }, '98': {'channel': 10, 'midi': [144, 46, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 2 }, '99': {'channel': 10, 'midi': [144, 47, 0, 128], 'actions': ['6', ''], 'toggle': 0, 'track': 3 }, '100': {'channel': 10, 'midi': [144, 64, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 0 }, '101': {'channel': 10, 'midi': [144, 65, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 1 }, '102': {'channel': 10, 'midi': [144, 66, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 2 }, '103': {'channel': 10, 'midi': [144, 67, 0, 128], 'actions': ['7', ''], 'toggle': 0, 'track': 3 }, '104': {'channel': 10, 'midi': [144, 48, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 0 }, '105': {'channel': 10, 'midi': [144, 49, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 1 }, '106': {'channel': 10, 'midi': [144, 50, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 2 }, '107': {'channel': 10, 'midi': [144, 51, 0, 128], 'actions': ['8', ''], 'toggle': 0, 'track': 3 }, }, }
-# 
-
-cl = { "name": "", 
-
-"leds": { "seq_leds": { 0: [ 176, 1, 48, ], 1: [ 176, 1, 49, ], 2: [ 176, 1, 50, ], 3: [ 176, 1, 51, ], 4: [ 176, 1, 52, ], 5: [ 176, 1, 53, ], 6: [ 176, 1, 54, ], 7: [ 176, 1, 55, ], 8: [ 176, 1, 64, ], 9: [ 176, 1, 65, ], 10: [ 176, 1, 66, ], 11: [ 176, 1, 67, ], 12: [ 176, 1, 68, ], 13: [ 176, 1, 69, ], 14: [ 176, 1, 70, ], 15: [ 176, 1, 71, ], }, "transport_leds": {"stop": [ 176, 1, 42, ], "start": [ 176, 1, 41, ], "record": [ 176, 1, 45, ], "shift": [ 176, 1, 46, ], }, },
-
-"jog_wheel": { },
-
-"defaults": { "octaves": 5, "sequence_length": 16, "plugin_control": 1, "mixer_tracks": 1, "Keyboard": 0, "Sequencer": 0, "keyboard_count": 5, "modes": ["Buttons", "Keyboard", "Sequencer", ], "levels_control_parameter": 0, "colors": [], "windows": [4, 0, 2, 1, 3, ] },
-
-"encoders": { '36': {'channel': 1, 'midi': [176, 16, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 1 }, '37': {'channel': 1, 'midi': [176, 17, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 2 }, '38': {'channel': 1, 'midi': [176, 18, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 3 }, '39': {'channel': 1, 'midi': [176, 19, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 4 }, '40': {'channel': 1, 'midi': [176, 20, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 5 }, '41': {'channel': 1, 'midi': [176, 21, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 6 }, '42': {'channel': 1, 'midi': [176, 22, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 7 }, '43': {'channel': 1, 'midi': [176, 23, 0, 176], 'actions': ['mixer_pan', 'selected_level'], 'toggle': 0, 'track': 8 }, '44': {'channel': 1, 'midi': [176, 0, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 1 }, '45': {'channel': 1, 'midi': [176, 1, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 2 }, '46': {'channel': 1, 'midi': [176, 2, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 3 }, '47': {'channel': 1, 'midi': [176, 3, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 4 }, '48': {'channel': 1, 'midi': [176, 4, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 5 }, '49': {'channel': 1, 'midi': [176, 5, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 6 }, '50': {'channel': 1, 'midi': [176, 6, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 7 }, '51': {'channel': 1, 'midi': [176, 7, 0, 176], 'actions': ['mixer_level', 'selected_level'], 'toggle': 0, 'track': 8 }, },
-
-"buttons": { '1': {'channel': 1, 'midi': [176, 120, 0, 176], 'actions': ['left', 'left'], 'toggle': 0, 'track': 0 }, '2': {'channel': 1, 'midi': [176, 59, 0, 176], 'actions': ['right', 'right'], 'toggle': 0, 'track': 0 }, '3': {'channel': 1, 'midi': [176, 46, 0, 176], 'actions': ['shift', 'shift'], 'toggle': 0, 'track': 0 }, '4': {'channel': 1, 'midi': [176, 60, 0, 176], 'actions': ['rotate_set_windows', 'rotate_set_windows'], 'toggle': 0, 'track': 0 }, '5': {'channel': 1, 'midi': [176, 61, 0, 176], 'actions': ['rand_trigs', 'rand_pattern'], 'toggle': 0, 'track': 0 }, '6': {'channel': 1, 'midi': [176, 62, 0, 176], 'actions': ['change_mode', 'change_mode'], 'toggle': 0, 'track': 0 }, '7': {'channel': 1, 'midi': [176, 43, 0, 176], 'actions': ['down', 'down'], 'toggle': 0, 'track': 0 }, '8': {'channel': 1, 'midi': [176, 44, 0, 176], 'actions': ['up', 'up'], 'toggle': 0, 'track': 0 }, '9': {'channel': 1, 'midi': [176, 42, 0, 176], 'actions': ['stop', 'quantize'], 'toggle': 0, 'track': 0 }, '10': {'channel': 1, 'midi': [176, 41, 0, 176], 'actions': ['start', 'copy'], 'toggle': 0, 'track': 0 }, '11': {'channel': 1, 'midi': [176, 45, 0, 176], 'actions': ['record', 'paste'], 'toggle': 0, 'track': 0 }, '12': {'channel': 1, 'midi': [176, 32, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 1 }, '13': {'channel': 1, 'midi': [176, 33, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 2 }, '14': {'channel': 1, 'midi': [176, 34, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 3 }, '15': {'channel': 1, 'midi': [176, 35, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 4 }, '16': {'channel': 1, 'midi': [176, 36, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 5 }, '17': {'channel': 1, 'midi': [176, 37, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 6 }, '18': {'channel': 1, 'midi': [176, 38, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 7 }, '19': {'channel': 1, 'midi': [176, 39, 0, 176], 'actions': ['mixer_solo', 'start'], 'toggle': 0, 'track': 8 }, '20': {'channel': 1, 'midi': [176, 48, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 1 }, '21': {'channel': 1, 'midi': [176, 49, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 2 }, '22': {'channel': 1, 'midi': [176, 50, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 3 }, '23': {'channel': 1, 'midi': [176, 51, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 4 }, '24': {'channel': 1, 'midi': [176, 52, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 5 }, '25': {'channel': 1, 'midi': [176, 53, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 6 }, '26': {'channel': 1, 'midi': [176, 54, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 7 }, '27': {'channel': 1, 'midi': [176, 55, 0, 176], 'actions': ['mixer_mute', 'start'], 'toggle': 0, 'track': 8 }, '28': {'channel': 1, 'midi': [176, 64, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 1 }, '29': {'channel': 1, 'midi': [176, 65, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 2 }, '30': {'channel': 1, 'midi': [176, 66, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 3 }, '31': {'channel': 1, 'midi': [176, 67, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 4 }, '32': {'channel': 1, 'midi': [176, 68, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 5 }, '33': {'channel': 1, 'midi': [176, 69, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 6 }, '34': {'channel': 1, 'midi': [176, 70, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 7 }, '35': {'channel': 1, 'midi': [176, 71, 0, 176], 'actions': ['mixer_record', 'start'], 'toggle': 0, 'track': 8 }, },
-
-"keyboard": { '52': {'channel': 1, 'midi': [176, 33, 0, 176], 'actions': ['C#', ''], 'toggle': 0, 'track': 0 }, '53': {'channel': 1, 'midi': [176, 35, 0, 176], 'actions': ['D#', ''], 'toggle': 0, 'track': 0 }, '54': {'channel': 1, 'midi': [176, 38, 0, 176], 'actions': ['F#', ''], 'toggle': 0, 'track': 0 }, '55': {'channel': 1, 'midi': [176, 48, 0, 176], 'actions': ['G#', ''], 'toggle': 0, 'track': 0 }, '56': {'channel': 1, 'midi': [176, 50, 0, 176], 'actions': ['A#', ''], 'toggle': 0, 'track': 0 }, '57': {'channel': 1, 'midi': [176, 32, 0, 176], 'actions': ['C', ''], 'toggle': 0, 'track': 0 }, '58': {'channel': 1, 'midi': [176, 34, 0, 176], 'actions': ['D', ''], 'toggle': 0, 'track': 0 }, '59': {'channel': 1, 'midi': [176, 36, 0, 176], 'actions': ['E', ''], 'toggle': 0, 'track': 0 }, '60': {'channel': 1, 'midi': [176, 37, 0, 176], 'actions': ['F', ''], 'toggle': 0, 'track': 0 }, '61': {'channel': 1, 'midi': [176, 39, 0, 176], 'actions': ['G', ''], 'toggle': 0, 'track': 0 }, '62': {'channel': 1, 'midi': [176, 49, 0, 176], 'actions': ['A', ''], 'toggle': 0, 'track': 0 }, '63': {'channel': 1, 'midi': [176, 51, 0, 176], 'actions': ['B', ''], 'toggle': 0, 'track': 0 }, '64': {'channel': 1, 'midi': [176, 53, 0, 176], 'actions': ['C#', ''], 'toggle': 0, 'track': 1 }, '65': {'channel': 1, 'midi': [176, 55, 0, 176], 'actions': ['D#', ''], 'toggle': 0, 'track': 1 }, '66': {'channel': 1, 'midi': [176, 66, 0, 176], 'actions': ['F#', ''], 'toggle': 0, 'track': 1 }, '67': {'channel': 1, 'midi': [176, 68, 0, 176], 'actions': ['G#', ''], 'toggle': 0, 'track': 1 }, '68': {'channel': 1, 'midi': [176, 70, 0, 176], 'actions': ['A#', ''], 'toggle': 0, 'track': 1 }, '69': {'channel': 1, 'midi': [176, 52, 0, 176], 'actions': ['C', ''], 'toggle': 0, 'track': 1 }, '70': {'channel': 1, 'midi': [176, 54, 0, 176], 'actions': ['D', ''], 'toggle': 0, 'track': 1 }, '71': {'channel': 1, 'midi': [176, 64, 0, 176], 'actions': ['E', ''], 'toggle': 0, 'track': 1 }, '72': {'channel': 1, 'midi': [176, 65, 0, 176], 'actions': ['F', ''], 'toggle': 0, 'track': 1 }, '73': {'channel': 1, 'midi': [176, 67, 0, 176], 'actions': ['G', ''], 'toggle': 0, 'track': 1 }, '74': {'channel': 1, 'midi': [176, 69, 0, 176], 'actions': ['A', ''], 'toggle': 0, 'track': 1 }, '75': {'channel': 1, 'midi': [176, 71, 0, 176], 'actions': ['B', ''], 'toggle': 0, 'track': 1 }, },
-
-"sequencer": { '120': {'channel': 1, 'midi': [176, 32, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 1 }, '121': {'channel': 1, 'midi': [176, 33, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 2 }, '122': {'channel': 1, 'midi': [176, 34, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 3 }, '123': {'channel': 1, 'midi': [176, 35, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 4 }, '124': {'channel': 1, 'midi': [176, 36, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 5 }, '125': {'channel': 1, 'midi': [176, 37, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 6 }, '126': {'channel': 1, 'midi': [176, 38, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 7 }, '127': {'channel': 1, 'midi': [176, 39, 0, 176], 'actions': ['select_pattern', 'select_pattern'], 'toggle': 0, 'track': 8 }, '128': {'channel': 1, 'midi': [176, 48, 0, 176], 'actions': ['0', '0'], 'toggle': 0, 'track': 1 }, '129': {'channel': 1, 'midi': [176, 49, 0, 176], 'actions': ['1', '1'], 'toggle': 0, 'track': 1 }, '130': {'channel': 1, 'midi': [176, 50, 0, 176], 'actions': ['2', '2'], 'toggle': 0, 'track': 1 }, '131': {'channel': 1, 'midi': [176, 51, 0, 176], 'actions': ['3', '3'], 'toggle': 0, 'track': 1 }, '132': {'channel': 1, 'midi': [176, 52, 0, 176], 'actions': ['4', '4'], 'toggle': 0, 'track': 1 }, '133': {'channel': 1, 'midi': [176, 53, 0, 176], 'actions': ['5', '5'], 'toggle': 0, 'track': 1 }, '134': {'channel': 1, 'midi': [176, 54, 0, 176], 'actions': ['6', '6'], 'toggle': 0, 'track': 1 }, '135': {'channel': 1, 'midi': [176, 55, 0, 176], 'actions': ['7', '7'], 'toggle': 0, 'track': 1 }, '136': {'channel': 1, 'midi': [176, 64, 0, 176], 'actions': ['8', '8'], 'toggle': 0, 'track': 1 }, '137': {'channel': 1, 'midi': [176, 65, 0, 176], 'actions': ['9', '9'], 'toggle': 0, 'track': 1 }, '138': {'channel': 1, 'midi': [176, 66, 0, 176], 'actions': ['10', '10'], 'toggle': 0, 'track': 1 }, '139': {'channel': 1, 'midi': [176, 67, 0, 176], 'actions': ['11', '11'], 'toggle': 0, 'track': 1 }, '140': {'channel': 1, 'midi': [176, 68, 0, 176], 'actions': ['12', '12'], 'toggle': 0, 'track': 1 }, '141': {'channel': 1, 'midi': [176, 69, 0, 176], 'actions': ['12', '12'], 'toggle': 0, 'track': 1 }, '142': {'channel': 1, 'midi': [176, 70, 0, 176], 'actions': ['14', '14'], 'toggle': 0, 'track': 1 }, '143': {'channel': 1, 'midi': [176, 71, 0, 176], 'actions': ['15', '15'], 'toggle': 0, 'track': 1 }, },
-
-"performance": { '96': {'channel': 1, 'midi': [176, 32, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 0 }, '97': {'channel': 1, 'midi': [176, 33, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 1 }, '98': {'channel': 1, 'midi': [176, 34, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 2 }, '99': {'channel': 1, 'midi': [176, 35, 0, 176], 'actions': ['1', ''], 'toggle': 0, 'track': 3 }, '100': {'channel': 1, 'midi': [176, 48, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 0 }, '101': {'channel': 1, 'midi': [176, 49, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 1 }, '102': {'channel': 1, 'midi': [176, 50, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 2 }, '103': {'channel': 1, 'midi': [176, 51, 0, 176], 'actions': ['2', ''], 'toggle': 0, 'track': 3 }, '104': {'channel': 1, 'midi': [176, 64, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 0 }, '105': {'channel': 1, 'midi': [176, 65, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 1 }, '106': {'channel': 1, 'midi': [176, 66, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 2 }, '107': {'channel': 1, 'midi': [176, 67, 0, 176], 'actions': ['3', ''], 'toggle': 0, 'track': 3 }, '108': {'channel': 1, 'midi': [176, 36, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 0 }, '109': {'channel': 1, 'midi': [176, 37, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 1 }, '110': {'channel': 1, 'midi': [176, 38, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 2 }, '111': {'channel': 1, 'midi': [176, 39, 0, 176], 'actions': ['4', ''], 'toggle': 0, 'track': 3 }, '112': {'channel': 1, 'midi': [176, 52, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 0 }, '113': {'channel': 1, 'midi': [176, 53, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 1 }, '114': {'channel': 1, 'midi': [176, 54, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 2 }, '115': {'channel': 1, 'midi': [176, 55, 0, 176], 'actions': ['5', ''], 'toggle': 0, 'track': 3 }, '116': {'channel': 1, 'midi': [176, 68, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 0 }, '117': {'channel': 1, 'midi': [176, 69, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 1 }, '118': {'channel': 1, 'midi': [176, 70, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 2 }, '119': {'channel': 1, 'midi': [176, 71, 0, 176], 'actions': ['6', ''], 'toggle': 0, 'track': 3 }, }, }
-cl2 = {
-    "name": "nanoKONTROL2",
-    "leds": {
-        "seq_leds": {
-            0: [
-                176,
-                1,
-                48,
-            ],
-            1: [
-                176,
-                1,
-                49,
-            ],
-            2: [
-                176,
-                1,
-                50,
-            ],
-            3: [
-                176,
-                1,
-                51,
-            ],
-            4: [
-                176,
-                1,
-                52,
-            ],
-            5: [
-                176,
-                1,
-                53,
-            ],
-            6: [
-                176,
-                1,
-                54,
-            ],
-            7: [
-                176,
-                1,
-                55,
-            ],
-            8: [
-                176,
-                1,
-                64,
-            ],
-            9: [
-                176,
-                1,
-                65,
-            ],
-            10: [
-                176,
-                1,
-                66,
-            ],
-            11: [
-                176,
-                1,
-                67,
-            ],
-            12: [
-                176,
-                1,
-                68,
-            ],
-            13: [
-                176,
-                1,
-                69,
-            ],
-            14: [
-                176,
-                1,
-                70,
-            ],
-            15: [
-                176,
-                1,
-                71,
-            ],
-        },
-        "transport_leds": {
-            "start": [
-                176,
-                1,
-                41,
-            ],
-            "stop": [
-                176,
-                1,
-                42,
-            ],
-            "record": [
-                176,
-                1,
-                45,
-            ],
-            "shift": [
-                176,
-                1,
-                46,
-            ],
-        },
-    },
-    "jog_wheel": {},
-    "defaults": {
-        "octaves": 5,
-        "sequence_length": 16,
-        "plugin_control": 1,
-        "mixer_tracks": 1,
-        "Keyboard": 0,
-        "Sequencer": 0,
-        "keyboard_count": 5,
-        "modes": [
-            "Buttons",
-            "Keyboard",
-            "Sequencer",
-        ],
-        "levels_control_parameter": 0,
-        "colors": [],
-        "windows": [
-            4,
-            0,
-            2,
-            1,
-            3,
-        ],
-    },
-    "encoders": {
-        "36": {
-            "channel": 1,
-            "midi": [176, 16, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "37": {
-            "channel": 1,
-            "midi": [176, 17, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 2,
-        },
-        "38": {
-            "channel": 1,
-            "midi": [176, 18, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 3,
-        },
-        "39": {
-            "channel": 1,
-            "midi": [176, 19, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 4,
-        },
-        "40": {
-            "channel": 1,
-            "midi": [176, 20, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 5,
-        },
-        "41": {
-            "channel": 1,
-            "midi": [176, 21, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 6,
-        },
-        "42": {
-            "channel": 1,
-            "midi": [176, 22, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 7,
-        },
-        "43": {
-            "channel": 1,
-            "midi": [176, 23, 0, 176],
-            "actions": ["mixer_pan", "selected_level"],
-            "toggle": 0,
-            "track": 8,
-        },
-        "44": {
-            "channel": 1,
-            "midi": [176, 0, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "45": {
-            "channel": 1,
-            "midi": [176, 1, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 2,
-        },
-        "46": {
-            "channel": 1,
-            "midi": [176, 2, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 3,
-        },
-        "47": {
-            "channel": 1,
-            "midi": [176, 3, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 4,
-        },
-        "48": {
-            "channel": 1,
-            "midi": [176, 4, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 5,
-        },
-        "49": {
-            "channel": 1,
-            "midi": [176, 5, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 6,
-        },
-        "50": {
-            "channel": 1,
-            "midi": [176, 6, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 7,
-        },
-        "51": {
-            "channel": 1,
-            "midi": [176, 7, 0, 176],
-            "actions": ["mixer_level", "selected_level"],
-            "toggle": 0,
-            "track": 8,
-        },
-    },
-    "buttons": {
+# cl = {
+#   "button": {
+#     "1": {
+#       "actions": [
+#         "shift",
+#         "shift"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         24,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "2": {
+#       "actions": [
+#         "increment_scale",
+#         "change_color"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         25,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "3": {
+#       "actions": [
+#         "quantize",
+#         "loop_record"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         26,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "4": {
+#       "actions": [
+#         "open_channel",
+#         "open_plugins"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         27,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "5": {
+#       "actions": [
+#         "change_mode",
+#         "change_mode"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         28,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "6": {
+#       "actions": [
+#         "enter",
+#         "enter"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         29,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "7": {
+#       "actions": [
+#         "rand_pattern",
+#         "rand_trigs"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         30,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "8": {
+#       "actions": [
+#         "rotate_set_windows",
+#         "rotate_set_windows"
+#       ],
+#       "channel": 2,
+#       "midi": [
+#         176,
+#         31,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "9": {
+#       "actions": [
+#         "stop",
+#         "stop"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         85,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "10": {
+#       "actions": [
+#         "start",
+#         "start"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         86,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "11": {
+#       "actions": [
+#         "record",
+#         "record"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         87,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "12": {
+#       "actions": [
+#         "metronome",
+#         "tap_tempo"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         89,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "13": {
+#       "actions": [
+#         "up",
+#         "up"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         103,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "14": {
+#       "actions": [
+#         "left",
+#         "left"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         102,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "15": {
+#       "actions": [
+#         "down",
+#         "down"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         104,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "16": {
+#       "actions": [
+#         "right",
+#         "right"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         105,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "17": {
+#       "actions": [
+#         "solo",
+#         "solo"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         24,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "18": {
+#       "actions": [
+#         "mute",
+#         "mute"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         25,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "19": {
+#       "actions": [
+#         "arm_track",
+#         "arm_track"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         26,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "20": {
+#       "actions": [
+#         "enter",
+#         "enter"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         27,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "21": {
+#       "actions": [
+#         "escape",
+#         "escape"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         28,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "22": {
+#       "actions": [
+#         "next_preset",
+#         "next_preset"
+#       ],
+#       "channel": 3,
+#       "midi": [
+#         176,
+#         29,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     }
+#   },
+#   "defaults": {
+#     "Keyboard": 0,
+#     "Sequencer": 0,
+#     "colors": [],
+#     "keyboard_count": 5,
+#     "levels_control_parameter": 0,
+#     "mixer_tracks": 8,
+#     "modes": [
+#       "Buttons",
+#       "Keyboard",
+#       "Sequencer"
+#     ],
+#     "octaves": 5,
+#     "plugin_control": 1,
+#     "sequence_length": 16,
+#     "windows": [
+#       4,
+#       0,
+#       2,
+#       1,
+#       3
+#     ]
+#   },
+#   "encoder": {
+#     "1": {
+#       "actions": [
+#         "set_random_max_octave",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         14,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "2": {
+#       "actions": [
+#         "set_random_min_octave",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         15,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "3": {
+#       "actions": [
+#         "set_random_offset",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         16,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "4": {
+#       "actions": [
+#         "pitch_bend",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         17,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 4
+#     },
+#     "5": {
+#       "actions": [
+#         "selected_level",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         18,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 5
+#     },
+#     "6": {
+#       "actions": [
+#         "selected_pan",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         19,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 6
+#     },
+#     "7": {
+#       "actions": [
+#         "set_efx_track",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         20,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 7
+#     },
+#     "8": {
+#       "actions": [
+#         "selected_level",
+#         "mixer_level"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         21,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 8
+#     },
+#     "9": {
+#       "actions": [
+#         "scroll",
+#         "scroll"
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         176,
+#         1,
+#         0,
+#         176
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     }
+#   },
+#   "jog_wheel": {},
+#   "keyboard": {
+#     "0": {
+#       "actions": [
+#         "C#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         53,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "1": {
+#       "actions": [
+#         "D#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         55,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "2": {
+#       "actions": [
+#         "F#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         58,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "3": {
+#       "actions": [
+#         "G#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         60,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "4": {
+#       "actions": [
+#         "A#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         62,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "5": {
+#       "actions": [
+#         "C",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         52,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "6": {
+#       "actions": [
+#         "D",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         54,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "7": {
+#       "actions": [
+#         "E",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         56,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "8": {
+#       "actions": [
+#         "F",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         57,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "9": {
+#       "actions": [
+#         "G",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         59,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "10": {
+#       "actions": [
+#         "A",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         61,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "11": {
+#       "actions": [
+#         "B",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         63,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "12": {
+#       "actions": [
+#         "C#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         65,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "13": {
+#       "actions": [
+#         "D#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         67,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "14": {
+#       "actions": [
+#         "F#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         38,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "15": {
+#       "actions": [
+#         "G#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         40,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "16": {
+#       "actions": [
+#         "A#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         42,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "17": {
+#       "actions": [
+#         "C",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         64,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "18": {
+#       "actions": [
+#         "D",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         66,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "19": {
+#       "actions": [
+#         "E",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         36,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "20": {
+#       "actions": [
+#         "F",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         37,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "21": {
+#       "actions": [
+#         "G",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         39,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "22": {
+#       "actions": [
+#         "A",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         41,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "23": {
+#       "actions": [
+#         "B",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         43,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "24": {
+#       "actions": [
+#         "C#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         45,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "25": {
+#       "actions": [
+#         "D#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         47,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "26": {
+#       "actions": [
+#         "F#",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         50,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "27": {
+#       "actions": [
+#         "G#",
+#         ""
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         "",
+#         "",
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "28": {
+#       "actions": [
+#         "A#",
+#         ""
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         "",
+#         "",
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "29": {
+#       "actions": [
+#         "C",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         44,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "30": {
+#       "actions": [
+#         "D",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         46,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "31": {
+#       "actions": [
+#         "E",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         48,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "32": {
+#       "actions": [
+#         "F",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         49,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "33": {
+#       "actions": [
+#         "G",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         51,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "34": {
+#       "actions": [
+#         "A",
+#         ""
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         "",
+#         "",
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "35": {
+#       "actions": [
+#         "B",
+#         ""
+#       ],
+#       "channel": 1,
+#       "midi": [
+#         "",
+#         "",
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     }
+#   },
+#     "led": {
+#         "1": {
+#             "actions": [
+#                 "start",
+#                 ""
+#              ],
+#             "channel": 5,
+#             "midi": [
+#               26,
+#               56,
+#               0,
+#               11
+#             ],
+#             "toggle": 0,
+#             "track": 0
+#     },
+#     "2": {
+#       "actions": [
+#         "2",
+#         ""
+#       ],
+#       "channel": 0,
+#       "midi": [
+#         56,
+#         656,
+#         0,
+#         26
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "3": {
+#       "actions": [
+#         "shift",
+#         ""
+#       ],
+#       "channel": 0,
+#       "midi": [
+#         656,
+#         4,
+#         0,
+#         64
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "4": {
+#       "actions": [
+#         "15",
+#         ""
+#       ],
+#       "channel": 0,
+#       "midi": [
+#         54,
+#         6,
+#         0,
+#         5
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     }
+#   },
+#   "name": "ATM SQ",
+#   "performance": {
+#     "1": {
+#       "actions": [
+#         "1",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         52,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "2": {
+#       "actions": [
+#         "1",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         53,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "3": {
+#       "actions": [
+#         "1",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         54,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "4": {
+#       "actions": [
+#         "1",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         55,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "5": {
+#       "actions": [
+#         "2",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         36,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "6": {
+#       "actions": [
+#         "2",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         37,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "7": {
+#       "actions": [
+#         "2",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         38,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "8": {
+#       "actions": [
+#         "2",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         39,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "9": {
+#       "actions": [
+#         "3",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         56,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "10": {
+#       "actions": [
+#         "3",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         57,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "11": {
+#       "actions": [
+#         "3",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         58,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "12": {
+#       "actions": [
+#         "3",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         59,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "13": {
+#       "actions": [
+#         "4",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         40,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "14": {
+#       "actions": [
+#         "4",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         41,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "15": {
+#       "actions": [
+#         "4",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         42,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "16": {
+#       "actions": [
+#         "4",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         43,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "17": {
+#       "actions": [
+#         "5",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         60,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "18": {
+#       "actions": [
+#         "5",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         61,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "19": {
+#       "actions": [
+#         "5",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         62,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "20": {
+#       "actions": [
+#         "5",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         63,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "21": {
+#       "actions": [
+#         "6",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         44,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "22": {
+#       "actions": [
+#         "6",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         45,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "23": {
+#       "actions": [
+#         "6",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         46,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "24": {
+#       "actions": [
+#         "6",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         47,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "25": {
+#       "actions": [
+#         "7",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         64,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "26": {
+#       "actions": [
+#         "7",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         65,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "27": {
+#       "actions": [
+#         "7",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         66,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "28": {
+#       "actions": [
+#         "7",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         67,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "29": {
+#       "actions": [
+#         "8",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         48,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 0
+#     },
+#     "30": {
+#       "actions": [
+#         "8",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         49,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "31": {
+#       "actions": [
+#         "8",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         50,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "32": {
+#       "actions": [
+#         "8",
+#         ""
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         51,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     }
+#   },
+#   "sequencer": {
+#     "1": {
+#       "actions": [
+#         "0",
+#         "0"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         36,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "2": {
+#       "actions": [
+#         "1",
+#         "1"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         37,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "3": {
+#       "actions": [
+#         "2",
+#         "2"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         38,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "4": {
+#       "actions": [
+#         "3",
+#         "3"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         39,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "5": {
+#       "actions": [
+#         "4",
+#         "4"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         40,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "6": {
+#       "actions": [
+#         "5",
+#         "5"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         41,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "7": {
+#       "actions": [
+#         "6",
+#         "6"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         42,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "8": {
+#       "actions": [
+#         "7",
+#         "7"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         43,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "9": {
+#       "actions": [
+#         "8",
+#         "8"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         44,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "10": {
+#       "actions": [
+#         "9",
+#         "9"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         45,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "11": {
+#       "actions": [
+#         "10",
+#         "10"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         46,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "12": {
+#       "actions": [
+#         "11",
+#         "11"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         47,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "13": {
+#       "actions": [
+#         "12",
+#         "12"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         48,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "14": {
+#       "actions": [
+#         "13",
+#         "13"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         49,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "15": {
+#       "actions": [
+#         "14",
+#         "14"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         50,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "16": {
+#       "actions": [
+#         "15",
+#         "15"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         51,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "17": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         52,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 1
+#     },
+#     "18": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         53,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 2
+#     },
+#     "19": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         54,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 3
+#     },
+#     "20": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         55,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 4
+#     },
+#     "21": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         56,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 5
+#     },
+#     "22": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         57,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 6
+#     },
+#     "23": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         58,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 7
+#     },
+#     "24": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         59,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 8
+#     },
+#     "25": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         60,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 9
+#     },
+#     "26": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         61,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 10
+#     },
+#     "27": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         62,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 11
+#     },
+#     "28": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         63,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 12
+#     },
+#     "29": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         64,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 13
+#     },
+#     "30": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         65,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 14
+#     },
+#     "31": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         66,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 15
+#     },
+#     "32": {
+#       "actions": [
+#         "select_pattern",
+#         "mute_channel"
+#       ],
+#       "channel": 10,
+#       "midi": [
+#         144,
+#         67,
+#         0,
+#         128
+#       ],
+#       "toggle": 0,
+#       "track": 16
+#     }
+#   }
+# }
+cl = {
+    "button": {
         "1": {
+            "actions": ["shift", "shift"],
             "channel": 1,
-            "midi": [176, 120, 0, 176],
-            "actions": ["left", "start"],
+            "midi": [176, 24, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "2": {
+            "actions": ["increment_scale", "change_color"],
             "channel": 1,
-            "midi": [176, 59, 0, 176],
-            "actions": ["right", "start"],
+            "midi": [176, 25, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "3": {
+            "actions": ["quantize", "loop_record"],
             "channel": 1,
-            "midi": [176, 46, 0, 176],
-            "actions": ["shift", "shift"],
+            "midi": [176, 26, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "4": {
+            "actions": ["open_channel", "open_plugins"],
             "channel": 1,
-            "midi": [176, 60, 0, 176],
-            "actions": ["rotate_set_windows", "rotate_set_windows"],
+            "midi": [176, 27, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "5": {
+            "actions": ["change_mode", "change_mode"],
             "channel": 1,
-            "midi": [176, 61, 0, 176],
-            "actions": ["rand_trigs", "rand_pattern"],
+            "midi": [176, 28, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "6": {
+            "actions": ["enter", "enter"],
             "channel": 1,
-            "midi": [176, 62, 0, 176],
-            "actions": ["copy", "paste"],
+            "midi": [176, 29, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "7": {
+            "actions": ["rand_pattern", "rand_trigs"],
             "channel": 1,
-            "midi": [176, 43, 0, 176],
-            "actions": ["open_channel", "start"],
+            "midi": [176, 30, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "8": {
+            "actions": ["rotate_set_windows", "rotate_set_windows"],
             "channel": 1,
-            "midi": [176, 44, 0, 176],
-            "actions": ["save", "start"],
+            "midi": [176, 31, 0, 176],
             "toggle": 0,
             "track": 0,
         },
         "9": {
-            "channel": 1,
-            "midi": [176, 42, 0, 176],
             "actions": ["stop", "stop"],
+            "channel": 1,
+            "midi": [144, 93, 0, 144],
             "toggle": 0,
             "track": 0,
         },
         "10": {
-            "channel": 1,
-            "midi": [176, 41, 0, 176],
             "actions": ["start", "start"],
+            "channel": 1,
+            "midi": [144, 94, 0, 144],
             "toggle": 0,
             "track": 0,
         },
         "11": {
-            "channel": 1,
-            "midi": [176, 45, 0, 176],
             "actions": ["record", "record"],
+            "channel": 1,
+            "midi": [144, 95, 0, 144],
             "toggle": 0,
             "track": 0,
         },
         "12": {
+            "actions": ["overdub", "start"],
             "channel": 1,
-            "midi": [176, 32, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "midi": [144, 89, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "13": {
+            "actions": ["undo", "song_pat"],
+            "channel": 1,
+            "midi": [144, 81, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "14": {
+            "actions": ["save", "metronome"],
+            "channel": 1,
+            "midi": [144, 86, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "15": {
+            "actions": ["solo", "solo"],
+            "channel": 1,
+            "midi": [144, 8, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "16": {
+            "actions": ["mute", "mute"],
+            "channel": 1,
+            "midi": [144, 16, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "17": {
+            "actions": ["arm_track", "arm_track"],
+            "channel": 1,
+            "midi": [144, 0, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "18": {
+            "actions": ["cut", "paste"],
+            "channel": 3,
+            "midi": [176, 24, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "19": {
+            "actions": ["new_pattern", "start"],
+            "channel": 3,
+            "midi": [176, 25, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "20": {
+            "actions": ["octave_up", "start"],
+            "channel": 3,
+            "midi": [176, 26, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "21": {
+            "actions": ["pattern_down", "next_pre_pat"],
+            "channel": 3,
+            "midi": [176, 27, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "22": {
+            "actions": ["pattern_up", "nothing"],
+            "channel": 3,
+            "midi": [176, 28, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "23": {
+            "actions": ["set_root_note", "set_root_note"],
+            "channel": 3,
+            "midi": [176, 29, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+        "24": {
+            "actions": ["start", "start"],
+            "channel": 1,
+            "midi": [144, 31, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "25": {
+            "actions": ["up", "up"],
+            "channel": 1,
+            "midi": [144, 98, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "26": {
+            "actions": ["start", "start"],
+            "channel": 1,
+            "midi": [144, 24, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+        "27": {
+            "actions": ["down", "down"],
+            "channel": 1,
+            "midi": [144, 99, 0, 144],
+            "toggle": 0,
+            "track": 0,
+        },
+    },
+        "defaults": {
+            "Keyboard": 0,
+            "Sequencer": 0,
+            "colors": [],
+            "keyboard_count": 5,
+            "levels_control_parameter": 0,
+            "mixer_tracks": 8,
+            "modes": ["Buttons", "Keyboard", "Sequencer"],
+            "octaves": 5,
+            "plugin_control": 1,
+            "sequence_length": 8,
+            "windows": [4, 0, 2, 1, 3],
+        },
+        "encoder": {
+            "1": {
+                "actions": ["set_random_max_octave", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 14, 0, 176],
+                "toggle": 0,
+                "track": 1,
+            },
+            "2": {
+                "actions": ["set_random_min_octave", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 15, 0, 176],
+                "toggle": 0,
+                "track": 2,
+            },
+            "3": {
+                "actions": ["set_random_offset", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 16, 0, 176],
+                "toggle": 0,
+                "track": 3,
+            },
+            "4": {
+                "actions": ["pitch_bend", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 17, 0, 176],
+                "toggle": 0,
+                "track": 4,
+            },
+            "5": {
+                "actions": ["selected_level", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 18, 0, 176],
+                "toggle": 0,
+                "track": 5,
+            },
+            "6": {
+                "actions": ["selected_pan", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 19, 0, 176],
+                "toggle": 0,
+                "track": 6,
+            },
+            "7": {
+                "actions": ["set_efx_track", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 20, 0, 176],
+                "toggle": 0,
+                "track": 7,
+            },
+            "8": {
+                "actions": ["selected_level", "mixer_level"],
+                "channel": 1,
+                "midi": [176, 21, 0, 176],
+                "toggle": 0,
+                "track": 8,
+            },
+            "9": {
+                "actions": ["scroll", "scroll"],
+                "channel": 1,
+                "midi": [176, 1, 0, 176],
+                "toggle": 0,
+                "track": 1,
+            },
+            "10": {
+                "actions": ["selected_level", "selected_level"],
+                "channel": 1,
+                "midi": ["", "", 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+        },
+        "jogwheel": {
+            "1": {
+                "actions": ["jog_wheel_up", "jog_wheel_up"],
+                "channel": 1,
+                "midi": [144, 99, 1, 144],
+                "toggle": 0,
+                "track": 0,
+            },
+            "2": {
+                "actions": ["jog_wheel_down", "jog_wheel_down"],
+                "channel": 1,
+                "midi": [144, 98, 65, 144],
+                "toggle": 0,
+                "track": 0,
+            },
+        },
+        "keyboard": {
+            "0": {
+                "actions": ["C#", ""],
+                "channel": 10,
+                "midi": [144, 53, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "1": {
+                "actions": ["D#", ""],
+                "channel": 10,
+                "midi": [144, 55, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "2": {
+                "actions": ["F#", ""],
+                "channel": 10,
+                "midi": [144, 58, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "3": {
+                "actions": ["G#", ""],
+                "channel": 10,
+                "midi": [144, 60, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "4": {
+                "actions": ["A#", ""],
+                "channel": 10,
+                "midi": [144, 62, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "5": {
+                "actions": ["C", ""],
+                "channel": 10,
+                "midi": [144, 52, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "6": {
+                "actions": ["D", ""],
+                "channel": 10,
+                "midi": [144, 54, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "7": {
+                "actions": ["E", ""],
+                "channel": 10,
+                "midi": [144, 56, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "8": {
+                "actions": ["F", ""],
+                "channel": 10,
+                "midi": [144, 57, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "9": {
+                "actions": ["G", ""],
+                "channel": 10,
+                "midi": [144, 59, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "10": {
+                "actions": ["A", ""],
+                "channel": 10,
+                "midi": [144, 61, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "11": {
+                "actions": ["B", ""],
+                "channel": 10,
+                "midi": [144, 63, 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "12": {
+                "actions": ["C#", ""],
+                "channel": 10,
+                "midi": [144, 65, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "13": {
+                "actions": ["D#", ""],
+                "channel": 10,
+                "midi": [144, 67, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "14": {
+                "actions": ["F#", ""],
+                "channel": 10,
+                "midi": [144, 38, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "15": {
+                "actions": ["G#", ""],
+                "channel": 10,
+                "midi": [144, 40, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "16": {
+                "actions": ["A#", ""],
+                "channel": 10,
+                "midi": [144, 42, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "17": {
+                "actions": ["C", ""],
+                "channel": 10,
+                "midi": [144, 64, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "18": {
+                "actions": ["D", ""],
+                "channel": 10,
+                "midi": [144, 66, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "19": {
+                "actions": ["E", ""],
+                "channel": 10,
+                "midi": [144, 36, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "20": {
+                "actions": ["F", ""],
+                "channel": 10,
+                "midi": [144, 37, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "21": {
+                "actions": ["G", ""],
+                "channel": 10,
+                "midi": [144, 39, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "22": {
+                "actions": ["A", ""],
+                "channel": 10,
+                "midi": [144, 41, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "23": {
+                "actions": ["B", ""],
+                "channel": 10,
+                "midi": [144, 43, 0, 128],
+                "toggle": 0,
+                "track": 1,
+            },
+            "24": {
+                "actions": ["C#", ""],
+                "channel": 10,
+                "midi": [144, 45, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "25": {
+                "actions": ["D#", ""],
+                "channel": 10,
+                "midi": [144, 47, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "26": {
+                "actions": ["F#", ""],
+                "channel": 10,
+                "midi": [144, 50, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "27": {
+                "actions": ["G#", ""],
+                "channel": 1,
+                "midi": ["", "", 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "28": {
+                "actions": ["A#", ""],
+                "channel": 1,
+                "midi": ["", "", 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "29": {
+                "actions": ["C", ""],
+                "channel": 10,
+                "midi": [144, 44, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "30": {
+                "actions": ["D", ""],
+                "channel": 10,
+                "midi": [144, 46, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "31": {
+                "actions": ["E", ""],
+                "channel": 10,
+                "midi": [144, 48, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "32": {
+                "actions": ["F", ""],
+                "channel": 10,
+                "midi": [144, 49, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "33": {
+                "actions": ["G", ""],
+                "channel": 10,
+                "midi": [144, 51, 0, 128],
+                "toggle": 0,
+                "track": 2,
+            },
+            "34": {
+                "actions": ["A", ""],
+                "channel": 1,
+                "midi": ["", "", 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+            "35": {
+                "actions": ["B", ""],
+                "channel": 1,
+                "midi": ["", "", 0, 128],
+                "toggle": 0,
+                "track": 0,
+            },
+        },
+     "led": {
+        "1": {
+          "actions": [
+            "0",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            36,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "2": {
+          "actions": [
+            "1",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            37,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "3": {
+          "actions": [
+            "2",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            38,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "4": {
+          "actions": [
+            "3",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            39,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "5": {
+          "actions": [
+            "4",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            40,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "6": {
+          "actions": [
+            "5",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            41,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "7": {
+          "actions": [
+            "6",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            42,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "8": {
+          "actions": [
+            "7",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            43,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "9": {
+          "actions": [
+            "8",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            44,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "10": {
+          "actions": [
+            "9",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            45,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "11": {
+          "actions": [
+            "10",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            46,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "12": {
+          "actions": [
+            "11",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            47,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "13": {
+          "actions": [
+            "12",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            48,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "14": {
+          "actions": [
+            "13",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            49,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "15": {
+          "actions": [
+            "14",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            50,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "16": {
+          "actions": [
+            "15",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            51,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        },
+        "17": {
+          "actions": [
+            "shift",
+            ""
+          ],
+          "channel": 1,
+          "midi": [
+            144,
+            58,
+            0,
+            128
+          ],
+          "toggle": 0,
+          "track": 0
+        }
+      },
+    "name": "ATM SQ",
+    "performance": {
+        "1": {
+            "actions": ["1", ""],
+            "channel": 10,
+            "midi": [144, 52, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "2": {
+            "actions": ["1", ""],
+            "channel": 10,
+            "midi": [144, 53, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "3": {
+            "actions": ["1", ""],
+            "channel": 10,
+            "midi": [144, 54, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "4": {
+            "actions": ["1", ""],
+            "channel": 10,
+            "midi": [144, 55, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "5": {
+            "actions": ["2", ""],
+            "channel": 10,
+            "midi": [144, 36, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "6": {
+            "actions": ["2", ""],
+            "channel": 10,
+            "midi": [144, 37, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "7": {
+            "actions": ["2", ""],
+            "channel": 10,
+            "midi": [144, 38, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "8": {
+            "actions": ["2", ""],
+            "channel": 10,
+            "midi": [144, 39, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "9": {
+            "actions": ["3", ""],
+            "channel": 10,
+            "midi": [144, 56, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "10": {
+            "actions": ["3", ""],
+            "channel": 10,
+            "midi": [144, 57, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "11": {
+            "actions": ["3", ""],
+            "channel": 10,
+            "midi": [144, 58, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "12": {
+            "actions": ["3", ""],
+            "channel": 10,
+            "midi": [144, 59, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "13": {
+            "actions": ["4", ""],
+            "channel": 10,
+            "midi": [144, 40, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "14": {
+            "actions": ["4", ""],
+            "channel": 10,
+            "midi": [144, 41, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "15": {
+            "actions": ["4", ""],
+            "channel": 10,
+            "midi": [144, 42, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "16": {
+            "actions": ["4", ""],
+            "channel": 10,
+            "midi": [144, 43, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "17": {
+            "actions": ["5", ""],
+            "channel": 10,
+            "midi": [144, 60, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "18": {
+            "actions": ["5", ""],
+            "channel": 10,
+            "midi": [144, 61, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "19": {
+            "actions": ["5", ""],
+            "channel": 10,
+            "midi": [144, 62, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "20": {
+            "actions": ["5", ""],
+            "channel": 10,
+            "midi": [144, 63, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "21": {
+            "actions": ["6", ""],
+            "channel": 10,
+            "midi": [144, 44, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "22": {
+            "actions": ["6", ""],
+            "channel": 10,
+            "midi": [144, 45, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "23": {
+            "actions": ["6", ""],
+            "channel": 10,
+            "midi": [144, 46, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "24": {
+            "actions": ["6", ""],
+            "channel": 10,
+            "midi": [144, 47, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "25": {
+            "actions": ["7", ""],
+            "channel": 10,
+            "midi": [144, 64, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "26": {
+            "actions": ["7", ""],
+            "channel": 10,
+            "midi": [144, 65, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "27": {
+            "actions": ["7", ""],
+            "channel": 10,
+            "midi": [144, 66, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "28": {
+            "actions": ["7", ""],
+            "channel": 10,
+            "midi": [144, 67, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+        "29": {
+            "actions": ["8", ""],
+            "channel": 10,
+            "midi": [144, 48, 0, 128],
+            "toggle": 0,
+            "track": 0,
+        },
+        "30": {
+            "actions": ["8", ""],
+            "channel": 10,
+            "midi": [144, 49, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "31": {
+            "actions": ["8", ""],
+            "channel": 10,
+            "midi": [144, 50, 0, 128],
+            "toggle": 0,
+            "track": 2,
+        },
+        "32": {
+            "actions": ["8", ""],
+            "channel": 10,
+            "midi": [144, 51, 0, 128],
+            "toggle": 0,
+            "track": 3,
+        },
+    },
+    "sequencer": {
+        "1": {
+            "actions": ["0", "0"],
+            "channel": 10,
+            "midi": [144, 36, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "2": {
+            "actions": ["1", "1"],
+            "channel": 10,
+            "midi": [144, 37, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "3": {
+            "actions": ["2", "2"],
+            "channel": 10,
+            "midi": [144, 38, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "4": {
+            "actions": ["3", "3"],
+            "channel": 10,
+            "midi": [144, 39, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "5": {
+            "actions": ["4", "4"],
+            "channel": 10,
+            "midi": [144, 40, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "6": {
+            "actions": ["5", "5"],
+            "channel": 10,
+            "midi": [144, 41, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "7": {
+            "actions": ["6", "6"],
+            "channel": 10,
+            "midi": [144, 42, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "8": {
+            "actions": ["7", "7"],
+            "channel": 10,
+            "midi": [144, 43, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "9": {
+            "actions": ["8", "8"],
+            "channel": 10,
+            "midi": [144, 44, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "10": {
+            "actions": ["9", "9"],
+            "channel": 10,
+            "midi": [144, 45, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "11": {
+            "actions": ["10", "10"],
+            "channel": 10,
+            "midi": [144, 46, 0, 128],
+            "toggle": 0,
+            "track": 1,
+        },
+        "12": {
+            "actions": ["11", "11"],
+            "channel": 10,
+            "midi": [144, 47, 0, 128],
             "toggle": 0,
             "track": 1,
         },
         "13": {
-            "channel": 1,
-            "midi": [176, 33, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["12", "12"],
+            "channel": 10,
+            "midi": [144, 48, 0, 128],
             "toggle": 0,
-            "track": 2,
+            "track": 1,
         },
         "14": {
-            "channel": 1,
-            "midi": [176, 34, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["13", "13"],
+            "channel": 10,
+            "midi": [144, 49, 0, 128],
             "toggle": 0,
-            "track": 3,
+            "track": 1,
         },
         "15": {
-            "channel": 1,
-            "midi": [176, 35, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["14", "14"],
+            "channel": 10,
+            "midi": [144, 50, 0, 128],
             "toggle": 0,
-            "track": 4,
+            "track": 1,
         },
         "16": {
-            "channel": 1,
-            "midi": [176, 36, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["15", "15"],
+            "channel": 10,
+            "midi": [144, 51, 0, 128],
             "toggle": 0,
-            "track": 5,
+            "track": 1,
         },
         "17": {
-            "channel": 1,
-            "midi": [176, 37, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 52, 0, 128],
             "toggle": 0,
-            "track": 6,
+            "track": 1,
         },
         "18": {
-            "channel": 1,
-            "midi": [176, 38, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 53, 0, 128],
             "toggle": 0,
-            "track": 7,
+            "track": 2,
         },
         "19": {
-            "channel": 1,
-            "midi": [176, 39, 0, 176],
-            "actions": ["mixer_solo", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 54, 0, 128],
             "toggle": 0,
-            "track": 8,
+            "track": 3,
         },
         "20": {
-            "channel": 1,
-            "midi": [176, 48, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 55, 0, 128],
             "toggle": 0,
-            "track": 1,
+            "track": 4,
         },
         "21": {
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 56, 0, 128],
             "toggle": 0,
-            "track": 2,
+            "track": 5,
         },
         "22": {
-            "channel": 1,
-            "midi": [176, 50, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 57, 0, 128],
             "toggle": 0,
-            "track": 3,
+            "track": 6,
         },
         "23": {
-            "channel": 1,
-            "midi": [176, 51, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 58, 0, 128],
             "toggle": 0,
-            "track": 4,
+            "track": 7,
         },
         "24": {
-            "channel": 1,
-            "midi": [176, 52, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 59, 0, 128],
             "toggle": 0,
-            "track": 5,
+            "track": 8,
         },
         "25": {
-            "channel": 1,
-            "midi": [176, 53, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 60, 0, 128],
             "toggle": 0,
-            "track": 6,
+            "track": 9,
         },
         "26": {
-            "channel": 1,
-            "midi": [176, 54, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 61, 0, 128],
             "toggle": 0,
-            "track": 7,
+            "track": 10,
         },
         "27": {
-            "channel": 1,
-            "midi": [176, 55, 0, 176],
-            "actions": ["mixer_mute", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 62, 0, 128],
             "toggle": 0,
-            "track": 8,
+            "track": 11,
         },
         "28": {
-            "channel": 1,
-            "midi": [176, 64, 0, 176],
-            "actions": ["mixer_record", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 63, 0, 128],
             "toggle": 0,
-            "track": 1,
+            "track": 12,
         },
         "29": {
-            "channel": 1,
-            "midi": [176, 65, 0, 176],
-            "actions": ["mixer_record", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 64, 0, 128],
             "toggle": 0,
-            "track": 2,
+            "track": 13,
         },
         "30": {
-            "channel": 1,
-            "midi": [176, 66, 0, 176],
-            "actions": ["mixer_record", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 65, 0, 128],
             "toggle": 0,
-            "track": 3,
+            "track": 14,
         },
         "31": {
-            "channel": 1,
-            "midi": [176, 67, 0, 176],
-            "actions": ["mixer_record", "start"],
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 66, 0, 128],
             "toggle": 0,
-            "track": 4,
+            "track": 15,
         },
         "32": {
-            "channel": 1,
-            "midi": [176, 68, 0, 176],
-            "actions": ["mixer_record", "start"],
-            "toggle": 0,
-            "track": 5,
-        },
-        "33": {
-            "channel": 1,
-            "midi": [176, 69, 0, 176],
-            "actions": ["mixer_record", "start"],
-            "toggle": 0,
-            "track": 6,
-        },
-        "34": {
-            "channel": 1,
-            "midi": [176, 70, 0, 176],
-            "actions": ["mixer_record", "start"],
-            "toggle": 0,
-            "track": 7,
-        },
-        "35": {
-            "channel": 1,
-            "midi": [176, 71, 0, 176],
-            "actions": ["mixer_record", "start"],
-            "toggle": 0,
-            "track": 8,
-        },
-    },
-    "keyboard": {
-        "52": {
-            "channel": 1,
-            "midi": [176, 33, 0, 176],
-            "actions": ["C#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "53": {
-            "channel": 1,
-            "midi": [176, 35, 0, 176],
-            "actions": ["D#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "54": {
-            "channel": 1,
-            "midi": [176, 38, 0, 176],
-            "actions": ["F#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "55": {
-            "channel": 1,
-            "midi": [176, 48, 0, 176],
-            "actions": ["G#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "56": {
-            "channel": 1,
-            "midi": [176, 50, 0, 176],
-            "actions": ["A#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "57": {
-            "channel": 1,
-            "midi": [176, 32, 0, 176],
-            "actions": ["C", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "58": {
-            "channel": 1,
-            "midi": [176, 34, 0, 176],
-            "actions": ["D", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "59": {
-            "channel": 1,
-            "midi": [176, 36, 0, 176],
-            "actions": ["E", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "60": {
-            "channel": 1,
-            "midi": [176, 37, 0, 176],
-            "actions": ["F", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "61": {
-            "channel": 1,
-            "midi": [176, 39, 0, 176],
-            "actions": ["G", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "62": {
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "actions": ["A", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "63": {
-            "channel": 1,
-            "midi": [176, 51, 0, 176],
-            "actions": ["B", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "64": {
-            "channel": 1,
-            "midi": [176, 53, 0, 176],
-            "actions": ["C#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "65": {
-            "channel": 1,
-            "midi": [176, 55, 0, 176],
-            "actions": ["D#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "66": {
-            "channel": 1,
-            "midi": [176, 68, 0, 176],
-            "actions": ["F#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "67": {
-            "channel": 1,
-            "midi": [176, 69, 0, 176],
-            "actions": ["G#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "68": {
-            "channel": 1,
-            "midi": [176, 71, 0, 176],
-            "actions": ["A#", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "69": {
-            "channel": 1,
-            "midi": [176, 52, 0, 176],
-            "actions": ["C", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "70": {
-            "channel": 1,
-            "midi": [176, 64, 0, 176],
-            "actions": ["D", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "71": {
-            "channel": 1,
-            "midi": [176, 65, 0, 176],
-            "actions": ["E", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "72": {
-            "channel": 1,
-            "midi": [176, 66, 0, 176],
-            "actions": ["F", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "73": {
-            "channel": 1,
-            "midi": [176, 68, 0, 176],
-            "actions": ["G", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "74": {
-            "channel": 1,
-            "midi": [176, 70, 0, 176],
-            "actions": ["A", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-    },
-    "sequencer": {
-        "100": {
-            "channel": 1,
-            "midi": [176, 32, 0, 176],
-            "actions": ["select_pattern", "0"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "101": {
-            "channel": 1,
-            "midi": [176, 33, 0, 176],
-            "actions": ["select_pattern", "1"],
-            "toggle": 0,
-            "track": 2,
-        },
-        "102": {
-            "channel": 1,
-            "midi": [176, 34, 0, 176],
-            "actions": ["select_pattern", "2"],
-            "toggle": 0,
-            "track": 3,
-        },
-        "103": {
-            "channel": 1,
-            "midi": [176, 35, 0, 176],
-            "actions": ["select_pattern", "3"],
-            "toggle": 0,
-            "track": 4,
-        },
-        "104": {
-            "channel": 1,
-            "midi": [176, 36, 0, 176],
-            "actions": ["select_pattern", "4"],
-            "toggle": 0,
-            "track": 5,
-        },
-        "105": {
-            "channel": 1,
-            "midi": [176, 37, 0, 176],
-            "actions": ["select_pattern", "5"],
-            "toggle": 0,
-            "track": 6,
-        },
-        "106": {
-            "channel": 1,
-            "midi": [176, 38, 0, 176],
-            "actions": ["select_pattern", "6"],
-            "toggle": 0,
-            "track": 7,
-        },
-        "107": {
-            "channel": 1,
-            "midi": [176, 39, 0, 176],
-            "actions": ["select_pattern", "7"],
-            "toggle": 0,
-            "track": 8,
-        },
-        "108": {
-            "channel": 1,
-            "midi": [176, 48, 0, 176],
-            "actions": ["0", "0"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "109": {
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "actions": ["1", "1"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "110": {
-            "channel": 1,
-            "midi": [176, 50, 0, 176],
-            "actions": ["2", "2"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "111": {
-            "channel": 1,
-            "midi": [176, 51, 0, 176],
-            "actions": ["3", "3"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "112": {
-            "channel": 1,
-            "midi": [176, 52, 0, 176],
-            "actions": ["4", "4"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "113": {
-            "channel": 1,
-            "midi": [176, 53, 0, 176],
-            "actions": ["5", "5"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "114": {
-            "channel": 1,
-            "midi": [176, 54, 0, 176],
-            "actions": ["6", "6"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "115": {
-            "channel": 1,
-            "midi": [176, 55, 0, 176],
-            "actions": ["7", "7"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "116": {
-            "channel": 1,
-            "midi": [176, 64, 0, 176],
-            "actions": ["8", "8"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "117": {
-            "channel": 1,
-            "midi": [176, 65, 0, 176],
-            "actions": ["9", "9"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "118": {
-            "channel": 1,
-            "midi": [176, 66, 0, 176],
-            "actions": ["10", "10"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "119": {
-            "channel": 1,
-            "midi": [176, 67, 0, 176],
-            "actions": ["10", "11"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "120": {
-            "channel": 1,
-            "midi": [176, 68, 0, 176],
-            "actions": ["12", "12"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "121": {
-            "channel": 1,
-            "midi": [176, 69, 0, 176],
-            "actions": ["13", "13"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "122": {
-            "channel": 1,
-            "midi": [176, 70, 0, 176],
-            "actions": ["14", "14"],
-            "toggle": 0,
-            "track": 1,
-        },
-        "123": {
-            "channel": 1,
-            "midi": [176, 71, 0, 176],
-            "actions": ["15", "15"],
-            "toggle": 0,
-            "track": 1,
-        },
-    },
-    "performance": {
-        "76": {
-            "channel": 1,
-            "midi": [176, 32, 0, 176],
-            "actions": ["1", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "77": {
-            "channel": 1,
-            "midi": [176, 33, 0, 176],
-            "actions": ["1", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "78": {
-            "channel": 1,
-            "midi": [176, 34, 0, 176],
-            "actions": ["1", ""],
-            "toggle": 0,
-            "track": 3,
-        },
-        "79": {
-            "channel": 1,
-            "midi": [176, 35, 0, 176],
-            "actions": ["1", ""],
-            "toggle": 0,
-            "track": 4,
-        },
-        "80": {
-            "channel": 1,
-            "midi": [176, 48, 0, 176],
-            "actions": ["2", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "81": {
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "actions": ["2", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "82": {
-            "channel": 1,
-            "midi": [176, 50, 0, 176],
-            "actions": ["2", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "83": {
-            "channel": 1,
-            "midi": [176, 51, 0, 176],
-            "actions": ["2", ""],
-            "toggle": 0,
-            "track": 3,
-        },
-        "84": {
-            "channel": 1,
-            "midi": [176, 64, 0, 176],
-            "actions": ["3", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "85": {
-            "channel": 1,
-            "midi": [176, 65, 0, 176],
-            "actions": ["3", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "86": {
-            "channel": 1,
-            "midi": [176, 66, 0, 176],
-            "actions": ["3", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "87": {
-            "channel": 1,
-            "midi": [176, 67, 0, 176],
-            "actions": ["3", ""],
-            "toggle": 0,
-            "track": 3,
-        },
-        "88": {
-            "channel": 1,
-            "midi": [176, 36, 0, 176],
-            "actions": ["4", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "89": {
-            "channel": 1,
-            "midi": [176, 37, 0, 176],
-            "actions": ["4", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "90": {
-            "channel": 1,
-            "midi": [176, 38, 0, 176],
-            "actions": ["4", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "91": {
-            "channel": 1,
-            "midi": [176, 39, 0, 176],
-            "actions": ["4", ""],
-            "toggle": 0,
-            "track": 3,
-        },
-        "92": {
-            "channel": 1,
-            "midi": [176, 52, 0, 176],
-            "actions": ["5", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "93": {
-            "channel": 1,
-            "midi": [176, 53, 0, 176],
-            "actions": ["5", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "94": {
-            "channel": 1,
-            "midi": [176, 54, 0, 176],
-            "actions": ["5", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "95": {
-            "channel": 1,
-            "midi": [176, 55, 0, 176],
-            "actions": ["5", ""],
-            "toggle": 0,
-            "track": 3,
-        },
-        "96": {
-            "channel": 1,
-            "midi": [176, 68, 0, 176],
-            "actions": ["6", ""],
-            "toggle": 0,
-            "track": 0,
-        },
-        "97": {
-            "channel": 1,
-            "midi": [176, 69, 0, 176],
-            "actions": ["6", ""],
-            "toggle": 0,
-            "track": 1,
-        },
-        "98": {
-            "channel": 1,
-            "midi": [176, 70, 0, 176],
-            "actions": ["6", ""],
-            "toggle": 0,
-            "track": 2,
-        },
-        "99": {
-            "channel": 1,
-            "midi": [176, 71, 0, 176],
-            "actions": ["6", ""],
-            "toggle": 0,
-            "track": 3,
+            "actions": ["select_pattern", "mute_channel"],
+            "channel": 10,
+            "midi": [144, 67, 0, 128],
+            "toggle": 0,
+            "track": 16,
         },
     },
 }

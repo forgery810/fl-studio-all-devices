@@ -1,5 +1,5 @@
-# import config_layout 
 from leds import Leds
+from config_layout import cl
 
 class Modes():
 
@@ -20,6 +20,7 @@ class Modes():
 
 	def set_seq_leds(b):
 		Modes.sequence_leds = b
+		Leds.sequence_leds = b
 
 	def get_sequence_leds():
 		return Modes.sequence_leds
@@ -37,8 +38,8 @@ class Modes():
 		if (Modes.current_mode >= len(Modes.modes)):
 			Modes.current_mode = 0
 			# Change to mode_assigned()
-		# if Leds.leds_assigned():
-		# 	Leds.set_current_mode(Modes.modes[Modes.current_mode])
+		# if Leds.check_if_led_set("seq_leds"):
+		Leds.set_current_mode(Modes.modes[Modes.current_mode])
 
 	def get_layer():
 		return Modes.layer_count
@@ -67,6 +68,8 @@ class Modes():
 
 	@classmethod
 	def mode_active(cls, mode):
+		if cl["defaults"][mode]:
+			return True
 		if mode in cls.modes and Modes.get_mode() == mode:
 			return True 
 		# elif cl.defaults[mode]:

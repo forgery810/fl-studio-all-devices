@@ -41,8 +41,11 @@ class Action():
 	track_number = -1
 	track_original = -1
 	performance_row = -1
-	old_pattern_number = 2
-	new_pattern_number = 2
+	old_pattern_number = -1
+	new_pattern_number = -1
+	change_pattern = False
+	selected_playlist_track = 1
+	c = itertools.cycle(cl["defaults"]["colors"])
 	# offset_iter = 0
 	# pitch_value = 0
 
@@ -98,9 +101,6 @@ class Action():
 		ui.setHintMsg(f"Min Octave: {Action.random_min_octave}")
 		return 
 
-	def set_mixer_route(track):
-		Action.mixer_send = track 
-
 	def get_mixer_route():
 		return Action.mixer_send
 
@@ -108,8 +108,15 @@ class Action():
 		return mixer.setRouteTo(mixer.trackNumber(), Action.get_mixer_route(), 1)
 
 	def start():
-		device.midiOutMsg(176, 1, 42, 127)
+		# device.midiOutMsg(176, 1, 42, 127)
 		return transport.start()	
+
+	def start_reset():
+		if (transport.isPlaying()):
+			transport.stop()
+			transport.start()
+		else:
+			transport.start()
 
 	def step_parameters():
 		if channels.isGraphEditorVisible():
@@ -156,6 +163,12 @@ class Action():
 	def jog_wheel_down():
 		return ui.jog(-1)
 
+	def jog_tempo_up():
+		return transport.globalTransport(FPT_TempoJog, 1)
+
+	def jog_tempo_down():
+		return transport.globalTransport(FPT_TempoJog, -1)
+
 	def open_editor():
 		channels.showEditor();
 
@@ -164,8 +177,9 @@ class Action():
 			return mixer.muteTrack(mixer.trackNumber())
 		elif ui.getFocused(1):
 			return channels.muteChannel(channels.channelNumber())
-		# elif ui.getFocused(2):
-		# 	playlist.muteTrack(ModWheel.get_pl_mod_value())
+		elif ui.getFocused(2):
+			print('nute')
+			playlist.muteTrack(Action.selected_playlist_track)
 
 	def open_channel():
 		return channels.showCSForm(channels.channelNumber(), -1)
@@ -292,7 +306,7 @@ class Action():
 		if plugins.isValid(channels.selectedChannel()):
 			plugins.prevPreset(channels.selectedChannel())
 
-	def arm_track():
+	def arm():
 		mixer.armTrack(mixer.trackNumber())
 
 	def quantize():
@@ -303,6 +317,7 @@ class Action():
 		if Action.rotate_set_count >= len(cl["defaults"]['windows']):
 			Action.rotate_set_count = 0
 		ui.showWindow(cl["defaults"]['windows'][Action.rotate_set_count])
+		# transport.rewind(1)
 
 	def rotate_all():
 		ui.nextWindow()
@@ -331,6 +346,9 @@ class Action():
 	def new_pattern():
 		transport.globalTransport(midi.FPT_F4, 63)
 
+	def clone_pattern():
+		patterns.clonePattern()
+
 	def save():
 		transport.globalTransport(midi.FPT_Save, 92)
 
@@ -345,8 +363,8 @@ class Action():
 			mixer.soloTrack(mixer.trackNumber())
 		elif ui.getFocused(widChannelRack):
 			channels.soloChannel(channels.selectedChannel())
-		# elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(ModWheel.get_pl_mod_value()):
-		# 	playlist.soloTrack(ModWheel.get_pl_mod_value())	
+		elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(Action.selected_playlist_track):
+			playlist.soloTrack(Action.selected_playlist_track)	
 
 	def link_mix():
 		mixer.linkTrackToChannel(0)
@@ -369,8 +387,8 @@ class Action():
 			channels.setChannelColor(channels.selectedChannel(), next(Action.c))
 		elif ui.getFocused(widMixer):
 			mixer.setTrackColor(mixer.trackNumber(), next(Action.c))
-		elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(ModWheel.get_pl_mod_value()):
-			playlist.setTrackColor(ModWheel.get_pl_mod_value(), next(Action.c))
+		elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(Action.selected_playlist_track):
+			playlist.setTrackColor(Action.selected_playlist_track, next(Action.c))
 
 	def trig_clip():
 		print(f"row track: {Action.performance_row}, {Action.track_number}")
@@ -422,7 +440,8 @@ class Action():
 		elif Action.shift_status == 1:
 			Action.shift_status = 0
 			ui.setHintMsg('Shift Disabled')
-		Leds.check_shift(Action.shift_status)
+		if Leds.check_if_led_set('shift'):
+			Leds.check_shift(Action.shift_status)
 
 	def get_shift_status():
 		return Action.shift_status
@@ -442,23 +461,6 @@ class Action():
 	def nothing():
 		pass
 
-	def get_param_from_range(cc):
-		param = 0
-		if cc < 19:
-			param = 0
-		elif cc < 37:
-			param = 1
-		elif cc < 56:
-			param = 2
-		elif cc < 74:
-			param = 3
-		elif cc < 92:
-			param = 4
-		elif cc < 110:
-			param = 5
-		elif cc <= 127:
-			param = 6
-		return param
 
 	def set_parameter_value(data2):
 
@@ -498,15 +500,13 @@ class Action():
 
 	def select_pattern():
 		"""is pattern_change_wait set, onupbeatindicator will trigger
-			change when new_pattern_number !- track_original"""
+			change when change_patten = true """
 
-		if Config.PATTERN_CHANGE_WAIT and transport.isPlaying():
-			Action.new_pattern_number = Action.track_original
-
+		if Action.track_original != patterns.patternNumber() and transport.isPlaying():
+			Action.change_pattern = True
 
 		else:
 			device.midiOutMsg(176, 1, 50, 80)
-
 			patterns.jumpToPattern(Action.track_original)
 
 	def mute_channel():
@@ -515,10 +515,15 @@ class Action():
 			channels.muteChannel(chan)
 
 class EncoderAction(Action):
+	parameter_ranges = [ 0, 19, 37, 56, 74, 92, 110, 128 ]
 
 	def call_func(f, d2):
 		method = getattr(EncoderAction, f)
 		return method(d2) 
+
+	def set_mixer_route(d2):
+		Action.mixer_send = d2
+		ui.setHintMsg(f"Route Mixer to {d2}") 
 
 	def set_parameter_value(d2):
 		Action.set_parameter_value(d2)
@@ -530,7 +535,7 @@ class EncoderAction(Action):
 		Action.set_random_max_octave(d2)
 
 	def set_step_parameter(d2):
-		Action.parameter_index = Action.get_param_from_range(data2)
+		Action.parameter_index = EncoderAction.get_param_from_range(d2)
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def set_random_offset(d2):
@@ -545,6 +550,13 @@ class EncoderAction(Action):
 			mixer.setTrackVolume(mixer.trackNumber(), d2/127, True)
 		elif ui.getFocused(midi.widChannelRack):
 			channels.setChannelVolume(channels.selectedChannel(), d2/127, True)
+
+	def get_param_from_range(cc):
+		for i, r in enumerate(EncoderAction.parameter_ranges):
+			if cc < r:
+				return i 
+		# return param
+
 
 	def selected_pan(d2):
 		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
@@ -584,8 +596,11 @@ class EncoderAction(Action):
 			channels.selectOneChannel(int(round(Utility.mapvalues(d2, 0, channels.channelCount()-1, 0, 127), 0)))			
 
 		elif ui.getFocused(2):
+			track = int(Utility.mapvalues(d2, 1, 30, 0, 127))
 			playlist.deselectAll()
-			playlist.selectTrack(int(Utility.mapvalues(d2, 1, 30, 0, 127)))
+			playlist.selectTrack(track)
+			Action.selected_playlist_track = track 
+			print(track)
 
 		elif ui.getFocused(4):
 			ui.navigateBrowser(midi.FPT_Down, 41)
@@ -596,12 +611,17 @@ class EncoderAction(Action):
 	def jog_wheel_down(d2):
 		Action.jog_wheel_down()
 
+	def pitch_bend(d2):
+		channels.setChannelPitch(channels.selectedChannel(), Utility.mapvalues(d2, -1, 1, 0, 127))
+
 	def mixer_level(d2):
-		# print(f"track_number: {EncoderAction.track_number}")
 		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
+		# print(f"track_number: {EncoderAction.track_number}")
 
 	def mixer_pan(d2):
 		mixer.setTrackPan(EncoderAction.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
+
+
 
 	def nothing(d2):
 		pass
