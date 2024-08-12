@@ -1,6 +1,6 @@
 Fl Studio Script Builder is Python script which allows any MIDI controller to work with FL Studio. The layout can be custom designed by the user through a web app available at www.midicontrol.cc. 
 
-Instructions
+## Installation
 
 Download by clicking the green Code button above and selecting Download ZIP. Unzip the download and place the folder in the following directory:  
 
@@ -17,7 +17,32 @@ The second file is config_layout.py. This file should be empty when downloaded. 
 
 Upon opening FL Studio, go to MIDI Options and select the controller. Under device scripts, select the no_defaults script.  
   
-If you have more than one contoller that uses the script, you will need two instances of it. Rename one of the fl-studio-all-devices folder.  It can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. Also, open this file and edit the first line. As is the first line is # name=No Default . Again, it must start with # name= but after that it can be named anything. This is what will appear in the list of available scripts under MIDI Options. 
+If you have more than one contoller that uses the script, you will need two instances of it. Rename one of the fl-studio-all-devices folder.  It can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
+For example,
+
+```sh
+device_no-default.py
+```
+
+can be changed to
+
+```sh
+device_korg_nanoKontrol2
+```
+
+
+Also, open this file and edit the first line. As is the first line is # name=No Default . Again, it must start with # name= but after that it can be named anything. This is what will appear in the list of available scripts under MIDI Options. 
+
+```sh
+# name=No Default
+```
+
+can be change to
+
+```sh
+# name=Korg nanoKontrol2
+```
+
 
 If you have issues, in FL Studio, go to View and click Script Output. Copy the error info you see there. 
 Either create a github issue or, presuming you found out about this script via YouTube, post a the issue there with the copied data. 
