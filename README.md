@@ -17,6 +17,9 @@ The second file is config_layout.py. This file should be empty when downloaded. 
 
 Upon opening FL Studio, go to MIDI Options and select the controller. Under device scripts, select the no_defaults script.  
   
+
+## Multiple Controllers 
+
 If you have more than one contoller that uses the script, you will need two instances of it. Rename one of the fl-studio-all-devices folder.  It can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
 For example,
 
@@ -27,7 +30,7 @@ device_no-default.py
 can be changed to
 
 ```sh
-device_korg_nanoKontrol2
+device_korg_nanoKontrol2.py
 ```
 
 
@@ -43,6 +46,44 @@ can be change to
 # name=Korg nanoKontrol2
 ```
 
+
+## Editing the Layout
+
+Once created, it may be easier in certain situtations to edit the config_layout.py file directly, rather than using the web app. 
+Even users with no coding experience should have little issue.  
+  
+Before editing, it may be helpful to reformat the code for better legibilty. Search the web for a Python reformatter and past the output back into the file. 
+
+Open the options.txt file in the script folder to find the correct data to input. As an example, we can  edit the button currently set to metronome to focus the browser instead. Looking at config_layout, we find this entry,
+
+```sh
+        "8": {
+            "actions": ["metronome", "escape"],
+            "channel": 1,
+            "midi": [176, 49, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+```
+
+options.txt has this entry:
+```sh
+Focus Browser - focus_browser
+```
+
+Copy the function name and replace the previous entry resulting it:
+
+```sh
+        "8": {
+            "actions": ["focus_browser", "escape"],
+            "channel": 1,
+            "midi": [176, 49, 0, 176],
+            "toggle": 0,
+            "track": 0,
+        },
+```
+
+The first entry, the one changed here, controls the function when unshifted. Escape will be active when shift is active.
 
 If you have issues, in FL Studio, go to View and click Script Output. Copy the error info you see there. 
 Either create a github issue or, presuming you found out about this script via YouTube, post a the issue there with the copied data. 
