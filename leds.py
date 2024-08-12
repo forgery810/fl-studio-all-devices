@@ -48,22 +48,21 @@ class Leds():
 		if event in Leds.events["sequencer"] and Leds.mode == 'Sequencer':
 			Leds.set_sequence()
 		elif event in Leds.events["transport"]:
-			print('in transport' )
 			if transport.isPlaying():
 				if Leds.check_if_led_set("start"):
-					device.midiOutMsg(d["leds"]["transport_leds"]["start"], 127)
+					device.midiOutMsg(*d["leds"]["transport_leds"]["start"], 127)
 				if Leds.check_if_led_set("stop"):
-					device.midiOutMsg(d["leds"]["transport_leds"]["stop"], 0)						# turn step leds off
+					device.midiOutMsg(*d["leds"]["transport_leds"]["stop"], 0)						# turn step leds off
 			else:
 				if Leds.check_if_led_set("start"):
-					device.midiOutMsg(d["leds"]["transport_leds"]["start"], 0)						# turn step leds off
+					device.midiOutMsg(*d["leds"]["transport_leds"]["start"], 0)						# turn step leds off
 				if Leds.check_if_led_set("stop"):
-					device.midiOutMsg(d["leds"]["transport_leds"]["stop"], 127)
+					device.midiOutMsg(*d["leds"]["transport_leds"]["stop"], 127)
 			if Leds.check_if_led_set("record"):
 				if transport.isRecording():
-					device.midiOutMsg(d["leds"]["transport_leds"]["record"], 127)
+					device.midiOutMsg(*d["leds"]["transport_leds"]["record"], 127)
 				else:
-					device.midiOutMsg(d["leds"]["transport_leds"]["record"], 0)
+					device.midiOutMsg(*d["leds"]["transport_leds"]["record"], 0)
 
 	def set_sequence():
 		print('set_sequence')

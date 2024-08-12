@@ -1,6 +1,6 @@
 # name=No Default 
 # Author: forgery810
-# VERSION = '0.1.8'
+# VERSION = '0.4.8'
 
 from config_layout import cl  
 import device
@@ -20,7 +20,7 @@ from data import d
 from config import Config
 import plugindata as plg
 # import time
-from action import Action
+from action import Action, EncoderAction
 import plugindata
 
 def OnInit():
@@ -59,7 +59,7 @@ def OnMidiMsg(event):
 
 # if Config.PITCH_BEND:
 # 	def OnPitchBend(event):
-# 		pass
+# 		print('bend')
 		# EncoderAction.pitch_bend(event.data2)
 
 def OnRefresh(event):
@@ -80,8 +80,21 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			d[key_name][v['channel']] = {}	
 		for v in data.values():
 			d[key_name][v['channel']][v['midi'][0]] = {}	
+			d[key_name][v['channel']][v['midi'][3]] = {}	
 		for v in data.values():
 			d[key_name]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])	
+			if key_name == 'keyboardData':
+				d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])	
+
+			# d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])	
+			d[key_name][v['channel']][v['midi'][3]][v['midi'][1]] = {
+				'actions': v['actions'],
+				'channel': v['channel'],
+				'midi_2': v['midi'][2],
+				'toggle': v['toggle'],
+				# 'release': v['midi'][3],
+				'track': v['track']
+			}
 			d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
 				'actions': v['actions'],
 				'channel': v['channel'],
@@ -90,12 +103,12 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 				# 'release': v['midi'][3],
 				'track': v['track']
 			}
-		if key_name == "jogData":
-			for v in data.values():
-				d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
-					'midi_2': v['midi'][2]
-				}
-		d[key_name]['midi_pairs'].append(v['midi'])
+		# if key_name == "jogData":
+		# 	for v in data.values():
+		# 		d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
+		# 			'midi_2': v['midi'][2]
+		# 	}
+		# d[key_name]['midi_pairs'].append(v['midi'])
 
 
 	def process_jog_data(jw, jogData):
@@ -119,14 +132,16 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 			d["jogData"]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])	
 			# d["jogData"]['midi_pairs'].append([v['midi'][0:2], v['channel']])
 
-
-
+	def process_encoders_for_plugins(data):
+		for v in data.values():
+			plg.knob_num.append(v["midi"][1])
 
 
 	process_data(bt, 'buttonData')
 	process_data(kb, 'keyboardData')
 	process_data(sq, 'sequencerData')
 	process_data(en, 'encoderData')
+	process_encoders_for_plugins(en)
 	process_data(pf, 'performanceData')
 	process_jog_data(jw, 'jogData')
 	# print(d["buttonData"]["midi_pairs"])
@@ -171,30 +186,4 @@ def AssignLeds(led):
 		else:
 			d["leds"]["seq_leds"][v["actions"][0]] = [v["midi"][0], v["channel"] - 1, v["midi"][1]]
 			Modes.set_seq_leds(True)
-			
-			# d.leds["seq_leds"].append(v)
-			# Leds.active_leds.append(k)
-	# print(Leds.active_leds)
 	print(Leds.active_leds)
-
-	# if cl["leds"].get("transport_leds", {}):	
-	# 	for k in cl["leds"]["transport_leds"]:
-	# 		Leds.active_leds.append(k)
-	# if cl["leds"].get('seq_leds'):
-	# 	Leds.active_leds.append('seq_leds')
-
-# 	if cl["leds"]["transport_leds"]:
-# 		if Config.CHANNEL_OFFSET:
-# 			for v in cl["leds"]["transport_leds"].values():
-# 					v[1] -=  Config.CHANNEL_OFFSET;
-# 		d["ledData"]["transport"] = cl["leds"]["transport_leds"]
-# # 
-# 	if cl["leds"]["seq_leds"]:
-# 		if Config.CHANNEL_OFFSET:
-# 			for v in cl["leds"]["seq_leds"].values():
-# 					v[1] -= Config.CHANNEL_OFFSET;
-# 		d["ledData"]["seq"] = cl["leds"]["seq_leds"]
-
-
-# def OnDeInit():
-# 	print('OnDeInit')

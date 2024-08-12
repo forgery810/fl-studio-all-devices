@@ -54,6 +54,7 @@ class Process(Dispatch):
 			Main.set_track(d["encoderData"][self.midi_chan][midi_id][data_1])
 			Encoder.set(self, d["encoderData"][self.midi_chan][midi_id][data_1])
 		elif midi_pair in d["jogData"]["midi_pairs"]:
+			print('jog') 
 			# data[self.midi_chan][self.event.data2]
 			Encoder.jogWheel(self, d["jogData"][self.midi_chan][midi_id])
 		else:
@@ -61,10 +62,10 @@ class Process(Dispatch):
 			print('not set')
 
 class Keys(Process):
-
 	oct_iter = 2
 	octave = [-36, -24, -12, 0, 12, 24, 36]
 	def decide(self, data):
+		print(f"keys d2: {self.event.midiId}")
 
 		index = Notes.note_list.index(data["actions"][0])
 		if Config.KEYBOARD_CHROMATIC:
@@ -90,13 +91,14 @@ class Sequencer(Process):
 		act = data["actions"][Action.shift_status] 
 		if act.isdigit():
 			track = int(act) // cl["defaults"]["sequence_length"]
-			# print(f"track: {track}")
-			# print(int(act))
+			print(f"track: {track}")
+			print(int(act))
 			step_num = Sequencer.get_step(int(act), cl["defaults"]["sequence_length"])
 			chan = Sequencer.get_seq_channel(track, step_num)
 
 			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
 				Action.selected_step = step_num
+				print('step_selected')
 				self.event.handled = True
 			else:
 				Sequencer.set_step(self, step_num, chan) 
@@ -112,8 +114,8 @@ class Sequencer(Process):
 			return input % len
 			
 	def set_step(self, step, chan):
-		print(f"step: {step}")
-		print(f"chan: {chan}")
+		# print(f"step: {step}")
+		# print(f"chan: {chan}")
 		if channels.getGridBit(chan, step) == 0:						
 			channels.setGridBit(chan, step, 1)
 			self.event.handled = True
@@ -123,6 +125,7 @@ class Sequencer(Process):
 
 	def get_seq_channel(track, step):
 			# offset = int(step_num / cl["defaults"]["sequence_length"])
+			# print(track)
 			chan = channels.selectedChannel() + track
 			return chan
 

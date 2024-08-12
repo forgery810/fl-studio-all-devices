@@ -462,20 +462,7 @@ class Action():
 		pass
 
 
-	def set_parameter_value(data2):
 
-		c = channels.selectedChannel()
-		p = patterns.patternNumber()
-		s = Action.selected_step
-		pi = Action.parameter_index
-		if Action.parameter_index == midi.pModX or Action.parameter_index == midi.pModY: 					
-						#long index, long patNum, long step, long param, long value, (long globalIndex = 0)
-			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(data2, 0 , 255, 0, 127)), 1)
-		elif Action.parameter_index == midi.pFinePitch:	
-			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(data2, 0 , 240, 0, 127)), 1)
-		else:
-			channels.setStepParameterByIndex(c, p, s, pi, data2, 1)
-		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def zoom_in_horz():
 		ui.horZoom(1)
@@ -517,6 +504,21 @@ class Action():
 class EncoderAction(Action):
 	parameter_ranges = [ 0, 19, 37, 56, 74, 92, 110, 128 ]
 
+	def set_parameter_value(d2):
+
+		c = channels.selectedChannel()
+		p = patterns.patternNumber()
+		s = Action.selected_step
+		pi = Action.parameter_index
+		if Action.parameter_index == midi.pModX or Action.parameter_index == midi.pModY: 					
+						#long index, long patNum, long step, long param, long value, (long globalIndex = 0)
+			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(d2, 0 , 255, 0, 127)), 1)
+		elif Action.parameter_index == midi.pFinePitch:	
+			channels.setStepParameterByIndex(c, p, s, pi, int(Utility.mapvalues(d2, 0 , 240, 0, 127)), 1)
+		else:
+			channels.setStepParameterByIndex(c, p, s, pi, d2, 1)
+		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
+
 	def call_func(f, d2):
 		method = getattr(EncoderAction, f)
 		return method(d2) 
@@ -525,8 +527,8 @@ class EncoderAction(Action):
 		Action.mixer_send = d2
 		ui.setHintMsg(f"Route Mixer to {d2}") 
 
-	def set_parameter_value(d2):
-		Action.set_parameter_value(d2)
+	# def set_parameter_value(d2):
+	# 	Action.set_parameter_value(d2)
 
 	def set_random_min_octave(d2):
 		Action.set_random_min_octave(d2)
@@ -589,7 +591,7 @@ class EncoderAction(Action):
 
 	def scroll(d2):
 		if ui.getFocused(0):
-			mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, 64, 0, 127)))
+			mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, Config.MIXER_SCROLL_MAX, 0, 127)))
 			ui.scrollWindow(midi.widMixer, mixer.trackNumber())
 
 		elif ui.getFocused(1):

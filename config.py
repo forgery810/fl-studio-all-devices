@@ -5,8 +5,8 @@ class Config:
 	SELECT_PARAM_STEP = True
 
 	CHANNEL_OFFSET = 1
-	"""WebMidi, the API used to allow MIDI communication on the browser to create the layout,
-		uses a 0-15 for MIDI channels rahter than 1-16 like FL Studio. This is the offset for 
+	"""WebMidi, the API used to create the layout, allows MIDI communication on the browser. It
+		uses a 0-15 for MIDI channels rather than 1-16 like FL Studio. This is the offset for 
 		that. It is unlikely that this needs to be changed."""
 
 	FOLLOW_TRACK = True			
@@ -22,6 +22,11 @@ class Config:
 		allow them to be set within FL via the Link to Controller option. It is probably better to
 		set each button/knob to pass when linking is desired and leaving this True but
 		the option is here"""
+
+	ALLOW_KEYS = True
+	"""This works with PREVENT_PASSTHROUGH. This will allow MIDI data with 144 or 128 MIDI id to 
+		pass through and block everything else. This allows a keyboard notes to be played 
+		but all other data blocked. Only relavent if PREVENT_PASSTHROUGH is True."""
 
 
 	PATTERN_CHANGE_WAIT = True	
@@ -41,7 +46,7 @@ class Config:
 		different MIDI 2 (Velocity) values to differ between the two. Set to True if this is the case.
 		If different CC values are used, then set to False. """
 
-	KEYBOARD_CHROMATIC = False
+	KEYBOARD_CHROMATIC = True
 	"""True will keep the keyboard chromatic no matter the root and scale setting. Changing the root and scale will 
 		only affect random note generation. If False, the keyboard will only play notes from the selected scale."""
 
@@ -58,3 +63,5 @@ class Config:
 
 	PITCH_BEND = True
 	"""True enables pitch bend."""
+
+	MIXER_SCROLL_MAX = 32
