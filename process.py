@@ -12,7 +12,7 @@ from utility import Utility
 import midi
 from data import d
 from config import Config
-from config_layout import cl
+from config_layout1 import cl
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
@@ -26,6 +26,8 @@ class Dispatch:
 
 class Process(Dispatch):
 
+
+
 	def triage(self):
 		midi_id = self.event.midiId
 		data_1 = self.event.data1
@@ -33,33 +35,90 @@ class Process(Dispatch):
 		self.midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
 		midi_pair = [midi_id, data_1, self.midi_chan]
 		print(midi_pair)
-		if midi_pair in d["performanceData"]["midi_pairs"] and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist):
-			print('performance') 
+
+		cat = Process.get_categories(midi_pair)
+		active = Process.get_active_category(cat)
+		print(active)
+		if active in d:
+			midi_data = d[active][self.midi_chan][midi_id][data_1]
+
+
+
+		# if "performanceData" in cat and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist):
+		if active == "performanceData":
 			if data_2 > 0:
-				Action.performance_row = int(d["performanceData"][self.midi_chan][midi_id][data_1]["actions"][0])
-				Main.set_track(d["performanceData"][self.midi_chan][midi_id][data_1])
+				Action.performance_row = int(midi_data["actions"][0])
+				Main.set_track(midi_data)
 				Action.trig_clip()
 				self.event.handled = True
-				# Main.transport_act(self, d.performanceData[self.midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif midi_pair in d["keyboardData"]["midi_pairs"]and Modes.mode_active('Keyboard'):
-			Keys.decide(self, d["keyboardData"][self.midi_chan][midi_id][data_1])
-		elif midi_pair in d["sequencerData"]["midi_pairs"] and Modes.mode_active('Sequencer'):
+		# elif "keyboardData" in cat and Modes.mode_active('Keyboard'):
+		elif active == "keyboardData":
+			Keys.decide(self, midi_data)
+		# elif "sequencerData" in cat and Modes.mode_active('Sequencer'):
+
+		elif active == "sequencerData":
 			if d["sequencerData"][self.midi_chan][midi_id][data_1]["toggle"] or data_2 > 0:
-				Sequencer.step_pressed(self, d["sequencerData"][self.midi_chan][midi_id][data_1])
-		elif midi_pair in d["buttonData"]["midi_pairs"]:
-			if (d["buttonData"][self.midi_chan][midi_id][data_1]["toggle"]) or data_2 > 0:
-				Main.set_track(d["buttonData"][self.midi_chan][midi_id][data_1])
-				Main.transport_act(self, d["buttonData"][self.midi_chan][midi_id][data_1]["actions"], Action.shift_status)
-		elif midi_pair in d["encoderData"]["midi_pairs"]:
-			Main.set_track(d["encoderData"][self.midi_chan][midi_id][data_1])
-			Encoder.set(self, d["encoderData"][self.midi_chan][midi_id][data_1])
-		elif midi_pair in d["jogData"]["midi_pairs"]:
-			print('jog') 
-			# data[self.midi_chan][self.event.data2]
+				Sequencer.step_pressed(self, midi_data)
+		elif active == "buttonData":
+			if (midi_data["toggle"]) or data_2 > 0:
+				Main.set_track(midi_data)
+				Main.transport_act(self, midi_data["actions"], Action.shift_status)
+		elif active == "encoderData":
+			Main.set_track(midi_data)
+			Encoder.set(self, midi_data)
+		elif active == "jogData":
 			Encoder.jogWheel(self, d["jogData"][self.midi_chan][midi_id])
 		else:
 			self.event.handled = Config.PREVENT_PASSTHROUGH
 			print('not set')
+
+	# Return list of dict names that midi data 
+	def get_categories(midi_pair):
+
+	    """
+	    Returns all categories a MIDI pair belongs to.
+
+		Categories are the names of the various dictionaries within d. midi_pair may be a member
+		of more than one dictionary.
+	    """
+	    categories = ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]
+	    all_categories = []
+	    for category in categories:
+	        if midi_pair in d[category]["midi_pairs"]:
+	            all_categories.append(category)
+	    return all_categories
+
+	def get_active_category(cat):
+
+	    """
+	    Determines the active category based on a list of categories and the application state.
+		
+	    """
+	    print(cat)
+	    category = []
+	    if "performanceData" in cat and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist) and transport.getLoopMode():
+	        category = "performanceData"
+	    elif "keyboardData" in cat and Modes.mode_active('Keyboard'):
+	        category = "keyboardData"
+	    elif "sequencerData" in cat and Modes.mode_active('Sequencer'):
+	        category = "sequencerData"
+	    elif "buttonData" in cat:
+	        category = "buttonData"
+	    elif "encoderData" in cat:
+	    	category = "encoderData"
+	    elif "jogData" in cat:
+	    	category = "jogData"
+	    else:
+	    	category = "none"
+	    return category
+
+
+
+	# def get_category(midi_pair):
+	# 	for category in ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]:
+	# 		if midi_pair in d[category]["midi_pairs"]:
+	# 			return category
+	# 	return None		
 
 class Keys(Process):
 	oct_iter = 2
@@ -116,39 +175,19 @@ class Sequencer(Process):
 	def set_step(self, step, chan):
 		# print(f"step: {step}")
 		# print(f"chan: {chan}")
-		if channels.getGridBit(chan, step) == 0:						
-			channels.setGridBit(chan, step, 1)
-			self.event.handled = True
-		else:															
-			channels.setGridBit(chan, step, 0)
+		if chan < channels.channelCount():
+			if channels.getGridBit(chan, step) == 0:						
+				channels.setGridBit(chan, step, 1)
+				self.event.handled = True
+			else:															
+				channels.setGridBit(chan, step, 0)
+				self.event.handled = True
+		else:
 			self.event.handled = True
 
 	def get_seq_channel(track, step):
-			# offset = int(step_num / cl["defaults"]["sequence_length"])
-			# print(track)
 			chan = channels.selectedChannel() + track
 			return chan
-
-	# def step_pressed(self, data):
-	# 		print(data)
-	# 		# seq_len = cl["defaults"]["sequence_length"]
-	# 		s = int(data["actions"][0])
-	# 		track = data["track"]
-	# 		# step_num = (cl["defaults"]["sequence_length"] % s)
-	# 		step_num = Sequencer.get_step(s, cl["defaults"]["sequence_length"])
-	# 		# step_num = 0 if s == 0 else (cl["defaults"]["sequence_length"] % s)
-	# 				# step_num = int(data["actions"][0]) - (cl["defaults"]["sequence_length"] * track)
-	# 		print(step_num)
-	# 		# if cl["defaults"]["seq_mult"]:
-	# 		chan = Sequencer.get_seq_channel(track)
-	# 		# else:
-	# 		# 	chan = channels.selectedChannel()
-	# 		if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
-	# 			Action.selected_step = step_num
-	# 			self.event.handled = True
-	# 		else:
-	# 			# step = step_num % cl["defaults"]["sequence_multiple"][1]
-	# 			Sequencer.set_step(self, step_num, chan) 
 
 class Encoder(Process):
 
@@ -221,16 +260,13 @@ class Main(Process):
 			self.event.handled = True
 
 	def set_track(data):
-		# Action.track_number = data["track"]
-		# if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-		# 	num_tracks = cl["defaults"]["mixer_tracks"]
-		# 	n, d = divmod(mixer.trackNumber(), num_tracks)
-		# 	if d == 0:
-		# 		mult = (mixer.trackNumber() - 1) // num_tracks
-		# 	else:
-		# 		mult = mixer.trackNumber() // num_tracks
-
-		# 	track_offset = mult * cl["defaults"]["mixer_tracks"]
+		"""
+		Gets the track associated with the currently selected output.
+		track_original is direct from the dictionary entry. track_number is
+		the entry plus the offset. The offset is calculated by finding the range
+		the currently selected track is in. The range is a decided by the mixer_tracks
+		setting from the default settings set by the user.
+		"""
 		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
 			num_tracks = cl["defaults"]["mixer_tracks"]
 			# this catches an issue when the selected track / mixer_tracks has 0 remainder

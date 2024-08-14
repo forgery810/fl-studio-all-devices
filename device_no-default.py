@@ -2,7 +2,7 @@
 # Author: forgery810
 # VERSION = '0.4.8'
 
-from config_layout import cl  
+from config_layout1 import cl  
 import device
 import channels
 from midi import *
@@ -72,46 +72,44 @@ def OnRefresh(event):
 p = Process()
 
 def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
-	"""converts dict from config_layout to one that is easier for processing"""
 
 	def process_data(data, key_name):
-		for v in data.values():
-			d[key_name][v['channel']] = {}	
-			d[key_name][v['channel']] = {}	
-		for v in data.values():
-			d[key_name][v['channel']][v['midi'][0]] = {}	
-			d[key_name][v['channel']][v['midi'][3]] = {}	
-		for v in data.values():
-			d[key_name]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])	
-			if key_name == 'keyboardData':
-				d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])	
+		"""converts dict from the the easy to edit config_layout to one that is easier for processing"""
+		try:
+			for v in data.values():
+				d[key_name][v['channel']] = {}	
+				d[key_name][v['channel']] = {}	
+			for v in data.values():
+				d[key_name][v['channel']][v['midi'][0]] = {}	
+				d[key_name][v['channel']][v['midi'][3]] = {}	
+			for v in data.values():
+				d[key_name]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])	
+				if key_name == 'keyboardData':
+					d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])	
+	
+				d[key_name][v['channel']][v['midi'][3]][v['midi'][1]] = {
+					'actions': v['actions'],
+					'channel': v['channel'],
+					'midi_2': v['midi'][2],
+					'toggle': v['toggle'],
+					# 'release': v['midi'][3],
+					'track': v['track']
+				}
+				d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
+					'actions': v['actions'],
+					'channel': v['channel'],
+					'midi_2': v['midi'][2],
+					'toggle': v['toggle'],
+					# 'release': v['midi'][3],
+					'track': v['track']
+				}
+		except (KeyError, TypeError, ValueError) as e:
+			print(f"An error occured: {e}")
 
-			# d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])	
-			d[key_name][v['channel']][v['midi'][3]][v['midi'][1]] = {
-				'actions': v['actions'],
-				'channel': v['channel'],
-				'midi_2': v['midi'][2],
-				'toggle': v['toggle'],
-				# 'release': v['midi'][3],
-				'track': v['track']
-			}
-			d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
-				'actions': v['actions'],
-				'channel': v['channel'],
-				'midi_2': v['midi'][2],
-				'toggle': v['toggle'],
-				# 'release': v['midi'][3],
-				'track': v['track']
-			}
-		# if key_name == "jogData":
-		# 	for v in data.values():
-		# 		d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
-		# 			'midi_2': v['midi'][2]
-		# 	}
-		# d[key_name]['midi_pairs'].append(v['midi'])
-
+	
 
 	def process_jog_data(jw, jogData):
+		""" jog wheel must have its own function as it requires the midi_2 data to be a key"""
 		for k, v in jw.items():
 			d["jogData"][v["channel"]] = {}
 		for k, v in jw.items():

@@ -4,7 +4,7 @@ import transport
 import device
 import midi
 import channels
-from config_layout import cl
+from config_layout1 import cl
 from config import Config
 
 class Leds():

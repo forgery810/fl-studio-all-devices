@@ -1,5 +1,5 @@
 from leds import Leds
-from config_layout import cl
+from config_layout1 import cl
 
 class Modes():
 
@@ -7,7 +7,7 @@ class Modes():
 	# seq_modes = ['Pattern B', 'Pattern A']
 	# seq = itertools.cycle(seq_modes)
 	# seq_status = 'Pattern A'
-	modes = [  'Buttons', 'Sequencer', 'Keyboard']
+	modes = cl["defaults"]["modes"]
 	layer_count = 0
 	sequence_leds = False
 	transport_leds = False

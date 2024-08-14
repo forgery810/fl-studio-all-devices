@@ -4,7 +4,7 @@ Fl Studio Script Builder is Python script which allows any MIDI controller to wo
 
 Download by clicking the green Code button above and selecting Download ZIP. Unzip the download and place the folder in the following directory:  
 
-Documents/Image-Line/FLStudio/Settings/Hardware
+%userprofile%\Documents\Image-Line\FL Studio\Settings\Hardware
 
 When unzipped, everything should be in a folder named something like fl-studio-all-devices.
 This entire folder should be placed in the above directory.
@@ -20,7 +20,7 @@ Upon opening FL Studio, go to MIDI Options and select the controller. Under devi
 
 ## Multiple Controllers 
 
-If you have more than one contoller that uses the script, you will need two instances of it. Rename one of the fl-studio-all-devices folder.  It can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
+If you have more than one contoller that uses the script, you will need two instances of it. A second copy of the folder will be needed. The folder can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
 For example,
 
 ```sh
@@ -52,8 +52,9 @@ can be change to
 Once created, it may be easier in certain situtations to edit the config_layout.py file directly, rather than using the web app. 
 Even users with no coding experience should have little issue.  
   
-Before editing, it may be helpful to reformat the code for better legibilty. Search the web for a Python reformatter and past the output back into the file. 
+Before editing, it may be helpful to reformat the code for better legibility. Search the web for a Python reformatter and past the output back into the file. 
 
+The options.txt file is a reference for the function names that can be assigned to controller outputs. 
 Open the options.txt file in the script folder to find the correct data to input. As an example, we can  edit the button currently set to metronome to focus the browser instead. Looking at config_layout, we find this entry,
 
 ```sh
@@ -84,6 +85,8 @@ Copy the function name and replace the previous entry resulting it:
 ```
 
 The first entry, the one changed here, controls the function when unshifted. Escape will be active when shift is active.
+
+## Troubleshooting
 
 If you have issues, in FL Studio, go to View and click Script Output. Copy the error info you see there. 
 Either create a github issue or, presuming you found out about this script via YouTube, post a the issue there with the copied data. 

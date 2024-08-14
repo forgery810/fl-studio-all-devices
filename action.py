@@ -13,7 +13,7 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-from config_layout import cl
+from config_layout1 import cl
 import data 
 from config import Config 
 from utility import Utility
@@ -460,9 +460,6 @@ class Action():
 
 	def nothing():
 		pass
-
-
-
 
 	def zoom_in_horz():
 		ui.horZoom(1)
