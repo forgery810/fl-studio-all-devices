@@ -4,9 +4,6 @@ from config_layout1 import cl
 class Modes():
 
 	current_mode = 0;
-	# seq_modes = ['Pattern B', 'Pattern A']
-	# seq = itertools.cycle(seq_modes)
-	# seq_status = 'Pattern A'
 	modes = cl["defaults"]["modes"]
 	layer_count = 0
 	sequence_leds = False
@@ -37,8 +34,6 @@ class Modes():
 		Modes.current_mode += 1
 		if (Modes.current_mode >= len(Modes.modes)):
 			Modes.current_mode = 0
-			# Change to mode_assigned()
-		# if Leds.check_if_led_set("seq_leds"):
 		Leds.set_current_mode(Modes.modes[Modes.current_mode])
 
 	def get_layer():
@@ -49,8 +44,6 @@ class Modes():
 
 	def get_mode():
 		return Modes.modes[Modes.current_mode]
-
-		# return Modes.modes[Action.get_mode()]
 
 	def set_pattern_range(self):
 		"""rotates between pattern a and pattern b"""

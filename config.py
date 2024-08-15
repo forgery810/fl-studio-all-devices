@@ -57,6 +57,7 @@ class Config:
 	"""Root Note and Scale combined will set the default scale the script opens with. These can both be changed
 		with a MIDI controller if you dedicate buttons to it. It may be easier, though, to change the values here
 		and reload the script and dedicated the buttons to a more commonly used function.
+		
 		Valid note and scale entries are:
 			["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 			["Major", "Natural Minor", "Harmonic Minor", "Dorian", "Mixolydian", "Minor Pentatonic", "Chromatic"] """

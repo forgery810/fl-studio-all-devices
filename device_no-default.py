@@ -1,6 +1,6 @@
 # name=No Default 
 # Author: forgery810
-# VERSION = '0.4.8'
+# VERSION = '0.7.9'
 
 from config_layout1 import cl  
 import device
@@ -13,7 +13,7 @@ import channels
 import ui
 import transport
 from leds import Leds
-from process import Process, Dispatch, Main
+from process import Process,  Main
 from modes import Modes
 from notes import Notes, Scales
 from data import d
@@ -57,10 +57,10 @@ def OnMidiMsg(event):
 	p.d2 = event.data2
 	p.triage()
 
-# if Config.PITCH_BEND:
-# 	def OnPitchBend(event):
-# 		print('bend')
-		# EncoderAction.pitch_bend(event.data2)
+if Config.PITCH_BEND:
+	def OnPitchBend(event):
+		EncoderAction.pitch_bend(event.data2)
+		event.handled = True
 
 def OnRefresh(event):
 	# print(f"Refresh Event: {event}")
@@ -142,34 +142,6 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	process_encoders_for_plugins(en)
 	process_data(pf, 'performanceData')
 	process_jog_data(jw, 'jogData')
-	# print(d["buttonData"]["midi_pairs"])
-
-
-
-# 	# for k, v in jw.items():
-# 	# 	d.jogData[v['midi'][0]] = {}
-# 	# 	d.jogData[v['midi'][0]][v['midi'][1]] = {} 
-# 	# for k, v in jw.items():
-# 	# 	d.jogData[v['midi'][0]][v['midi'][1]][v['midi'][2]] = { 
-# 	# 		'actions': v['actions'],
-# 	# 		'channel': v['channel'],
-# 	# 		'toggle': v['toggle'],
-# 	# 		'release': v['midi'][3],
-# 	# 		'midi_2': v['midi'][2]
-# 	# 		}
-
-
-
-# 	# print(d)
-# 	# print(plugindata.knob_num)
-# 	# print(d.encoderData)
-
-# 	# print(d.sequencerData)
-# 	# print(d.keyboardData)
-# 	# print(d.performanceData)
-# 	# print(d.defaults)
-# 	# print(d.jogData)
-# 	# print(Modes.modes)
 
 transport_leds = ['shift', 'start', 'stop', 'record']
 
@@ -184,4 +156,3 @@ def AssignLeds(led):
 		else:
 			d["leds"]["seq_leds"][v["actions"][0]] = [v["midi"][0], v["channel"] - 1, v["midi"][1]]
 			Modes.set_seq_leds(True)
-	print(Leds.active_leds)

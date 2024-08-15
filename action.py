@@ -524,9 +524,6 @@ class EncoderAction(Action):
 		Action.mixer_send = d2
 		ui.setHintMsg(f"Route Mixer to {d2}") 
 
-	# def set_parameter_value(d2):
-	# 	Action.set_parameter_value(d2)
-
 	def set_random_min_octave(d2):
 		Action.set_random_min_octave(d2)
 
@@ -543,8 +540,6 @@ class EncoderAction(Action):
 	def selected_level(d2):
 		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
 			Action.set_parameter_value(d2)
-			# channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), Action.selected_step, Action.parameter_index, d2, 1) # int(Utility.level_adjust(d2, param_value, 1)),
-			# channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 		elif ui.getFocused(midi.widMixer):
 			mixer.setTrackVolume(mixer.trackNumber(), d2/127, True)
 		elif ui.getFocused(midi.widChannelRack):
@@ -554,20 +549,14 @@ class EncoderAction(Action):
 		for i, r in enumerate(EncoderAction.parameter_ranges):
 			if cc < r:
 				return i 
-		# return param
-
 
 	def selected_pan(d2):
 		if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
 			Action.set_step_parameter(d2)
-			# Action.parameter_index = Encoder.get_param_from_range(d2)
-			# channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 		if ui.getFocused(midi.widMixer):
 			mixer.setTrackPan(mixer.trackNumber(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
 		elif ui.getFocused(midi.widChannelRack):
 			channels.setChannelPan(channels.selectedChannel(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
-			# if channels.isGraphEditorVisible():
-			# else:
 
 	def master_mixer_level(d2):
 		mixer.setTrackVolume(0, d2/127, True)
@@ -611,7 +600,9 @@ class EncoderAction(Action):
 		Action.jog_wheel_down()
 
 	def pitch_bend(d2):
+		# mixer.setTrackVolume(0, d2/127, True)
 		channels.setChannelPitch(channels.selectedChannel(), Utility.mapvalues(d2, -1, 1, 0, 127))
+		print('pitch')
 
 	def mixer_level(d2):
 		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)

@@ -19,9 +19,7 @@ class Leds():
 
 	def led_setup():
 		if d["leds"]:
-			# print(f"d.ledData: {bool(d["ledData"])}")
 			Leds.assigned = True 
-				# turn step leds off
 
 	def check_shift(shift):
 		print(*d["leds"]["transport_leds"]["shift"])
@@ -35,7 +33,6 @@ class Leds():
 			return True
 		else:			
 			return False
-		# return led in Leds.active_leds
  
 	def leds_assigned():
 		return Leds.assigned
@@ -44,7 +41,6 @@ class Leds():
 		Leds.assigned = b
 
 	def check_event_leds(event):   
-		# if event in Leds.events["sequencer"] and Leds.check_if_led_set("seq_leds") and Leds.mode == 'sequencer':
 		if event in Leds.events["sequencer"] and Leds.mode == 'Sequencer':
 			Leds.set_sequence()
 		elif event in Leds.events["transport"]:
@@ -65,10 +61,7 @@ class Leds():
 					device.midiOutMsg(*d["leds"]["transport_leds"]["record"], 0)
 
 	def set_sequence():
-		print('set_sequence')
-		# device.midiOutMsg(144, 0, 37, 127)
 		for k, v in d["leds"]["seq_leds"].items():
-			print(int(k))
 			if channels.getGridBit(channels.selectedChannel(), int(k) ) == 0:
 				device.midiOutMsg(*d["leds"]["seq_leds"][k], 0)						# turn step leds off
 			elif channels.getGridBit(channels.selectedChannel(), int(k)) == 1:
@@ -80,11 +73,9 @@ class Leds():
 
 	def set_current_mode(mode):
 		Leds.mode = mode
-		print(f"mode: {mode}")
 		if mode == 'Sequencer' or Config.SEQUENCE_LEDS_ALWAYS_ON:
 			Leds.set_sequence()
 		else:
-			print('resey')
 			Leds.reset_sequence()
 
 

@@ -17,44 +17,47 @@ import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
 
-class Dispatch:
-	def __init__(self):
-		self.chan_ex = 0
-		self.channel = channels.selectedChannel()
-		self.pattern = patterns.patternNumber()
-		self.random_offset = 63
+# class Dispatch:
+# 	def __init__(self):
+# 		self.chan_ex = 0
+# 		self.channel = channels.selectedChannel()
+# 		self.pattern = patterns.patternNumber()
+# 		self.random_offset = 63
 
-class Process(Dispatch):
-
-
+class Process():
 
 	def triage(self):
+
+		"""
+		Handles incoming MIDI events and routes them to the appropriate category to be processed.
+		
+    	This functions retrieves MIDI data from the incoming message and checks if it matches
+    	any of the controller categories. If so, it evaluates the FL Studio's state (active windows and 
+    	selected modes) and determines the intended category. 
+    	The MIDI data is then sent to the corresponding category class call the associated action. 
+    	If no matching category is found, the event is marked as handled and no longer processed.
+    	"""
+
 		midi_id = self.event.midiId
 		data_1 = self.event.data1
 		data_2 = self.event.data2
 		self.midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
 		midi_pair = [midi_id, data_1, self.midi_chan]
-		print(midi_pair)
 
 		cat = Process.get_categories(midi_pair)
 		active = Process.get_active_category(cat)
-		print(active)
+
 		if active in d:
 			midi_data = d[active][self.midi_chan][midi_id][data_1]
 
-
-
-		# if "performanceData" in cat and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist):
 		if active == "performanceData":
 			if data_2 > 0:
 				Action.performance_row = int(midi_data["actions"][0])
 				Main.set_track(midi_data)
 				Action.trig_clip()
 				self.event.handled = True
-		# elif "keyboardData" in cat and Modes.mode_active('Keyboard'):
 		elif active == "keyboardData":
 			Keys.decide(self, midi_data)
-		# elif "sequencerData" in cat and Modes.mode_active('Sequencer'):
 
 		elif active == "sequencerData":
 			if d["sequencerData"][self.midi_chan][midi_id][data_1]["toggle"] or data_2 > 0:
@@ -69,10 +72,9 @@ class Process(Dispatch):
 		elif active == "jogData":
 			Encoder.jogWheel(self, d["jogData"][self.midi_chan][midi_id])
 		else:
+			print('passthrough')
 			self.event.handled = Config.PREVENT_PASSTHROUGH
-			print('not set')
 
-	# Return list of dict names that midi data 
 	def get_categories(midi_pair):
 
 	    """
@@ -94,7 +96,6 @@ class Process(Dispatch):
 	    Determines the active category based on a list of categories and the application state.
 		
 	    """
-	    print(cat)
 	    category = []
 	    if "performanceData" in cat and playlist.getPerformanceModeState() and ui.getFocused(midi.widPlaylist) and transport.getLoopMode():
 	        category = "performanceData"
@@ -113,18 +114,10 @@ class Process(Dispatch):
 	    return category
 
 
-
-	# def get_category(midi_pair):
-	# 	for category in ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]:
-	# 		if midi_pair in d[category]["midi_pairs"]:
-	# 			return category
-	# 	return None		
-
 class Keys(Process):
 	oct_iter = 2
 	octave = [-36, -24, -12, 0, 12, 24, 36]
 	def decide(self, data):
-		print(f"keys d2: {self.event.midiId}")
 
 		index = Notes.note_list.index(data["actions"][0])
 		if Config.KEYBOARD_CHROMATIC:
@@ -136,8 +129,6 @@ class Keys(Process):
 			root = Notes.get_root_note()
 		note = scale[index] +  data["track"] * scale[12]  +  Action.get_octave() + 60 
 		channels.midiNoteOn(self.channel, note, self.event.data2)
-		# channels.midiNoteOn(channels.selectedChannel(), Notes.all_notes.index(act) + Action.get_octave() + 60, self.event.data2)
-		# channels.midiNoteOn(channels.selectedChannel(), Notes.note_list.index(data["actions"][0]) + (data["track"] * 12) + Action.get_octave() + 60, self.event.data2)
 		self.event.handled = True
 
 	def play_note(self, data):
@@ -167,14 +158,17 @@ class Sequencer(Process):
 			Main.transport_act(self, data["actions"], Action.shift_status)
 
 	def get_step(input, len):
+		"""
+		This function takes in the action as a step number and the user-defined sequence length set for 
+		the controller. It returns the remainder as to determine if the step applies to the selected channel.
+		or another
+		"""
 		if input == 0:
 			return 0
 		else:
 			return input % len
 			
 	def set_step(self, step, chan):
-		# print(f"step: {step}")
-		# print(f"chan: {chan}")
 		if chan < channels.channelCount():
 			if channels.getGridBit(chan, step) == 0:						
 				channels.setGridBit(chan, step, 1)
@@ -195,6 +189,7 @@ class Encoder(Process):
 		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
 		else:		
+			print(data['actions'][Action.shift_status])
 			EncoderAction.call_func(data['actions'][Action.shift_status], self.event.data2)
 
 	def set_data(d):
@@ -207,16 +202,13 @@ class Encoder(Process):
 	def control_plugin(self):
 		plugin = plugins.getPluginName(channels.selectedChannel())	
 		param_count = plugins.getParamCount(channels.selectedChannel())
-		if plugin in plg.plugin_dict:
-			print('plugins')
-			print(plg.knob_num)
+		if plugin in plg.plugin_dict and plg.knob_num.index(self.event.data1) < len(plg.plugin_dict[plugin]):
 			param = plg.plugin_dict[plugin][plg.knob_num.index(self.event.data1)]
 			param_value =  self.event.data2/127 #Utility.level_adjust(self.event.data2, plugins.getParamValue(param, channels.selectedChannel()), .025)		                                                                           																		
 			plugins.setParamValue(param_value, param, channels.selectedChannel())
 			self.event.handled = True
 		else:	
 			param = self.event.data1 - 15
-			# param_value =  Utility.level_adjust(self.event.data2, plugins.getParamValue(param, channels.selectedChannel()), .025)	
 			plugins.setParamValue(self.event.data2/127, param, self.channel)
 			self.event.handled = True
 
@@ -224,22 +216,6 @@ class Encoder(Process):
 		if data[self.event.data1].get(self.event.data2, {}):
 			# print(data[self.event.data1][self.event.data2]['actions'])
 			Main.transport_act(self, data[self.event.data1][self.event.data2]['actions'], Action.get_shift_status())
-		# self.event.handled = True
-
-		# if data[self.event.data1]['toggle']:
-		# 	if self.event.data2 == data[self.event.data1]["midi_2"]:
-		# 		Main.transport_act(self, data[self.event.data1]['actions'], Action.get_shift_status())
-		# else:
-		# 	Main.transport_act(self, data[self.event.data1]['actions'], Action.get_shift_status())
-		# 	print('no track_offset')
-		# if data.get(self.event.data2):
-		# if Config.JOGWHEEL_USES_SAME_MIDI_CC:
-		# 	print(data)
-		# 	# Main.transport_act(self, data[self.event.data2][self.event.data1]['actions'], Action.get_shift_status())
-		# 	Main.transport_act(self, data[self.event.data1][self.event.data2]['actions'], Action.get_shift_status())
-		# else:
-			# print(data[self.event.midiId][self.event.data1]['actions'])
-		# Main.transport_act(self, data[self.event.midiId][self.event.data1]['actions'], Action.get_shift_status())
 
 	def channel_link(cc):
 		tracks = [i for i in range(0, 128)]
@@ -276,5 +252,4 @@ class Main(Process):
 			track_offset = 0
 		Action.track_number = data["track"] + track_offset 
 		Action.track_original = data["track"]
-		# print(f"Action.track_original: {Action.track_original}")
 

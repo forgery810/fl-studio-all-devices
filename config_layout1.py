@@ -480,14 +480,14 @@ cl = {
   "encoder": {
     "1": {
       "actions": [
-        "mixer_level",
+        "pitch_bend",
         "mixer_level"
       ],
       "channel": 1,
       "midi": [
-        176,
-        14,
-        4,
+        225,
+        0,
+        0,
         176
       ],
       "toggle": 0,
@@ -570,7 +570,7 @@ cl = {
     },
     "7": {
       "actions": [
-        "set_random_max_octave",
+        "pitch_bend",
         "set_random_max_octave"
       ],
       "channel": 1,
