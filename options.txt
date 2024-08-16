@@ -1,129 +1,127 @@
-Start - start:
+Start - start
 
-Stop - stop:
+Stop - stop
 
-Toggle Record - record:
+Toggle Record - record
 
-Toggle Overdub - overdub:
+Toggle Overdub - overdub
 
-Metronome - metronome:
+Metronome - metronome
 
-Song/Pattern - song_pat:
+Song/Pattern - song_pat
 
-Toggle Countdown - countdown:
+Toggle Countdown - countdown
 
-Loop Record - loop_record:
+Loop Record - loop_record
 
-Pattern Down - pattern_down:
+Pattern Down - pattern_down
 
-Pattern Up - pattern_up:
+Pattern Up - pattern_up
 
-Up Arrow - up:
+Up Arrow - up
 
-Down Arrow - down:
+Down Arrow - down
 
-Left Arrow - left:
+Left Arrow - left
 
-Right Arrow - right:
+Right Arrow - right
 
-Enter - enter:
+Enter - enter
 
-Next - next:
+Next - next
 
-Previous - previous:
+Previous - previous
 
-Solo - solo:
+Solo - solo
 
-Mute - mute:
+Mute - mute
 
-Focus Mixer - focus_mixer:
+Focus Mixer - focus_mixer
 
-Focus Channels - focus_channels:
+Focus Channels - focus_channels
 
-Focus Piano Roll - focus_piano:
+Focus Piano Roll - focus_piano
 
-Focus Browser - focus_browser:
+Focus Browser - focus_browser
 
-Focus Playlist - focus_playlist:
+Focus Playlist - focus_playlist
 
-Open Plugins - open_plugins:
+Open Plugins - open_plugins
 
-Rotate Set Windows - rotate_set_windows:
+Rotate Set Windows - rotate_set_windows
 
-Rotate All Windows - rotate_all:
+Rotate All Windows - rotate_all
 
-Escape - escape:
+Escape - escape
 
-Open Channel - open_channel:
+Open Channel - open_channel
 
-Cut - cut:
+Cut - cut
 
-Copy - copy:
+Copy - copy
 
-Copy All - copy_all:
+Copy All - copy_all
 
-Paste - paste:
+Paste - paste
 
-Delete - delete:
+Delete - delete
 
-Undo/Redo - undo:
+Undo/Redo - undo
 
-Next Preset - next_preset:
+Next Preset - next_preset
 
-Previous Preset - prev_preset:
+Previous Preset - prev_preset
 
-Quick Quantize - quantize:
+Quick Quantize - quantize
 
-Shift - shift:
+Shift - shift
 
-Step Record - step_rec:
+Step Record - step_rec
 
-Change Color - change_color:
+Change Color - change_color
 
-Random Pattern - rand_pat:
+Random Pattern - rand_pat
 
-Random Notes - rand_notes:
+Random Notes - rand_notes
 
-Link Mix/Chan - link_mix:
+Link Mix/Chan - link_mix
 
-Route Mixer Track - mixer_route:
+Route Mixer Track - mixer_route
 
-Pad Mode - pad_mode:
+Pad Mode - pad_mode
 
-Save - save:
+Save - save
 
-Step Parameters - step_param:
+Step Parameters - step_param
 
-Tap Tempo - tap_tempo:
+Tap Tempo - tap_tempo
 
-Wait for Input - wait_for_input:
+Wait for Input - wait_for_input
 
-Item Menu - item_menu:
+Item Menu - item_menu
 
-Open New Pattern - new_pattern:
+Open New Pattern - new_pattern
 
-Encoder/Pad Range - toggle_range:
+Encoder/Pad Range - toggle_range
 
-Next Preset/Pattern - next_pre_pat:
+Next Preset/Pattern - next_pre_pat
 
-Prev Preset/Pattern - prev_pre_pat:
+Prev Preset/Pattern - prev_pre_pat
 
-Arm Track - arm_track:
+Arm Track - arm_track
 
-Alt - alt:
+Octave Up - octave_up
 
-Octave Up - octave_up:
+Menu - menu
 
-Menu - menu:
+Change Step Parameter - change_step_parameter
 
-Change Step Parameter - change_step_parameter:
+Undo Up - undo_up
 
-Undo Up - undo_up:
+Set Root Note - set_root_note
 
-Set Root Note - set_root_note:
+Set Scale - increment_scale
 
-Set Scale - increment_scale:
+Set Step Range - set_step_range
 
-Set Step Range - set_step_range:
-
-Nothing - nothing:
+Nothing - nothing

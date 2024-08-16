@@ -44,6 +44,7 @@ class Shifter():
 
 	def pattern_to_string(self):
 		"""takes current pattern, appends to list, return string of list"""
+		
 		for bit in range(0, self.pat_len):
 			self.pattern.append(str(channels.getGridBit(self.channel, bit)))
 		return (''.join(self.pattern))
