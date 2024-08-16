@@ -23,13 +23,13 @@ class Config:
 		set each button/knob to pass when linking is desired and leaving this True but
 		the option is here"""
 
-	ALLOW_KEYS = True
+	# ALLOW_KEYS = True
 	"""This works with PREVENT_PASSTHROUGH. This will allow MIDI data with 144 or 128 MIDI id to 
 		pass through and block everything else. This allows a keyboard notes to be played 
 		but all other data blocked. Only relavent if PREVENT_PASSTHROUGH is True."""
 
 
-	PATTERN_CHANGE_WAIT = True	
+	PATTERN_CHANGE_WAIT = False
 	""" This only affects pattern changes when using the 'Select Pattern *' where buttons are 
 		set with specific patterns to change to when pushed. If set to true, the pattern will not
 		change until the end of the current bar. False will mean patterns are changed immediately."""
@@ -46,7 +46,7 @@ class Config:
 		different MIDI 2 (Velocity) values to differ between the two. Set to True if this is the case.
 		If different CC values are used, then set to False. """
 
-	KEYBOARD_CHROMATIC = True
+	KEYBOARD_CHROMATIC = False
 	"""True will keep the keyboard chromatic no matter the root and scale setting. Changing the root and scale will 
 		only affect random note generation. If False, the keyboard will only play notes from the selected scale."""
 
@@ -57,7 +57,7 @@ class Config:
 	"""Root Note and Scale combined will set the default scale the script opens with. These can both be changed
 		with a MIDI controller if you dedicate buttons to it. It may be easier, though, to change the values here
 		and reload the script and dedicated the buttons to a more commonly used function.
-		
+
 		Valid note and scale entries are:
 			["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 			["Major", "Natural Minor", "Harmonic Minor", "Dorian", "Mixolydian", "Minor Pentatonic", "Chromatic"] """

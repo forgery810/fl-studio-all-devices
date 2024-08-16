@@ -1,5 +1,5 @@
 from leds import Leds
-from config_layout1 import cl
+from config_layout import cl
 
 class Modes():
 

@@ -13,8 +13,8 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-from config_layout1 import cl
-import data 
+from config_layout import cl
+from data import d
 from config import Config 
 from utility import Utility
 from notes import Notes, Scales 
@@ -29,7 +29,6 @@ class Action():
 	random_min_octave = 6
 	octave_index = 3
 	current_mode = 0
-	# color_num = 0
 	active_track = 0
 	parameter_index = 0
 	mixer_num = 0 
@@ -45,9 +44,7 @@ class Action():
 	new_pattern_number = -1
 	change_pattern = False
 	selected_playlist_track = 1
-	c = itertools.cycle(cl["defaults"]["colors"])
-	# offset_iter = 0
-	# pitch_value = 0
+
 
 	def call_func(f):
 		method = getattr(Action, f)
@@ -176,13 +173,13 @@ class Action():
 		if ui.getFocused(0):
 			return mixer.muteTrack(mixer.trackNumber())
 		elif ui.getFocused(1):
-			return channels.muteChannel(channels.channelNumber())
+			return channels.muteChannel(channels.selectedChannel())
 		elif ui.getFocused(2):
 			print('nute')
 			playlist.muteTrack(Action.selected_playlist_track)
 
 	def open_channel():
-		return channels.showCSForm(channels.channelNumber(), -1)
+		return channels.showCSForm(channels.selectedChannel(), -1)
 
 	def up():
 		return ui.up()
@@ -191,7 +188,7 @@ class Action():
 		return ui.down()
 
 	def left():
-		if ui.getFocused(5) and channels.getChannelType(channels.channelNumber()) != CT_Sampler:
+		if ui.getFocused(5) and channels.getChannelType(channels.selectedChannel()) != CT_Sampler:
 			return ui.previous()
 		elif ui.getFocused(widPlaylist):
 			return arrangement.jumpToMarker(0, 1)
@@ -199,7 +196,7 @@ class Action():
 			return ui.left()
 
 	def right():
-		if ui.getFocused(5) and channels.getChannelType(channels.channelNumber()) != CT_Sampler:
+		if ui.getFocused(5) and channels.getChannelType(channels.selectedChannel()) != CT_Sampler:
 			return ui.next()
 		elif ui.getFocused(widPlaylist):
 			arrangement.jumpToMarker(1, 1)
@@ -216,13 +213,13 @@ class Action():
 			return ui.enter()
 
 	def prev_pre_pat():
-		if ui.getFocused(5) and channels.getChannelType(channels.channelNumber()) != CT_Sampler:
+		if ui.getFocused(5) and channels.getChannelType(channels.selectedChannel()) != CT_Sampler:
 			return ui.previous()
 		else:
 			Action.pattern_down()
 
 	def next_pre_pat():
-		if ui.getFocused(5) and channels.getChannelType(channels.channelNumber()) != CT_Sampler:
+		if ui.getFocused(5) and channels.getChannelType(channels.selectedChannel()) != CT_Sampler:
 			return ui.next()
 		else:
 			Action.pattern_up()		
@@ -310,14 +307,13 @@ class Action():
 		mixer.armTrack(mixer.trackNumber())
 
 	def quantize():
-		channels.quickQuantize(channels.channelNumber())
+		channels.quickQuantize(channels.selectedChannel())
 
 	def rotate_set_windows():
 		Action.rotate_set_count += 1
 		if Action.rotate_set_count >= len(cl["defaults"]['windows']):
 			Action.rotate_set_count = 0
 		ui.showWindow(cl["defaults"]['windows'][Action.rotate_set_count])
-		# transport.rewind(1)
 
 	def rotate_all():
 		ui.nextWindow()
@@ -383,33 +379,34 @@ class Action():
 		channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
 	def change_color():
-		if ui.getFocused(widChannelRack):
-			channels.setChannelColor(channels.selectedChannel(), next(Action.c))
-		elif ui.getFocused(widMixer):
-			mixer.setTrackColor(mixer.trackNumber(), next(Action.c))
-		elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(Action.selected_playlist_track):
-			playlist.setTrackColor(Action.selected_playlist_track, next(Action.c))
+		if cl["defaults"]["colors"]:
+			if ui.getFocused(widChannelRack):
+				channels.setChannelColor(channels.selectedChannel(), next(d["colors"]))
+			elif ui.getFocused(widMixer):
+				mixer.setTrackColor(mixer.trackNumber(), next(Action.c))
+			elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(Action.selected_playlist_track):
+				playlist.setTrackColor(Action.selected_playlist_track, next(d["colors"]))
 
 	def trig_clip():
-		print(f"row track: {Action.performance_row}, {Action.track_number}")
-		# turn_off = [2, 4]
+		mode = playlist.getLiveLoopMode(Action.performance_row)
 		if playlist.getLiveBlockStatus(Action.performance_row, Action.track_number, 2) == 2: 
-			print('!=0')
-			playlist.triggerLiveClip(Action.performance_row, -1, midi.TLC_MuteOthers | midi.TLC_Fill)
+			if mode == 1:
+				print(f"mode: {playlist.getLiveLoopMode(Action.performance_row)}");
+				playlist.triggerLiveClip(Action.performance_row, Action.track_number, midi.TLC_MuteOthers | midi.TLC_Fill)
+			else:
+				playlist.triggerLiveClip(Action.performance_row, -1, midi.TLC_MuteOthers | midi.TLC_Fill)
+
 		else:
-			print('-==')
 			playlist.triggerLiveClip(Action.performance_row, Action.track_number, midi.TLC_MuteOthers | midi.TLC_Fill)
-		# print(f"glbs: {playlist.getLiveBlockStatus(Action.performance_row, Action.track_number, 2)}")
 
 	def rand_trigs():
 			"""Function clears pattern and for each step, generates a random number. The number is checked"""
-			
 			for i in range(patterns.getPatternLength(patterns.patternNumber())): 
-				channels.setGridBit(channels.channelNumber(), i, 0)
+				channels.setGridBit(channels.selectedChannel(), i, 0)
 			for z in range (patterns.getPatternLength(patterns.patternNumber())):
 				y = Utility.num_gen()
 				if y < ( Action.random_offset * 516):
-					channels.setGridBit(channels.channelNumber(), z, 1)
+					channels.setGridBit(channels.selectedChannel(), z, 1)
 				else:
 					pass
 
@@ -423,11 +420,11 @@ class Action():
 		upper = Action.random_max_octave
 		lower = Action.random_min_octave
 		for i in range(patterns.getPatternLength(patterns.patternNumber())):
-			# note = Scales.scales[scale][int(Utility.mapvalues(Utility.num_gen(), lower, len(Scales.scales[scale]) + upper, 0, 65535))]
 			interval = Scales.scales[scale][int(Utility.mapvalues(Utility.num_gen(), 0, len(Scales.scales[scale]), 0, 65535))]
 			octave = int(Utility.mapvalues(Utility.num_gen(), lower, upper, 0, 65535)) * 12
 			note = interval + octave
-			channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), i, 0, note + root, 1)		
+			finalNote = note + root
+			channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), i, 0, finalNote)		
 
 	def rand_pattern():
 		Action.rand_trigs()
@@ -486,7 +483,7 @@ class Action():
 		"""is pattern_change_wait set, onupbeatindicator will trigger
 			change when change_patten = true """
 
-		if Action.track_original != patterns.patternNumber() and transport.isPlaying():
+		if Action.track_original != patterns.patternNumber() and transport.isPlaying() and Config.PATTERN_CHANGE_WAIT:
 			Action.change_pattern = True
 
 		else:
@@ -606,12 +603,9 @@ class EncoderAction(Action):
 
 	def mixer_level(d2):
 		mixer.setTrackVolume(EncoderAction.track_number, d2/127, True)
-		# print(f"track_number: {EncoderAction.track_number}")
 
 	def mixer_pan(d2):
 		mixer.setTrackPan(EncoderAction.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
-
-
 
 	def nothing(d2):
 		pass

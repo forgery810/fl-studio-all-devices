@@ -4,8 +4,9 @@ Fl Studio Script Builder is Python script which allows any MIDI controller to wo
 
 Download by clicking the green Code button above and selecting Download ZIP. Unzip the download and place the folder in the following directory:  
 
+```sh
 %userprofile%\Documents\Image-Line\FL Studio\Settings\Hardware
-
+```
 When unzipped, everything should be in a folder named something like fl-studio-all-devices.
 This entire folder should be placed in the above directory.
 

@@ -6,5 +6,7 @@ d = {
 		"performanceData": {'midi_pairs': [], },
 		"jogData": {'midi_pairs': [], },
 		"data": {'midi_pairs': [], },
-		"leds": { "transport_leds": {}, "seq_leds": {}}
+		"leds": { "transport_leds": {}, "seq_leds": {}},
+		"colors": []
 }
+

@@ -1,8 +1,8 @@
 # name=No Default 
 # Author: forgery810
-# VERSION = '0.7.9'
+VERSION = '0.8.0'
 
-from config_layout1 import cl  
+from config_layout import cl  
 import device
 import channels
 from midi import *
@@ -19,9 +19,9 @@ from notes import Notes, Scales
 from data import d
 from config import Config
 import plugindata as plg
-# import time
 from action import Action, EncoderAction
 import plugindata
+import itertools
 
 def OnInit():
 	"""Function called when script starts"""
@@ -30,6 +30,7 @@ def OnInit():
 	AssignLeds(cl["led"])
 	Leds.led_setup()
 	print(device.getName())
+	print(f"Script Version: {VERSION}")
 	
 	if device.isAssigned():		
 		print(f"Assigned. Layout: {cl['name']}")		
@@ -74,7 +75,7 @@ p = Process()
 def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 
 	def process_data(data, key_name):
-		"""converts dict from the the easy to edit config_layout to one that is easier for processing"""
+		"""converts dict from the the easier to edit config_layout to one that is designed for processing efficiently"""
 		try:
 			for v in data.values():
 				d[key_name][v['channel']] = {}	
@@ -134,6 +135,10 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 		for v in data.values():
 			plg.knob_num.append(v["midi"][1])
 
+	def process_colors(color_list):
+		if color_list:
+			d["colors"] = itertools.cycle(color_list)
+			print(d["colors"])
 
 	process_data(bt, 'buttonData')
 	process_data(kb, 'keyboardData')
@@ -142,6 +147,7 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	process_encoders_for_plugins(en)
 	process_data(pf, 'performanceData')
 	process_jog_data(jw, 'jogData')
+	process_colors(cl["defaults"]["colors"])
 
 transport_leds = ['shift', 'start', 'stop', 'record']
 

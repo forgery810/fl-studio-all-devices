@@ -12,17 +12,10 @@ from utility import Utility
 import midi
 from data import d
 from config import Config
-from config_layout1 import cl
+from config_layout import cl
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
-
-# class Dispatch:
-# 	def __init__(self):
-# 		self.chan_ex = 0
-# 		self.channel = channels.selectedChannel()
-# 		self.pattern = patterns.patternNumber()
-# 		self.random_offset = 63
 
 class Process():
 
@@ -58,9 +51,8 @@ class Process():
 				self.event.handled = True
 		elif active == "keyboardData":
 			Keys.decide(self, midi_data)
-
 		elif active == "sequencerData":
-			if d["sequencerData"][self.midi_chan][midi_id][data_1]["toggle"] or data_2 > 0:
+			if midi_data["toggle"] or data_2 > 0:
 				Sequencer.step_pressed(self, midi_data)
 		elif active == "buttonData":
 			if (midi_data["toggle"]) or data_2 > 0:

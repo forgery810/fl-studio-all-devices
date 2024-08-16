@@ -4,7 +4,7 @@ import transport
 import device
 import midi
 import channels
-from config_layout1 import cl
+from config_layout import cl
 from config import Config
 
 class Leds():
@@ -20,6 +20,7 @@ class Leds():
 	def led_setup():
 		if d["leds"]:
 			Leds.assigned = True 
+			Leds.reset_sequence()
 
 	def check_shift(shift):
 		print(*d["leds"]["transport_leds"]["shift"])
