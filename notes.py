@@ -1,7 +1,7 @@
 
 import ui
 from utility import Utility
-from config_layout1 import cl
+from config_layout import cl
 from config import Config
 
 class Notes():
