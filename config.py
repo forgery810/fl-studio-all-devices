@@ -51,7 +51,7 @@ class Config:
 		only affect random note generation. If False, the keyboard will only play notes from the selected scale."""
 
 	ROOT_NOTE = "C"
-	SCALE = "Harmonic Minor"
+	SCALE = "Natural Minor"
 
 
 	"""Root Note and Scale combined will set the default scale the script opens with. These can both be changed

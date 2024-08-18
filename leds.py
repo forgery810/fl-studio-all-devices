@@ -12,7 +12,7 @@ class Leds():
 	active_leds = set()
 	events = {
 		"transport": [256, 260],
-		"sequencer": [65824, 1056, 1024],
+		"sequencer": [65824, 1056, 1024, 1280],
 	}
 	mode = ''
 	sequence_leds = False

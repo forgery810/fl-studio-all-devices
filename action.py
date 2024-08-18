@@ -471,12 +471,15 @@ class Action():
 		ui.verZoom(-1)
 
 	def mixer_solo():
+		print(f"track_num {Action.track_number}")
 		mixer.soloTrack(Action.track_number)
 
 	def mixer_record():
+		print(f"track_num {Action.track_number}")
 		mixer.armTrack(Action.track_number)
 
 	def mixer_mute():
+		print(f"track_num {Action.track_number}")
 		mixer.muteTrack(Action.track_number)
 
 	def select_pattern():

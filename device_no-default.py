@@ -1,6 +1,6 @@
 # name=No Default 
 # Author: forgery810
-VERSION = '0.8.0'
+VERSION = '0.8.1'
 
 from config_layout import cl  
 import device
@@ -138,7 +138,6 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	def process_colors(color_list):
 		if color_list:
 			d["colors"] = itertools.cycle(color_list)
-			print(d["colors"])
 
 	process_data(bt, 'buttonData')
 	process_data(kb, 'keyboardData')
