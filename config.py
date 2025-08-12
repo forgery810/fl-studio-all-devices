@@ -29,7 +29,7 @@ class Config:
 		but all other data blocked. Only relavent if PREVENT_PASSTHROUGH is True."""
 
 
-	PATTERN_CHANGE_WAIT = False
+	PATTERN_CHANGE_WAIT = True
 	""" This only affects pattern changes when using the 'Select Pattern *' where buttons are 
 		set with specific patterns to change to when pushed. If set to true, the pattern will not
 		change until the end of the current bar. False will mean patterns are changed immediately."""

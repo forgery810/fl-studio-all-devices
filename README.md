@@ -1,5 +1,18 @@
 Fl Studio Script Builder is Python script which allows any MIDI controller to work with FL Studio. The layout can be custom designed by the user through a web app available at www.midicontrol.cc. 
 
+
+
+0.9.0 Update - 8/11/2025
+
+- shift pattern left/right now includes note data (not panning)
+- select next channel function added
+- randomize selected channels function added. randomizes the trigs of selected channels
+- randomize entire pattern function added
+- randomize plugin function added. randomizes all parameters of selected plugin 
+- double pattern function added. doubles the length of entire pattern, note and trig data included, up to 512 steps
+  
+
+
 ## Installation
 
 Download by clicking the green Code button above and selecting Download ZIP. Unzip the download and place the folder in the following directory:  
@@ -22,7 +35,9 @@ Upon opening FL Studio, go to MIDI Options and select the controller. Under devi
 ## Multiple Controllers 
 
 If you have more than one contoller that uses the script, you will need additional instances of it. An additional copy of the folder will be needed for each. The folder can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
-For example,
+
+For example:
+
 
 ```sh
 device_no-default.py

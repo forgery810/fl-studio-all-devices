@@ -1,6 +1,6 @@
 # name=No Default 
 # Author: forgery810
-VERSION = '0.8.1'
+VERSION = '0.9.1'
 
 from config_layout import cl  
 import device
@@ -22,6 +22,7 @@ import plugindata as plg
 from action import Action, EncoderAction
 import plugindata
 import itertools
+import constants
 
 def OnInit():
 	"""Function called when script starts"""
@@ -67,9 +68,17 @@ def OnRefresh(event):
 	# print(f"Refresh Event: {event}")
 	if Leds.leds_assigned():
 		Leds.check_event_leds(event)
+<<<<<<< HEAD
 	if event == 1024:
 		Action.old_pattern_number = patterns.patternNumber()
 	
+=======
+	if event == constants.PATTERN_REFRESH:
+		Action.old_pattern_number = patterns.patternNumber()
+	if event == constants.CHANNEL_REFRESH:
+		Action.channel_index = -1 # Used by Action.select_next_channel()
+
+>>>>>>> bfe9c4f (initial recommit)
 p = Process()
 
 def AssignLayoutData(bt, kb, sq, en, jw, df, pf):

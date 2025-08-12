@@ -133,14 +133,11 @@ class Sequencer(Process):
 		act = data["actions"][Action.shift_status] 
 		if act.isdigit():
 			track = int(act) // cl["defaults"]["sequence_length"]
-			print(f"track: {track}")
-			print(int(act))
 			step_num = Sequencer.get_step(int(act), cl["defaults"]["sequence_length"])
 			chan = Sequencer.get_seq_channel(track, step_num)
 
 			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
 				Action.selected_step = step_num
-				print('step_selected')
 				self.event.handled = True
 			else:
 				Sequencer.set_step(self, step_num, chan) 
@@ -181,7 +178,6 @@ class Encoder(Process):
 		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
 		else:		
-			print(data['actions'][Action.shift_status])
 			EncoderAction.call_func(data['actions'][Action.shift_status], self.event.data2)
 
 	def set_data(d):
@@ -222,7 +218,6 @@ class Main(Process):
 
 	def transport_act(self, offset_event, status):
 		print(f"event: {offset_event[status]}")
-		print(f"status: { Action.get_shift_status()}")
 		Action.call_func(offset_event[status])
 		if offset_event[status] != 'nothing':
 			self.event.handled = True

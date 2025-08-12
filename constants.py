@@ -1,0 +1,4 @@
+# OnRefresh flag constants
+
+PATTERN_REFRESH = 1024
+CHANNEL_REFRESH = 65824
