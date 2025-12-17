@@ -13,8 +13,9 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-from config_layout import cl
+import data 
 from data import d
+import data
 from config import Config 
 from utility import Utility
 from notes import Notes, Scales 
@@ -94,7 +95,7 @@ class Action():
         ui.setHintMsg(Modes.modes[Modes.current_mode])
 
     def get_mode():
-        return cl["default"]["modes"][Modes.current_mode]
+        return data.cl["defaults"]["modes"][Modes.current_mode]
 
     def channel_mixer():
         if ui.getFocused(midi.widMixer):
@@ -342,9 +343,9 @@ class Action():
 
     def rotate_set_windows():
         Action.rotate_set_count += 1
-        if Action.rotate_set_count >= len(cl["defaults"]['windows']):
+        if Action.rotate_set_count >= len(data.cl["defaults"]['windows']):
             Action.rotate_set_count = 0
-        ui.showWindow(cl["defaults"]['windows'][Action.rotate_set_count])
+        ui.showWindow(data.cl["defaults"]['windows'][Action.rotate_set_count])
 
     def rotate_all():
         ui.nextWindow()
@@ -410,7 +411,7 @@ class Action():
         channels.showGraphEditor(True, Action.parameter_index, Action.selected_step, channels.selectedChannel())
 
     def change_color():
-        if cl["defaults"]["colors"]:
+        if data.cl["defaults"]["colors"]:
             if ui.getFocused(widChannelRack):
                 channels.setChannelColor(channels.selectedChannel(), next(d["colors"]))
             elif ui.getFocused(widMixer):
@@ -598,7 +599,7 @@ class EncoderAction(Action):
         Action.set_random_offset(d2)
 
     def selected_level(d2):
-        if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
             Action.set_parameter_value(d2)
         elif ui.getFocused(midi.widMixer):
             mixer.setTrackVolume(mixer.trackNumber(), d2/127, True)
@@ -611,7 +612,7 @@ class EncoderAction(Action):
                 return i 
 
     def selected_pan(d2):
-        if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
             Action.set_step_parameter(d2)
         if ui.getFocused(midi.widMixer):
             mixer.setTrackPan(mixer.trackNumber(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
@@ -622,7 +623,7 @@ class EncoderAction(Action):
         mixer.setTrackVolume(0, d2/127, True)
 
     def set_efx_track(d2):
-        if channels.isGraphEditorVisible() and cl["defaults"]['levels_control_parameter']:
+        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
             Action.selected_step = EncoderAction.set_step(d2)
         else:
             channels.setTargetFxTrack(channels.selectedChannel(), d2)

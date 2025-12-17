@@ -1,13 +1,15 @@
 from leds import Leds
-from config_layout import cl
+import data
 
 class Modes():
 
 	current_mode = 0;
-	modes = cl["defaults"]["modes"]
 	layer_count = 0
 	sequence_leds = False
 	transport_leds = False
+
+	def init_modes():
+		Modes.modes = data.cl["defaults"]["modes"]
 
 	def set_transport_leds(b):
 		Modes.transport_leds = b
@@ -61,7 +63,7 @@ class Modes():
 
 	@classmethod
 	def mode_active(cls, mode):
-		if cl["defaults"][mode]:
+		if data.cl["defaults"][mode]:
 			return True
 		if mode in cls.modes and Modes.get_mode() == mode:
 			return True 

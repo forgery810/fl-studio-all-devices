@@ -12,12 +12,22 @@ from utility import Utility
 import midi
 from data import d
 from config import Config
-from config_layout import cl
+import data
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
 
 class Process():
+	"""
+	Main processing class.
+	
+	ARCHITECTURAL NOTE: 
+	Subclasses like 'Keys', 'Sequencer', etc., are used as "static" namespaces to organize logic.
+	They are not instantiated individually. Instead, the main 'Process' instance (created as 'p' 
+	in the main script) is passed to their methods as 'self'.
+	
+	Example: Keys.decide(self, midi_data) -> here 'self' is the 'p' instance from device_no-default.py.
+	"""
 
 	def triage(self):
 
@@ -129,11 +139,11 @@ class Keys(Process):
 class Sequencer(Process):
 
 
-	def step_pressed(self, data):
-		act = data["actions"][Action.shift_status] 
+	def step_pressed(self, midi_data):
+		act = midi_data["actions"][Action.shift_status] 
 		if act.isdigit():
-			track = int(act) // cl["defaults"]["sequence_length"]
-			step_num = Sequencer.get_step(int(act), cl["defaults"]["sequence_length"])
+			track = int(act) // data.cl["defaults"]["sequence_length"]
+			step_num = Sequencer.get_step(int(act), data.cl["defaults"]["sequence_length"])
 			chan = Sequencer.get_seq_channel(track, step_num)
 
 			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
@@ -142,9 +152,9 @@ class Sequencer(Process):
 			else:
 				Sequencer.set_step(self, step_num, chan) 
 		else:
-			track = data["track"]
-			Main.set_track(data)
-			Main.transport_act(self, data["actions"], Action.shift_status)
+			track = midi_data["track"]
+			Main.set_track(midi_data)
+			Main.transport_act(self, midi_data["actions"], Action.shift_status)
 
 	def get_step(input, len):
 		"""
@@ -174,15 +184,15 @@ class Sequencer(Process):
 
 class Encoder(Process):
 
-	def set(self, data):
-		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and cl["defaults"]["plugin_control"]:
+	def set(self, midi_data):
+		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and data.cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
 		else:		
-			EncoderAction.call_func(data['actions'][Action.shift_status], self.event.data2)
+			EncoderAction.call_func(midi_data['actions'][Action.shift_status], self.event.data2)
 
 	def set_data(d):
 		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-			track_offset = cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
+			track_offset = data.cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
 		else:
 			track_offset = 0
 		EncoderAction.track_number = d["track"] + track_offset
@@ -222,7 +232,7 @@ class Main(Process):
 		if offset_event[status] != 'nothing':
 			self.event.handled = True
 
-	def set_track(data):
+	def set_track(midi_data):
 		"""
 		Gets the track associated with the currently selected output.
 		track_original is direct from the dictionary entry. track_number is
@@ -231,12 +241,12 @@ class Main(Process):
 		setting from the default settings set by the user.
 		"""
 		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-			num_tracks = cl["defaults"]["mixer_tracks"]
+			num_tracks = data.cl["defaults"]["mixer_tracks"]
 			# this catches an issue when the selected track / mixer_tracks has 0 remainder
 			mult = (mixer.trackNumber() - 1) // num_tracks if mixer.trackNumber() > 1 else 0
 			track_offset = mult * num_tracks
 		else:
 			track_offset = 0
-		Action.track_number = data["track"] + track_offset 
-		Action.track_original = data["track"]
+		Action.track_number = midi_data["track"] + track_offset 
+		Action.track_original = midi_data["track"]
 

@@ -1,8 +1,8 @@
 # name=No Default 
 # Author: forgery810
-VERSION = '0.9.1'
+VERSION = '0.9.5'
 
-from config_layout import cl  
+# from config_layout import cl  
 import device
 import channels
 from midi import *
@@ -17,19 +17,36 @@ from process import Process,  Main
 from modes import Modes
 from notes import Notes, Scales
 from data import d
+import data
 from config import Config
 import plugindata as plg
 from action import Action, EncoderAction
 import plugindata
 import itertools
 import constants
+import json
+import os
+import sys
+
 
 def OnInit():
 	"""Function called when script starts"""
+	print('hello thessre')
+	from layout_reader import load_config
+	
+	# Load configuration (handles JSON vs Python fallback internally)
+	cl = load_config()
+	data.cl = cl
+	# print(f"Loaded config keys: {list(cl.keys())}")
 
+	# Initialize Notes after config is loaded
+	Notes.init_notes()
+	Modes.init_modes()
+	# Process Layout Data
 	AssignLayoutData(cl["button"], cl["keyboard"], cl["sequencer"], cl["encoder"], cl["jogwheel"], cl["defaults"], cl["performance"])
 	AssignLeds(cl["led"])
 	Leds.led_setup()
+	
 	print(device.getName())
 	print(f"Script Version: {VERSION}")
 	
@@ -40,12 +57,12 @@ def OnInit():
 		print("Not assigned. In the MIDI settings, set the Input and Output Ports to the same number for this device.")
 
 
-if Config.PATTERN_CHANGE_WAIT:
-	def OnUpdateBeatIndicator(e):
-		if e == 1:
-			if Config.PATTERN_CHANGE_WAIT and Action.change_pattern:
-				patterns.jumpToPattern(Action.track_original)
-				Action.change_pattern = False
+	if Config.PATTERN_CHANGE_WAIT:
+		def OnUpdateBeatIndicator(e):
+			if e == 1:
+				if Config.PATTERN_CHANGE_WAIT and Action.change_pattern:
+					patterns.jumpToPattern(Action.track_original)
+					Action.change_pattern = False
  
 def OnMidiMsg(event):
 	"""Function called on every midi message sent by controller"""
@@ -149,13 +166,13 @@ def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
 	process_encoders_for_plugins(en)
 	process_data(pf, 'performanceData')
 	process_jog_data(jw, 'jogData')
-	process_colors(cl["defaults"]["colors"])
+	process_colors(df["colors"])
 
 transport_leds = ['shift', 'start', 'stop', 'record']
 
 def AssignLeds(led):
 
-	for v in cl["led"].values():
+	for v in led.values():
 		Leds.active_leds.add(v["actions"][0])
 		if v["actions"][0] in transport_leds:
 			d["leds"]["transport_leds"][v["actions"][0]] = [v["midi"][0], v["channel"] - 1, v["midi"][1]]

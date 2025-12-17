@@ -1,7 +1,7 @@
 
 import ui
 from utility import Utility
-from config_layout import cl
+import data
 from config import Config
 
 class Notes():
@@ -12,10 +12,14 @@ class Notes():
 	note_list = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 	# all_notes = note_list * cl["defaults"]["keyboard_count"]
 	all_notes = []
-	for i in range(0, cl["defaults"]["keyboard_count"]):
-		for n in note_list:
-			text = str(n) + str(i)
-			all_notes.append(text)
+
+	@staticmethod
+	def init_notes():
+		if not Notes.all_notes:
+			for i in range(0, data.cl["defaults"]["keyboard_count"]):
+				for n in Notes.note_list:
+					text = str(n) + str(i)
+					Notes.all_notes.append(text)
 
 	octaves = [-36, -24, -12, 0, 12, 24, 36]
 	root = note_list.index(Config.ROOT_NOTE)
