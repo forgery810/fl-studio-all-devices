@@ -1,6 +1,6 @@
-# name=No Default 
+# name=All Devices
 # Author: forgery810
-VERSION = '0.9.5'
+VERSION = '0.9.8'
 
 # from config_layout import cl  
 import device
