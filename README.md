@@ -54,7 +54,7 @@ device_korg_nanoKontrol2.py
 ```
 
 
-Open this file and edit the first line. As is, the first line is # name=No Default. Again, it must start with # name= but after that it can be named anything. This is what will appear in the list of available scripts under MIDI Options. 
+Open this file and edit the first line. As is, the first line is # name=All Devices. Again, it must start with # name= but after that it can be named anything. This is what will appear in the list of available scripts under MIDI Options. 
 
 ```sh
 # name=No Default
@@ -69,22 +69,30 @@ can be change to
 
 ## Editing the Layout
 
-Once created, it may be easier in certain situations to edit the config_layout.py file directly, rather than using the web app. 
+Once created, it may be easier in certain situations to edit the user_layout.json file directly, rather than using the web app. 
 Even users with no coding experience should have little issue.  
   
-Before editing, it may be helpful to reformat the code for better legibility. Search the web for a Python reformatter and past the output back into the file. 
+Look up an web based JSON editor for an easier way to edit. 
 
 The options.txt file is a reference for the function names that can be assigned to controller outputs. 
-Open the options.txt file in the script folder to find the correct data to input. As an example, we can edit the button currently set to metronome to focus the browser instead. Looking at config_layout, we find this entry,
+Open the options.txt file in the script folder to find the correct data to input. As an example, we can edit the button currently set to metronome to focus the browser instead. Looking at user_layout.json, we find this entry,
 
 ```sh
-        "8": {
-            "actions": ["metronome", "escape"],
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "toggle": 0,
-            "track": 0,
-        },
+    "8": {
+      "actions": [
+        "metronome",
+        "escape"
+      ],
+      "channel": 1,
+      "midi": [
+        176,
+        49,
+        0,
+        176
+      ],
+      "toggle": 0,
+      "track": 0
+    },
 ```
 
 options.txt has this entry:
@@ -95,13 +103,21 @@ Focus Browser - focus_browser
 Copy the function name and replace the previous entry resulting it:
 
 ```sh
-        "8": {
-            "actions": ["focus_browser", "escape"],
-            "channel": 1,
-            "midi": [176, 49, 0, 176],
-            "toggle": 0,
-            "track": 0,
-        },
+    "8": {
+      "actions": [
+        "focus_browser",
+        "escape"
+      ],
+      "channel": 1,
+      "midi": [
+        176,
+        49,
+        0,
+        176
+      ],
+      "toggle": 0,
+      "track": 0
+    },
 ```
 
 The first entry, the one changed here, controls the function when unshifted. Escape will be active when shift is active.
@@ -111,5 +127,4 @@ The first entry, the one changed here, controls the function when unshifted. Esc
 If you have issues, in FL Studio, go to View and click Script Output. Copy the error info you see there. 
 Either create a github issue or, presuming you found out about this script via YouTube, post a the issue there with the copied data. 
 
-If a process error appears, it is likely due to an error with the dictionary in the layout_config.py file. 
  
