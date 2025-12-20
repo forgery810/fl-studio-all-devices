@@ -16,6 +16,7 @@ import data
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
+from state import state
 
 class Process():
 	"""
@@ -55,9 +56,9 @@ class Process():
 
 		if active == "performanceData":
 			if data_2 > 0:
-				Action.performance_row = int(midi_data["actions"][0])
+				state.performance_row = int(midi_data["actions"][0])
 				Main.set_track(midi_data)
-				Action.trig_clip()
+				state.trig_clip()
 				self.event.handled = True
 		elif active == "keyboardData":
 			Keys.decide(self, midi_data)
@@ -67,7 +68,7 @@ class Process():
 		elif active == "buttonData":
 			if (midi_data["toggle"]) or data_2 > 0:
 				Main.set_track(midi_data)
-				Main.transport_act(self, midi_data["actions"], Action.shift_status)
+				Main.transport_act(self, midi_data["actions"], state.shift_status)
 		elif active == "encoderData":
 			Main.set_track(midi_data)
 			Encoder.set(self, midi_data)
@@ -140,21 +141,21 @@ class Sequencer(Process):
 
 
 	def step_pressed(self, midi_data):
-		act = midi_data["actions"][Action.shift_status] 
+		act = midi_data["actions"][state.shift_status] 
 		if act.isdigit():
 			track = int(act) // data.cl["defaults"]["sequence_length"]
 			step_num = Sequencer.get_step(int(act), data.cl["defaults"]["sequence_length"])
 			chan = Sequencer.get_seq_channel(track, step_num)
 
 			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
-				Action.selected_step = step_num
+				state.selected_step = step_num
 				self.event.handled = True
 			else:
 				Sequencer.set_step(self, step_num, chan) 
 		else:
 			track = midi_data["track"]
 			Main.set_track(midi_data)
-			Main.transport_act(self, midi_data["actions"], Action.shift_status)
+			Main.transport_act(self, midi_data["actions"], state.shift_status)
 
 	def get_step(input, len):
 		"""
@@ -188,7 +189,7 @@ class Encoder(Process):
 		if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and data.cl["defaults"]["plugin_control"]:
 			Encoder.control_plugin(self)
 		else:		
-			EncoderAction.call_func(midi_data['actions'][Action.shift_status], self.event.data2)
+			EncoderAction.call_func(midi_data['actions'][state.shift_status], self.event.data2)
 
 	def set_data(d):
 		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
@@ -247,6 +248,6 @@ class Main(Process):
 			track_offset = mult * num_tracks
 		else:
 			track_offset = 0
-		Action.track_number = midi_data["track"] + track_offset 
-		Action.track_original = midi_data["track"]
+		state.track_number = midi_data["track"] + track_offset 
+		state.track_original = midi_data["track"]
 

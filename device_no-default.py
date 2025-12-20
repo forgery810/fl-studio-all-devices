@@ -1,6 +1,6 @@
 # name=All Devices
 # Author: forgery810
-VERSION = '0.9.8.1'
+VERSION = '0.9.8.15'
 
 # from config_layout import cl  
 import device
@@ -12,6 +12,7 @@ import patterns
 import channels
 import ui
 import transport
+from state import state
 from leds import Leds
 from process import Process,  Main
 from modes import Modes
@@ -31,7 +32,6 @@ import sys
 
 def OnInit():
 	"""Function called when script starts"""
-	print('hello thessre')
 	from layout_reader import load_config
 	
 	# Load configuration (handles JSON vs Python fallback internally)
@@ -60,9 +60,9 @@ def OnInit():
 	if Config.PATTERN_CHANGE_WAIT:
 		def OnUpdateBeatIndicator(e):
 			if e == 1:
-				if Config.PATTERN_CHANGE_WAIT and Action.change_pattern:
-					patterns.jumpToPattern(Action.track_original)
-					Action.change_pattern = False
+				if Config.PATTERN_CHANGE_WAIT and state.change_pattern:
+					patterns.jumpToPattern(state.track_original)
+					state.change_pattern = False
  
 def OnMidiMsg(event):
 	"""Function called on every midi message sent by controller"""
@@ -86,9 +86,9 @@ def OnRefresh(event):
 	if Leds.leds_assigned():
 		Leds.check_event_leds(event)
 	if event == constants.PATTERN_REFRESH:
-		Action.old_pattern_number = patterns.patternNumber()
+		state.old_pattern_number = patterns.patternNumber()
 	if event == constants.CHANNEL_REFRESH:
-		Action.channel_index = -1 # Used by Action.select_next_channel()
+		state.channel_index = -1 # Used by Action.select_next_channel()
 
 p = Process()
 
