@@ -1,6 +1,6 @@
 # name=All Devices
 # Author: forgery810
-VERSION = '0.9.8.15'
+VERSION = '0.9.8.16'
 
 # from config_layout import cl  
 import device
@@ -28,7 +28,6 @@ import constants
 import json
 import os
 import sys
-
 
 def OnInit():
 	"""Function called when script starts"""
