@@ -2,7 +2,7 @@
 import ui
 from utility import Utility
 import data
-from config import Config
+import user_files.config as config
 
 class Notes():
 	something = 2
@@ -22,7 +22,7 @@ class Notes():
 					Notes.all_notes.append(text)
 
 	octaves = [-36, -24, -12, 0, 12, 24, 36]
-	root = note_list.index(Config.ROOT_NOTE)
+	root = note_list.index(config.Config.ROOT_NOTE)
 
 	def get_root_note():
 		return Notes.root
@@ -67,7 +67,7 @@ class Scales(Notes):
 	chromatic_scale = [i for i in range(0, 145)]
 	scales = [major_scale, natural_scale, harmonic_scale, dorian_scale, mixolydian_scale, min_pent_scale, chromatic_scale]
 	scale_names = ["Major", "Natural Minor", "Harmonic Minor", "Dorian", "Mixolydian", "Minor Pentatonic", "Chromatic"]
-	scale_choice = scale_names.index(Config.SCALE)
+	scale_choice = scale_names.index(config.Config.SCALE)
 
 	def set_scale(data_two):
 		Scales.scale_choice = data_two

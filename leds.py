@@ -5,7 +5,7 @@ import device
 import midi
 import channels
 import data
-from config import Config
+import user_files.config as config
 
 class Leds():
 	assigned = True
@@ -74,7 +74,7 @@ class Leds():
 
 	def set_current_mode(mode):
 		Leds.mode = mode
-		if mode == 'Sequencer' or Config.SEQUENCE_LEDS_ALWAYS_ON:
+		if mode == 'Sequencer' or config.Config.SEQUENCE_LEDS_ALWAYS_ON:
 			Leds.set_sequence()
 		else:
 			Leds.reset_sequence()

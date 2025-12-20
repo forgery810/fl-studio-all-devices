@@ -19,7 +19,7 @@ from modes import Modes
 from notes import Notes, Scales
 from data import d
 import data
-from config import Config
+import user_files.config as config
 import plugindata as plg
 from action import Action, EncoderAction
 import plugindata
@@ -28,6 +28,7 @@ import constants
 import json
 import os
 import sys
+from debug_test import run_test
 
 def OnInit():
 	"""Function called when script starts"""
@@ -56,26 +57,32 @@ def OnInit():
 		print("Not assigned. In the MIDI settings, set the Input and Output Ports to the same number for this device.")
 
 
-	if Config.PATTERN_CHANGE_WAIT:
+	if config.Config.PATTERN_CHANGE_WAIT:
 		def OnUpdateBeatIndicator(e):
 			if e == 1:
-				if Config.PATTERN_CHANGE_WAIT and state.change_pattern:
+				if config.Config.PATTERN_CHANGE_WAIT and state.change_pattern:
 					patterns.jumpToPattern(state.track_original)
 					state.change_pattern = False
  
 def OnMidiMsg(event):
-	"""Function called on every midi message sent by controller"""
+    """Function called on every midi message sent by controller"""
+    
+    try:
+        # print(event.midiChan, event.midiId, ...) 
+        p.event = event
+        p.channel = channels.selectedChannel()
+        p.track = mixer.trackNumber()
+        p.pattern = patterns.patternNumber()
+        p.d2 = event.data2
+        p.triage() # This runs the whole script logic
+        
+    except Exception as e:
+        # THIS CATCHES EVERYTHING
+        print("------------------------------------------------")
+        print(f"Script Error: {e}")
+        print("------------------------------------------------")
 
-	print(event.midiChan, event.midiId, event.data1, event.data2, event.midiChanEx, event.timestamp)
-
-	p.event = event
-	p.channel = channels.selectedChannel()
-	p.track = mixer.trackNumber()
-	p.pattern = patterns.patternNumber()
-	p.d2 = event.data2
-	p.triage()
-
-if Config.PITCH_BEND:
+if config.Config.PITCH_BEND:
 	def OnPitchBend(event):
 		EncoderAction.pitch_bend(event.data2)
 		event.handled = True

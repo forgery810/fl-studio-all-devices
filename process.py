@@ -11,7 +11,7 @@ import patterns
 from utility import Utility
 import midi
 from data import d
-from config import Config
+import user_files.config as config
 import data
 import plugindata as plg
 from notes import Notes, Scales
@@ -45,7 +45,7 @@ class Process():
 		midi_id = self.event.midiId
 		data_1 = self.event.data1
 		data_2 = self.event.data2
-		self.midi_chan = self.event.midiChan + Config.CHANNEL_OFFSET
+		self.midi_chan = self.event.midiChan + config.Config.CHANNEL_OFFSET
 		midi_pair = [midi_id, data_1, self.midi_chan]
 
 		cat = Process.get_categories(midi_pair)
@@ -58,7 +58,7 @@ class Process():
 			if data_2 > 0:
 				state.performance_row = int(midi_data["actions"][0])
 				Main.set_track(midi_data)
-				state.trig_clip()
+				Action.trig_clip()
 				self.event.handled = True
 		elif active == "keyboardData":
 			Keys.decide(self, midi_data)
@@ -76,7 +76,7 @@ class Process():
 			Encoder.jogWheel(self, d["jogData"][self.midi_chan][midi_id])
 		else:
 			print('passthrough')
-			self.event.handled = Config.PREVENT_PASSTHROUGH
+			self.event.handled = config.Config.PREVENT_PASSTHROUGH
 
 	def get_categories(midi_pair):
 
@@ -123,7 +123,7 @@ class Keys(Process):
 	def decide(self, data):
 
 		index = Notes.note_list.index(data["actions"][0])
-		if Config.KEYBOARD_CHROMATIC:
+		if config.Config.KEYBOARD_CHROMATIC:
 			si =  Scales.scale_names.index("Chromatic")
 			scale = Scales.scales[si]
 			root = 0
@@ -147,7 +147,7 @@ class Sequencer(Process):
 			step_num = Sequencer.get_step(int(act), data.cl["defaults"]["sequence_length"])
 			chan = Sequencer.get_seq_channel(track, step_num)
 
-			if channels.isGraphEditorVisible() and Config.SELECT_PARAM_STEP:
+			if channels.isGraphEditorVisible() and config.Config.SELECT_PARAM_STEP:
 				state.selected_step = step_num
 				self.event.handled = True
 			else:
@@ -192,7 +192,7 @@ class Encoder(Process):
 			EncoderAction.call_func(midi_data['actions'][state.shift_status], self.event.data2)
 
 	def set_data(d):
-		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
+		if config.Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
 			track_offset = data.cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
 		else:
 			track_offset = 0
@@ -241,7 +241,7 @@ class Main(Process):
 		the currently selected track is in. The range is a decided by the mixer_tracks
 		setting from the default settings set by the user.
 		"""
-		if Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
+		if config.Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
 			num_tracks = data.cl["defaults"]["mixer_tracks"]
 			# this catches an issue when the selected track / mixer_tracks has 0 remainder
 			mult = (mixer.trackNumber() - 1) // num_tracks if mixer.trackNumber() > 1 else 0

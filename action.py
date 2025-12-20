@@ -16,7 +16,7 @@ from shifter import Shifter
 import data 
 from data import d
 import data
-from config import Config 
+import user_files.config as config
 from utility import Utility
 from notes import Notes, Scales 
 from modes import Modes
@@ -25,34 +25,15 @@ from state import state
 
 class Action():
 
-    # channel_name = ''
-
-    # random_max_octave = 3
-    # random_min_octave = 6
-    # octave_index = 3
-    # current_mode = 0
-    # active_track = 0
-    # parameter_index = 0
-    # mixer_num = 0 
-    # mixer_send = 0 
-    # random_offset = 63
-    # rotate_set_count = 0
-    # shift_status = 0
-    # selected_step = 0
-    # track_number = -1
-    # track_original = -1
-    # performance_row = -1
-    # old_pattern_number = -1
-    # new_pattern_number = -1
-    # change_pattern = False
-    # selected_playlist_track = 1
-    # channel_index = 0
-
-
     def call_func(f):
-        method = getattr(Action, f)
-        return method()
-
+        try:
+            method = getattr(Action, f)
+            return method()
+        except Exception as e:
+            print(f"Error in Action: '{f}' failed")
+            print(f"Error: {e}")
+            return None
+                    
     def double_pattern():
         '''Repeats steps and notes for all channels in current pattern, doubling its length '''
         pattern = patterns.patternNumber()
@@ -460,14 +441,14 @@ class Action():
             channels.setStepParameterByIndex(channels.selectedChannel(), patterns.patternNumber(), i, 0, finalNote)     
 
     def rand_pattern():
-        state.rand_trigs()
-        state.rand_notes()
+        Action.rand_trigs()
+        Action.rand_notes()
 
     def randomize_all_channel_trigs():
         number_of_channels = channels.channelCount(patterns.patternNumber())
         for chan in range(number_of_channels):
             channels.selectOneChannel(chan)
-            state.rand_trigs()
+            Action.rand_trigs()
 
     def randomize_selected_channel_trigs():     ## Should consolidate along with random_trigs()
         number_of_channels = channels.channelCount(patterns.patternNumber())
@@ -548,7 +529,7 @@ class Action():
         """is pattern_change_wait set, onupbeatindicator will trigger
             change when change_patten = true """
 
-        if state.track_original != patterns.patternNumber() and transport.isPlaying() and Config.PATTERN_CHANGE_WAIT:
+        if state.track_original != patterns.patternNumber() and transport.isPlaying() and config.Config.PATTERN_CHANGE_WAIT:
             state.change_pattern = True
 
         else:
@@ -639,7 +620,7 @@ class EncoderAction(Action):
 
     def scroll(d2):
         if ui.getFocused(0):
-            mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, Config.MIXER_SCROLL_MAX, 0, 127)))
+            mixer.setTrackNumber(int(Utility.mapvalues(d2, 0, config.Config.MIXER_SCROLL_MAX, 0, 127)))
             ui.scrollWindow(midi.widMixer, mixer.trackNumber())
 
         elif ui.getFocused(1):
