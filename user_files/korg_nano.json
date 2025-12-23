@@ -47,7 +47,7 @@
     },
     "4": {
       "actions": [
-        "rotate_set_windows",
+        "change_color",
         "rotate_set_windows"
       ],
       "channel": 1,
@@ -529,7 +529,13 @@
   "defaults": {
     "Keyboard": 0,
     "Sequencer": 0,
-    "colors": [],
+    "colors": [
+      10365225,
+      2710686,
+      2727510,
+      8756777,
+      5777822
+    ],
     "keyboard_count": 5,
     "levels_control_parameter": 0,
     "mixer_tracks": 8,
@@ -1456,7 +1462,7 @@
       "track": 0
     }
   },
-  "name": "nanoKONTROL2 1 SLIDER/KNOB",
+  "name": "nanoKONTROL2",
   "performance": {
     "1": {
       "actions": [
@@ -2137,8 +2143,8 @@
     },
     "22": {
       "actions": [
-        "12",
-        "12"
+        "13",
+        "13"
       ],
       "channel": 1,
       "midi": [

@@ -1,42 +1,48 @@
 import json
 import os
+import device
 import sys
 
-# Define the user directory relative to this script
+
+try:
+    import user_files.config as config
+    # print(config.Config.LAYOUT_MAP)
+    # Default to a simple structure if LAYOUT_MAP is missing
+    LAYOUT_MAP = getattr(config.Config, 'LAYOUT_MAP', {'default': 'user_layout.json'})
+except ImportError:
+    LAYOUT_MAP = {'default': 'user_layout.json'}
+
 USER_DIR = os.path.join(os.path.dirname(__file__), 'user_files')
 
 def load_config():
-    # 1. Try to load user_layout.json from the new folder
-    json_path = os.path.join(USER_DIR, 'user_layout.json')
+    """
+    Determines which JSON to load based on the connected Device Name.
+    """
     
-    try:
-        if os.path.exists(json_path):
+    # 1. Get the name of the controller for this specific instance
+    # FL Studio runs this script in a separate context for each controller,
+    # so device.getName() is unique to the hardware triggering the script.
+    current_device_name = device.getName()
+    print(f"Device Detected: '{current_device_name}'")
+    print(LAYOUT_MAP)
+    # 2. Look up the filename in the config
+    if current_device_name in LAYOUT_MAP:
+        target_file = LAYOUT_MAP[current_device_name]
+        print(f"Layout match found. Loading: {target_file}")
+    else:
+        target_file = LAYOUT_MAP.get('default', 'user_layout.json')
+        print(f"No specific map found for '{current_device_name}'. Using default: {target_file}")
+
+    # 3. Load the file
+    json_path = os.path.join(USER_DIR, target_file)
+    
+    if os.path.exists(json_path):
+        try:
             with open(json_path, 'r') as f:
-                print(f"Loading layout from {json_path}")
                 return json.load(f)
-        
-        # FUTURE PROOFING: 
-        # If you later want to load *any* json file found in that folder:
-        # for filename in os.listdir(USER_DIR):
-        #     if filename.endswith(".json"):
-        #         ... load and merge logic ...
-
-    except json.JSONDecodeError as e:
-        print("----------------")
-        print(f"ERROR in user_layout.json: {e}")
-        print("----------------")
-        return None 
-    except Exception as e:
-        print(f"Error loading JSON: {e}")
-
-    # 2. Fallback to config_layout.py (now inside user_files package)
-    try:
-        # We import it from the package structure now
-        import user_files.config_layout as config_layout
-        print('Loading layout from user_files/config_layout.py')
-        return config_layout.cl
-    except ImportError:
-        pass
-        
-    print("Error: Could not load layout from user_files.")
-    return None
+        except json.JSONDecodeError as e:
+            print(f"ERROR: {target_file} is corrupted. {e}")
+            return None
+    else:
+        print(f"ERROR: Expected file '{target_file}' not found in user_files.")
+        return None

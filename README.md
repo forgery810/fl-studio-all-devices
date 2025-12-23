@@ -1,5 +1,9 @@
 Fl Studio Script Builder is Python script which allows any MIDI controller to work with FL Studio. The layout can be custom designed by the user through a web app available at www.midicontrol.cc. 
 
+1.0.0 Update 
+
+- layout files (.json files) are must now be place in the user_files folder. config.py is also found in this folder
+- Multiple controllers can now be handled by the same script instance. The script will look in the LAYOUT_MAP     variable in config.py to search the controller name with a matching .json file. user_layout.json will be used if no matching layouts are found. 
 
 0.9.8 Update - 12/18/2025
 
@@ -27,50 +31,31 @@ Download by clicking the green Code button above and selecting Download ZIP. Unz
 When unzipped, everything should be in a folder named something like fl-studio-all-devices.
 This entire folder should be placed in the above directory.
 
-Two files in the folder allow user control of the script functionality. 
+The user_files folder contains two files that allow user control of the script functionality. 
 The first, config.py, can be edited by the user. Descriptions of what each setting affects are in that file.
 It can be opened in a text editor or IDE to be edited but the name must not be changed.
     
 The second file is user_layout.json. This file should be empty when unzipped. The layout data downloaded from the web app listed above should be placed in the folder, replacing the file in the folder. 
 
 Upon opening FL Studio, go to MIDI Options and select the controller in Input and Output, setting both to the same Port. Under device scripts, select the All Devices script.  
-  
 
 ## Multiple Controllers 
-
-If you have more than one contoller that uses the script, you will need additional instances of it. An additional copy of the folder will be needed for each. The folder can be named anything. Rename the device_no-default.py file. It MUST start with device_ . It can be named anything else after. 
-
-For example:
-
+  
+More than one controller can be controlled with the script. A .json file for each must be placed in the user_files folder and the LAYOUT_MAP variable must be edited to reflect the changes.
 
 ```sh
-device_no-default.py
+  #  LAYOUT_MAP = {
+  #   "default": "user_layout.json", 
+  #   "name_of_controller": "name_of_file.json",
+  #   "name_of_controller_2": "name_of_file_2.json",
+  #         }
 ```
 
-can be changed to
-
-```sh
-device_korg_nanoKontrol2.py
-```
-
-
-Open this file and edit the first line. As is, the first line is # name=All Devices. Again, it must start with # name= but after that it can be named anything. This is what will appear in the list of available scripts under MIDI Options. 
-
-```sh
-# name=No Default
-```
-
-can be change to
-
-```sh
-# name=Korg nanoKontrol2
-```
-
+  name_of_controller must match what appears in FL Studio MIDI options. The name will also appear in the View - Script Output window for the controller. It cannot be set by the user. The .json file can have any name. 
 
 ## Editing the Layout
 
-Once created, it may be easier in certain situations to edit the user_layout.json file directly, rather than using the web app. 
-Even users with no coding experience should have little issue.  
+Once created, it may be easier in certain situations to edit the user_layout.json file directly, rather than using the web app. Even users with no coding experience should have little issue.  
   
 Look up an web based JSON editor for an easier way to edit. 
 

@@ -1,5 +1,25 @@
 class Config:
 
+
+	LAYOUT_MAP = {
+	    "default": "user_layout.json", 
+	    "nanoKONTROL2": "korg_nano.json",
+	    "ATM SQ": "atom_sq.json",
+	    "MIDIIN2 (ATM SQ)": "atom_sq.json",
+	}
+
+	# LAYOUT_MAP allows more than one controller to use the same script. To add new controllers, use the 
+	# the exact name of the controller as it appears in the MIDI settings within FL. The name also appears
+	# in View - Script Output and can be copied from there. The corresponding file can be named anything but should
+	# be stored in the user_files folder and the name must match exactly in the dict above. 
+	# Example:
+	#  LAYOUT_MAP = {
+	# 	"name_of_controller": "name_of_file.json",
+	# 	"name_of_controller_2": "name_of_file_2.json",
+	# 				}
+	# See Script Output for confirmation of file loading or error messages.
+
+
 	INIT_MODE = 6
 
 	SELECT_PARAM_STEP = True
@@ -7,15 +27,15 @@ class Config:
 	CHANNEL_OFFSET = 1
 	"""WebMidi, the API used to create the layout, allows MIDI communication on the browser. It
 		uses a 0-15 for MIDI channels rather than 1-16 like FL Studio. This is the offset for 
-		that. It is unlikely that this needs to be changed."""
+		to account for this issue. It is unlikely that this needs to be changed."""
 
 	FOLLOW_TRACK = True			
 	""" Set to True if you want your encoders to automatically adjust what mixer tracks 
 		they control based on the currently highlighted track. Only relavent if you have 
 		encoders set to control specific tracks. This is used in conjuction with the 
 		Number of Mixer Tracks setting on the web app. For example, if you have a controller 
-		set to control mixer tracks 1-8, if you highlight any track between 9-16, they will then control 
-		tracks 9-16 respectively. This affects track level, arm, mute, solo and pan.""" 
+		set to control 8 mixer tracks, if you highlight any track between 9-16, they will then control 
+		tracks 9-16, then 17-24 and so on respectively. This affects track level, arm, mute, solo and pan.""" 
 		
 	PREVENT_PASSTHROUGH = False
 	""" True will prevent any unset MIDI messages from reaching FL Studio. False will 

@@ -7,9 +7,11 @@ class Modes():
 	layer_count = 0
 	sequence_leds = False
 	transport_leds = False
+	modes = ["Buttons", "Keyboard", "Sequencer" ]
 
-	def init_modes():
-		Modes.modes = data.cl["defaults"]["modes"]
+	def init_modes(mode_list):
+		if mode_list:
+			Modes.modes = mode_list
 
 	def set_transport_leds(b):
 		Modes.transport_leds = b

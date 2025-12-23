@@ -22,5 +22,6 @@ class State:
 		self.change_pattern = False
 		self.selected_playlist_track = 1
 		self.channel_index = 0
+		self.current_color = 0
 
 state = State()

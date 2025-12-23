@@ -22,6 +22,7 @@ from notes import Notes, Scales
 from modes import Modes
 from leds import Leds
 from state import state
+from layout_manager import layout_map
 
 class Action():
 
@@ -55,8 +56,6 @@ class Action():
 
     def select_next_channel():
         """ state.channel_index is reset by OnRefresh(65824) """
-        print(channels.selectedChannel())
-        print(state.channel_index)
         if state.channel_index == -1:
             state.channel_index = channels.selectedChannel()
         elif state.channel_index >= channels.channelCount() - 1:
@@ -77,7 +76,8 @@ class Action():
         ui.setHintMsg(Modes.modes[Modes.current_mode])
 
     def get_mode():
-        return data.cl["defaults"]["modes"][Modes.current_mode]
+        modes = layout_setting.get_setting("modes")
+        return modes[Modes.current_mode]
 
     def channel_mixer():
         if ui.getFocused(midi.widMixer):
@@ -189,7 +189,6 @@ class Action():
         elif ui.getFocused(1):
             return channels.muteChannel(channels.selectedChannel())
         elif ui.getFocused(2):
-            print('nute')
             playlist.muteTrack(state.selected_playlist_track)
 
     def open_channel():
@@ -325,9 +324,10 @@ class Action():
 
     def rotate_set_windows():
         state.rotate_set_count += 1
-        if state.rotate_set_count >= len(data.cl["defaults"]['windows']):
+        windows = layout_map.get_setting('windows', [4, 0, 2, 1, 3])
+        if state.rotate_set_count >= len(windows):
             state.rotate_set_count = 0
-        ui.showWindow(data.cl["defaults"]['windows'][state.rotate_set_count])
+        ui.showWindow(windows[state.rotate_set_count])
 
     def rotate_all():
         ui.nextWindow()
@@ -393,19 +393,24 @@ class Action():
         channels.showGraphEditor(True, state.parameter_index, state.selected_step, channels.selectedChannel())
 
     def change_color():
-        if data.cl["defaults"]["colors"]:
+        colors = layout_map.get_setting("colors")
+        state.current_color += 1
+        if state.current_color >= len(colors):
+            count = 0
+        if colors:
             if ui.getFocused(widChannelRack):
-                channels.setChannelColor(channels.selectedChannel(), next(d["colors"]))
+                channels.setChannelColor(channels.selectedChannel(), colors[state.current_color])
             elif ui.getFocused(widMixer):
-                mixer.setTrackColor(mixer.trackNumber(), next(Action.c))
+                mixer.setTrackColor(mixer.trackNumber(), colors[count])
             elif ui.getFocused(widPlaylist) and playlist.isTrackSelected(state.selected_playlist_track):
-                playlist.setTrackColor(state.selected_playlist_track, next(d["colors"]))
+                playlist.setTrackColor(state.selected_playlist_track, colors[state.current_color])
+        else:
+            print('No colors set in default settings.')
 
     def trig_clip():
         mode = playlist.getLiveLoopMode(state.performance_row)
         if playlist.getLiveBlockStatus(state.performance_row, state.track_number, 2) == 2: 
             if mode == 1:
-                print(f"mode: {playlist.getLiveLoopMode(state.performance_row)}");
                 playlist.triggerLiveClip(state.performance_row, state.track_number, midi.TLC_MuteOthers | midi.TLC_Fill)
             else:
                 playlist.triggerLiveClip(state.performance_row, -1, midi.TLC_MuteOthers | midi.TLC_Fill)
@@ -514,15 +519,12 @@ class Action():
         ui.verZoom(-1)
 
     def mixer_solo():
-        print(f"track_num {state.track_number}")
         mixer.soloTrack(state.track_number)
 
     def mixer_record():
-        print(f"track_num {state.track_number}")
         mixer.armTrack(state.track_number)
 
     def mixer_mute():
-        print(f"track_num {state.track_number}")
         mixer.muteTrack(state.track_number)
 
     def select_pattern():
@@ -581,7 +583,8 @@ class EncoderAction(Action):
         Action.set_random_offset(d2)
 
     def selected_level(d2):
-        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
+        levels_control = layout_map.get_setting('levels_control_parameter')
+        if channels.isGraphEditorVisible() and levels_control_parameter:
             Action.set_parameter_value(d2)
         elif ui.getFocused(midi.widMixer):
             mixer.setTrackVolume(mixer.trackNumber(), d2/127, True)
@@ -594,7 +597,8 @@ class EncoderAction(Action):
                 return i 
 
     def selected_pan(d2):
-        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
+        levels_control = layout_map.get_setting('levels_control_parameter')
+        if channels.isGraphEditorVisible() and levels_control_parameter:
             Action.set_step_parameter(d2)
         if ui.getFocused(midi.widMixer):
             mixer.setTrackPan(mixer.trackNumber(), Utility.mapvalues(d2, -1, 1, 0, 127), True)
@@ -605,7 +609,8 @@ class EncoderAction(Action):
         mixer.setTrackVolume(0, d2/127, True)
 
     def set_efx_track(d2):
-        if channels.isGraphEditorVisible() and data.cl["defaults"]['levels_control_parameter']:
+        levels_control = layout_map.get_setting('levels_control_parameter')
+        if channels.isGraphEditorVisible() and levels_control_parameter:
             state.selected_step = EncoderAction.set_step(d2)
         else:
             channels.setTargetFxTrack(channels.selectedChannel(), d2)
@@ -631,7 +636,6 @@ class EncoderAction(Action):
             playlist.deselectAll()
             playlist.selectTrack(track)
             state.selected_playlist_track = track 
-            print(track)
 
         elif ui.getFocused(4):
             ui.navigateBrowser(midi.FPT_Down, 41)
@@ -645,13 +649,12 @@ class EncoderAction(Action):
     def pitch_bend(d2):
         # mixer.setTrackVolume(0, d2/127, True)
         channels.setChannelPitch(channels.selectedChannel(), Utility.mapvalues(d2, -1, 1, 0, 127))
-        print('pitch')
 
     def mixer_level(d2):
-        mixer.setTrackVolume(Encoderstate.track_number, d2/127, True)
+        mixer.setTrackVolume(state.track_number, d2/127, True)
 
     def mixer_pan(d2):
-        mixer.setTrackPan(Encoderstate.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
+        mixer.setTrackPan(state.track_number, Utility.mapvalues(d2, -1, 1, 0, 127), True)
 
     def nothing(d2):
         pass
