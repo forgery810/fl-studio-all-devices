@@ -126,7 +126,6 @@ def OnInit():
 def OnMidiMsg(event):
     """Function called on every midi message sent by controller"""
 
-    # try:
     print(event.midiChan, event.midiId, event.data1, event.data2) 
     p.event = event
     p.channel = channels.selectedChannel()
@@ -135,11 +134,6 @@ def OnMidiMsg(event):
     p.d2 = event.data2
     p.triage() # This runs the whole script logic
 
-    # except Exception as e:
-    #     # THIS CATCHES EVERYTHING
-    #     print("------------------------------------------------")
-    #     print(f"Script Error: {e}")
-    #     print("------------------------------------------------")
 
 if config.Config.PITCH_BEND:
     def OnPitchBend(event):
@@ -157,92 +151,3 @@ def OnRefresh(event):
 
 p = Process()
 
-# def AssignLayoutData(bt, kb, sq, en, jw, df, pf):
-
-#     def process_data(data, key_name):
-#         """converts dict from the the easier to edit config_layout to one that is designed for processing efficiently"""
-#         try:
-#             for v in data.values():
-#                 d[key_name][v['channel']] = {}  
-#                 d[key_name][v['channel']] = {}  
-#             for v in data.values():
-#                 d[key_name][v['channel']][v['midi'][0]] = {}    
-#                 d[key_name][v['channel']][v['midi'][3]] = {}    
-#             for v in data.values():
-#                 d[key_name]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ])  
-#                 if key_name == 'keyboardData':
-#                     d[key_name]['midi_pairs'].append([ v['midi'][3], v['midi'][1], v['channel'] ])  
-    
-#                 d[key_name][v['channel']][v['midi'][3]][v['midi'][1]] = {
-#                     'actions': v['actions'],
-#                     'channel': v['channel'],
-#                     'midi_2': v['midi'][2],
-#                     'toggle': v['toggle'],
-#                     # 'release': v['midi'][3],
-#                     'track': v['track']
-#                 }
-#                 d[key_name][v['channel']][v['midi'][0]][v['midi'][1]] = {
-#                     'actions': v['actions'],
-#                     'channel': v['channel'],
-#                     'midi_2': v['midi'][2],
-#                     'toggle': v['toggle'],
-#                     # 'release': v['midi'][3],
-#                     'track': v['track']
-#                 }
-#         except (KeyError, TypeError, ValueError) as e:
-#             print(f"An error occured: {e}")
-
-    
-
-#     def process_jog_data(jw, jogData):
-#         """ jog wheel must have its own function as it requires the midi_2 data to be a key"""
-#         for k, v in jw.items():
-#             d["jogData"][v["channel"]] = {}
-#         for k, v in jw.items():
-#             d["jogData"][v["channel"]][v['midi'][0]] = {}
-#             # d["jogData"][v["channel"]][v['midi'][0]][v['midi'][1]] = {} 
-#         for k, v in jw.items():
-#             d["jogData"][v["channel"]][v['midi'][0]][v['midi'][1]] = {} 
-#             d["jogData"][v["channel"]][v['midi'][0]][v['midi'][1]][v['midi'][2]] = {}
-#             # d["jogData"][v["channel"]]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ]) 
-#         for k, v in jw.items():
-#             d["jogData"][v["channel"]][v['midi'][0]][v['midi'][1]][v['midi'][2]] = { 
-#                 'actions': v['actions'],
-#                 'channel': v['channel'],
-#                 'toggle': v['toggle'],
-#                 'release': v['midi'][3],
-#                 'midi_2': v['midi'][2]
-#                 }
-#             d["jogData"]['midi_pairs'].append([ v['midi'][0], v['midi'][1], v['channel'] ]) 
-#             # d["jogData"]['midi_pairs'].append([v['midi'][0:2], v['channel']])
-
-#     def process_encoders_for_plugins(data):
-#         for v in data.values():
-#             plg.knob_num.append(v["midi"][1])
-
-#     def process_colors(color_list):
-#         if color_list:
-#             d["colors"] = itertools.cycle(color_list)
-
-#     process_data(bt, 'buttonData')
-#     process_data(kb, 'keyboardData')
-#     process_data(sq, 'sequencerData')
-#     process_data(en, 'encoderData')
-#     process_encoders_for_plugins(en)
-#     process_data(pf, 'performanceData')
-#     process_jog_data(jw, 'jogData')
-#     process_colors(df["colors"])
-
-transport_leds = ['shift', 'start', 'stop', 'record']
-
-# def AssignLeds(led):
-
-#     for v in led.values():
-#         Leds.active_leds.add(v["actions"][0])
-#         if v["actions"][0] in transport_leds:
-#             d["leds"]["transport_leds"][v["actions"][0]] = [v["midi"][0], v["channel"] - 1, v["midi"][1]]
-#             Modes.set_transport_leds(True)
-            
-#         else:
-#             d["leds"]["seq_leds"][v["actions"][0]] = [v["midi"][0], v["channel"] - 1, v["midi"][1]]
-#             Modes.set_seq_leds(True)

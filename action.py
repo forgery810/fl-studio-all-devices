@@ -72,10 +72,6 @@ class Action():
         Modes.set_mode()
         ui.setHintMsg(Modes.modes[Modes.current_mode])
 
-    def get_mode():
-        modes = layout_setting.get_setting("modes")
-        return modes[Modes.current_mode]
-
     def channel_mixer():
         if ui.getFocused(midi.widMixer):
             Action.focus_channels()
@@ -482,7 +478,7 @@ class Action():
         elif state.shift_status == 1:
             state.shift_status = 0
             ui.setHintMsg('Shift Disabled')
-        if Leds.check_if_led_set('shift'):
+        if layout_map.get_transport_led("shift"):
             Leds.check_shift(state.shift_status)
 
     def get_shift_status():

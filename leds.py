@@ -32,14 +32,16 @@ class Leds():
 
     @staticmethod
     def check_event_leds(event):   
-        # Check Sequencer Events
-        if event in Leds.events["sequencer"] and Leds.mode == 'Sequencer':
-            Leds.set_sequence()
-        
-        # Check Transport Events
-        elif event in Leds.events["transport"]:
+        # 1. Transport Check (Robust Bitwise)
+        # 256 is the specific flag for HW_Dirty_LEDs
+        if event & 256:
             Leds._update_transport_leds()
 
+        # 2. Sequencer Check (Existing List Logic)
+        # We use 'if' instead of 'elif' so a single event can update both if needed.
+        if event in Leds.events["sequencer"] and Leds.mode == 'Sequencer':
+            Leds.set_sequence()
+            
     @staticmethod
     def _update_transport_leds():
         """Updates Play, Stop, Record LEDs based on current Transport state."""

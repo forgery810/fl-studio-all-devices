@@ -52,28 +52,50 @@ class LayoutManager:
             return self._encoder_ccs.index(cc_value)
         except ValueError:
             return -1
-            
+
     def _process_section(self, section_data, context_key):
         for item in section_data.values():
             # Standardize Key extraction
             status = item['midi'][0]
             data1 = item['midi'][1]
+            data2 = item['midi'][2] # for jog wheels
             channel = item['channel'] 
             
+            try:
+                data2 = item['midi'][2]
+            except IndexError:
+                data2 = 0 
+
             key = (channel, status, data1)
-            
+
             # Ensure the slot exists
             if key not in self._map:
                 self._map[key] = {}
             
-            # Store the action under its specific context (Mode name)
-            self._map[key][context_key] = {
-                "type": context_key, # Useful to know later
-                "actions": item.get('actions', []),
-                "track": item.get('track', 0),
-                "toggle": item.get('toggle', False),
-                "midi_2": item.get('midi', [0,0,0])[2] # Store data2 filter if needed
-            }
+            # SPECIAL HANDLING FOR JOGWHEEL
+            if context_key == "jogwheel":
+                # Create a sub-dictionary for jogwheels if it doesn't exist
+                if "jogwheel" not in self._map[key]:
+                    self._map[key]["jogwheel"] = {}
+                
+                # Store specific action keyed by the Data2 value (Direction)
+                self._map[key]["jogwheel"][data2] = {
+                    "type": context_key,
+                    "actions": item.get('actions', []),
+                    "track": item.get('track', 0),
+                    "toggle": item.get('toggle', False),
+                    "midi_2": data2
+                }
+            
+            # STANDARD HANDLING (Buttons, Encoders, etc.)
+            else:
+                self._map[key][context_key] = {
+                    "type": context_key,
+                    "actions": item.get('actions', []),
+                    "track": item.get('track', 0),
+                    "toggle": item.get('toggle', False),
+                    "midi_2": data2 
+                }
 
     def _process_leds(self, led_data):
         """
@@ -98,7 +120,7 @@ class LayoutManager:
                 except ValueError:
                     print(f"Warning: Unknown LED action '{action_name}' ignored.")
 
-    def get_contextual_action(self, channel, status, data1, active_contexts):
+    def get_contextual_action(self, channel, status, data1, data2, active_contexts):
         """
         Looks up the key, then checks the 'active_contexts' list in order.
         Returns the first match found.
@@ -108,11 +130,17 @@ class LayoutManager:
         if not potential_actions:
             return None
             
-        # Iterate through our priorities (e.g. ['performance', 'Sequencer', 'encoder'])
+        # Iterate through  priorities (['performance', 'Sequencer', 'encoder'])
         for ctx in active_contexts:
             if ctx in potential_actions:
-                return potential_actions[ctx]
+                # If it's a Jog Wheel, use data2
+                if ctx == "jogwheel":
+                    jog_map = potential_actions[ctx]
+                    # Return the specific node for this direction (data2), or None if undefined
+                    return jog_map.get(data2)
                 
+                # Standard Return
+                return potential_actions[ctx]                
         return None
 
     def get_setting(self, key, default_val=None):

@@ -65,17 +65,18 @@ class Process():
         active_contexts.append("encoder")
         active_contexts.append("jogwheel")
         
-        target = layout_map.get_contextual_action(midi_chan, midi_id, data_1, active_contexts)
+        target = layout_map.get_contextual_action(midi_chan, midi_id, data_1, data_2, active_contexts)
 
         # Handle Unmapped
         if not target:
+            print('not target')
             self.event.handled = config.Config.PREVENT_PASSTHROUGH
             return
 
         # dispatch
         category = target["type"]
         is_press = (data_2 > 0)
-        
+        print(f"category: {category}")
         # check if the category found is any of the button types
         if category == "performance":
             if is_press:
@@ -98,12 +99,13 @@ class Process():
                 Main.set_track(target)
                 Main.transport_act(self, target["actions"], state.shift_status)
 
+        elif category == "jogwheel":
+            Encoder.jogWheel(self, target)
+
         elif category == "encoder":
             Main.set_track(target)
             Encoder.set(self, target)
             
-        elif category == "jogwheel":
-            Encoder.jogWheel(self, target)
 
 
 
@@ -196,6 +198,7 @@ class Sequencer(Process):
 class Encoder(Process):
 
     def set(self, midi_data):
+        print('set')
         plugin_ctrl = layout_map.get_setting("plugin_control", False)
         if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and plugin_ctrl:
             Encoder.control_plugin(self)
@@ -235,9 +238,13 @@ class Encoder(Process):
         plugins.setParamValue(param_value, param, channels.selectedChannel())
         self.event.handled = True
 
-    def jogWheel(self, data):
-        if data[self.event.data1].get(self.event.data2, {}):
-            Main.transport_act(self, data[self.event.data1][self.event.data2]['actions'], Action.get_shift_status())
+    def jogWheel(self, midi_data):
+        # Shift status check
+         Main.transport_act(self, midi_data['actions'], state.shift_status) # Wrap in list to satisfy transport_act logic if needed, or adjust args
+    
+        # # Main.transport_act expects a list/dict and an index, 
+        # print('jogwheel')
+        # Main.transport_act(self, midi_data['actions'], state.shift_status)
 
     def channel_link(cc):
         tracks = [i for i in range(0, 128)]
@@ -251,7 +258,7 @@ class Encoder(Process):
 class Main(Process):    
 
     def transport_act(self, offset_event, status):
-        print(f"event: {offset_event[status]}")
+        print(f"Main event: {offset_event[status]}")
         Action.call_func(offset_event[status])
         if offset_event[status] != 'nothing':
             self.event.handled = True
