@@ -12,7 +12,6 @@ import playlist
 import plugins  
 import transport 
 import ui 
-import data 
 
 class Shifter():
     def __init__(self):

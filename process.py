@@ -10,9 +10,7 @@ import plugins
 import patterns
 from utility import Utility
 import midi
-from data import d
 import user_files.config as config
-import data
 import plugindata as plg
 from notes import Notes, Scales
 from modes import Modes
@@ -109,21 +107,21 @@ class Process():
 
 
 
-    def get_categories(midi_pair):
+    # def get_categories(midi_pair):
 
-        """
-        Returns all categories a MIDI pair belongs to.
+    #     """
+    #     Returns all categories a MIDI pair belongs to.
 
-        Categories are the names of the various dictionaries within d. midi_pair may be a member
-        of more than one dictionary.
-        """
-        
-        categories = ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]
-        all_categories = []
-        for category in categories:
-            if midi_pair in d[category]["midi_pairs"]:
-                all_categories.append(category)
-        return all_categories
+    #      midi_pair may be a member
+    #     of more than one dictionary.
+    #     """
+
+    #     categories = ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]
+    #     all_categories = []
+    #     for category in categories:
+    #         if midi_pair in d[category]["midi_pairs"]:
+    #             all_categories.append(category)
+    #     return all_categories
 
 
 
@@ -154,8 +152,9 @@ class Sequencer(Process):
     def step_pressed(self, midi_data):
         act = midi_data["actions"][state.shift_status] 
         if act.isdigit():
-            track = int(act) // data.cl["defaults"]["sequence_length"]
-            step_num = Sequencer.get_step(int(act), data.cl["defaults"]["sequence_length"])
+            seq_len = layout_map.get_setting("sequence_length", 16)
+            track = int(act) // seq_len
+            step_num = Sequencer.get_step(int(act), seq_len)
             chan = Sequencer.get_seq_channel(track, step_num)
 
             if channels.isGraphEditorVisible() and config.Config.SELECT_PARAM_STEP:
@@ -197,14 +196,16 @@ class Sequencer(Process):
 class Encoder(Process):
 
     def set(self, midi_data):
-        if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and data.cl["defaults"]["plugin_control"]:
+        plugin_ctrl = layout_map.get_setting("plugin_control", False)
+        if ui.getFocused(5) and plugins.isValid(channels.channelNumber()) and plugin_ctrl:
             Encoder.control_plugin(self)
         else:       
             EncoderAction.call_func(midi_data['actions'][state.shift_status], self.event.data2)
 
     def set_data(d):
+        mixer_tracks = layout_map.get_setting("mixer_tracks", 8)
         if config.Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-            track_offset = data.cl["defaults"]["mixer_tracks"] % mixer.trackNumber()
+            track_offset = mixer_tracks % mixer.trackNumber()
         else:
             track_offset = 0
         EncoderAction.track_number = d["track"] + track_offset
@@ -252,7 +253,7 @@ class Main(Process):
         setting from the default settings set by the user.
         """
         if config.Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-            num_tracks = data.cl["defaults"]["mixer_tracks"]
+            mixer_tracks = layout_manager.get_setting("mixer_tracks", 8)
             # this catches an issue when the selected track / mixer_tracks has 0 remainder
             mult = (mixer.trackNumber() - 1) // num_tracks if mixer.trackNumber() > 1 else 0
             track_offset = mult * num_tracks

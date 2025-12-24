@@ -1,8 +1,8 @@
 
 import ui
 from utility import Utility
-import data
 import user_files.config as config
+from layout_manager import layout_map
 
 class Notes():
 	something = 2
@@ -15,8 +15,9 @@ class Notes():
 
 	@staticmethod
 	def init_notes():
+		key_count = layout_map.get_setting("keyboard_count", 1)
 		if not Notes.all_notes:
-			for i in range(0, data.cl["defaults"]["keyboard_count"]):
+			for i in range(0, key_count):
 				for n in Notes.note_list:
 					text = str(n) + str(i)
 					Notes.all_notes.append(text)
@@ -81,7 +82,6 @@ class Scales(Notes):
 			Scales.scale_choice = 0
 
 	def get_scale_choice():
-		print(Scales.scale_choice)
 		return Scales.scale_choice
 
 	def scale_message(data_two):

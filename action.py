@@ -13,9 +13,6 @@ import plugins
 import transport 
 import ui 
 from shifter import Shifter
-import data 
-from data import d
-import data
 import user_files.config as config
 from utility import Utility
 from notes import Notes, Scales 

@@ -1,5 +1,5 @@
 from leds import Leds
-import data
+from layout_manager import layout_map
 
 class Modes():
 
@@ -65,7 +65,7 @@ class Modes():
 
 	@classmethod
 	def mode_active(cls, mode):
-		if data.cl["defaults"][mode]:
+		if layout_map.get_setting(mode):
 			return True
 		if mode in cls.modes and Modes.get_mode() == mode:
 			return True 
