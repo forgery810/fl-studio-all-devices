@@ -1,7 +1,5 @@
 # plugin data is stored here
 
-knob_num = []
-
 plugin_names = ('Transistor Bass', 'Drumpad', 'Fruity DX10')
 drum_plugs = ('Slicex', 'FPC')
 FPC_pads = (37, 36, 42, 54, 40, 38, 46, 44, 48, 47, 45, 43, 49, 55, 51, 53, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75)

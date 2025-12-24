@@ -126,20 +126,20 @@ def OnInit():
 def OnMidiMsg(event):
     """Function called on every midi message sent by controller"""
 
-    try:
-        print(event.midiChan, event.midiId, event.data1, event.data2) 
-        p.event = event
-        p.channel = channels.selectedChannel()
-        p.track = mixer.trackNumber()
-        p.pattern = patterns.patternNumber()
-        p.d2 = event.data2
-        p.triage() # This runs the whole script logic
+    # try:
+    print(event.midiChan, event.midiId, event.data1, event.data2) 
+    p.event = event
+    p.channel = channels.selectedChannel()
+    p.track = mixer.trackNumber()
+    p.pattern = patterns.patternNumber()
+    p.d2 = event.data2
+    p.triage() # This runs the whole script logic
 
-    except Exception as e:
-        # THIS CATCHES EVERYTHING
-        print("------------------------------------------------")
-        print(f"Script Error: {e}")
-        print("------------------------------------------------")
+    # except Exception as e:
+    #     # THIS CATCHES EVERYTHING
+    #     print("------------------------------------------------")
+    #     print(f"Script Error: {e}")
+    #     print("------------------------------------------------")
 
 if config.Config.PITCH_BEND:
     def OnPitchBend(event):

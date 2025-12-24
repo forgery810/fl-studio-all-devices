@@ -107,21 +107,21 @@ class Process():
 
 
 
-    # def get_categories(midi_pair):
+    def get_categories(midi_pair):
 
-    #     """
-    #     Returns all categories a MIDI pair belongs to.
+        """
+        Returns all categories a MIDI pair belongs to.
 
-    #      midi_pair may be a member
-    #     of more than one dictionary.
-    #     """
+         midi_pair may be a member
+        of more than one dictionary.
+        """
 
-    #     categories = ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]
-    #     all_categories = []
-    #     for category in categories:
-    #         if midi_pair in d[category]["midi_pairs"]:
-    #             all_categories.append(category)
-    #     return all_categories
+        categories = ["performanceData", "keyboardData", "sequencerData", "buttonData", "encoderData", "jogData"]
+        all_categories = []
+        for category in categories:
+            if midi_pair in d[category]["midi_pairs"]:
+                all_categories.append(category)
+        return all_categories
 
 
 
@@ -212,16 +212,28 @@ class Encoder(Process):
 
     def control_plugin(self):
         plugin = plugins.getPluginName(channels.selectedChannel())  
-        param_count = plugins.getParamCount(channels.selectedChannel())
-        if plugin in plg.plugin_dict and plg.knob_num.index(self.event.data1) < len(plg.plugin_dict[plugin]):
-            param = plg.plugin_dict[plugin][plg.knob_num.index(self.event.data1)]
-            param_value =  self.event.data2/127 #Utility.level_adjust(self.event.data2, plugins.getParamValue(param, channels.selectedChannel()), .025)                                                                                                                                                     
-            plugins.setParamValue(param_value, param, channels.selectedChannel())
-            self.event.handled = True
-        else:   
-            param = self.event.data1 - 15
-            plugins.setParamValue(self.event.data2/127, param, self.channel)
-            self.event.handled = True
+        
+        # Get the logical index of the knob (0, 1, 2...) based on JSON order
+        knob_index = layout_map.get_encoder_index(self.event.data1)
+        
+        # If this knob isn't defined in our layout, ignore it
+        if knob_index == -1:
+            return
+
+        # Scenario A: We have a specific map for this plugin (e.g. Transistor Bass)
+        if plugin in plg.plugin_dict and knob_index < len(plg.plugin_dict[plugin]):
+            param = plg.plugin_dict[plugin][knob_index]
+            
+        # Scenario B: Generic Plugin (Control parameters 0, 1, 2... in order)
+        else:
+            param = knob_index 
+
+        # Execute
+        # (Using knob_index as the param for generic plugins ensures 
+        # the first knob always grabs the first parameter)
+        param_value = self.event.data2 / 127.0
+        plugins.setParamValue(param_value, param, channels.selectedChannel())
+        self.event.handled = True
 
     def jogWheel(self, data):
         if data[self.event.data1].get(self.event.data2, {}):
@@ -253,10 +265,10 @@ class Main(Process):
         setting from the default settings set by the user.
         """
         if config.Config.FOLLOW_TRACK and mixer.trackNumber() != 0:
-            mixer_tracks = layout_manager.get_setting("mixer_tracks", 8)
+            mixer_tracks = layout_map.get_setting("mixer_tracks", 8)
             # this catches an issue when the selected track / mixer_tracks has 0 remainder
-            mult = (mixer.trackNumber() - 1) // num_tracks if mixer.trackNumber() > 1 else 0
-            track_offset = mult * num_tracks
+            mult = (mixer.trackNumber() - 1) // mixer_tracks if mixer.trackNumber() > 1 else 0
+            track_offset = mult * mixer_tracks
         else:
             track_offset = 0
         state.track_number = midi_data["track"] + track_offset 

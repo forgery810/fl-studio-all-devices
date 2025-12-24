@@ -7,15 +7,21 @@ class LayoutManager:
             "sequencer": {}
         }
         self.transport_led_names = { "shift", "start", "stop", "record"}
+        self._encoder_ccs = []
 
     def build(self, cl):
         self._map.clear()
         self._led_map["transport"].clear()
         self._led_map["sequencer"].clear()
+        self._encoder_ccs.clear()
         
         self._defaults = cl.get("defaults", {})
         # We map the JSON section names to "Context Keys"
         # The user_layout.json sections:
+        
+        encoder_data = cl.get("encoder", {})
+        self._process_section(encoder_data, "encoder")
+        self._map_encoder_indices(encoder_data) # Populate the list
         self._process_section(cl.get("performance", {}), "performance")
         self._process_section(cl.get("encoder", {}), "encoder")
         self._process_section(cl.get("jogwheel", {}), "jogwheel")
@@ -28,6 +34,25 @@ class LayoutManager:
         self._process_section(cl.get("sequencer", {}), "Sequencer")
         self._process_leds(cl.get("led", {}))
 
+    def _map_encoder_indices(self, encoder_data):
+        """
+        Stores the CC numbers of encoders in the order they appear in the JSON.
+        This preserves the mapping of Knob 1 -> Param 1, Knob 2 -> Param 2, etc.
+        """
+        for item in encoder_data.values():
+            # item["midi"][1] is the data1 / CC number
+            self._encoder_ccs.append(item["midi"][1])
+
+    def get_encoder_index(self, cc_value):
+        """
+        Returns the index of the CC value in the encoder list.
+        Returns -1 if not found.
+        """
+        try:
+            return self._encoder_ccs.index(cc_value)
+        except ValueError:
+            return -1
+            
     def _process_section(self, section_data, context_key):
         for item in section_data.values():
             # Standardize Key extraction
