@@ -219,15 +219,13 @@ class Encoder(Process):
         # Get the logical index of the knob (0, 1, 2...) based on JSON order
         knob_index = layout_map.get_encoder_index(self.event.data1)
         
-        # If this knob isn't defined in our layout, ignore it
+        # If this knob isn't defined, ignore it
         if knob_index == -1:
             return
 
-        # Scenario A: We have a specific map for this plugin (e.g. Transistor Bass)
         if plugin in plg.plugin_dict and knob_index < len(plg.plugin_dict[plugin]):
             param = plg.plugin_dict[plugin][knob_index]
             
-        # Scenario B: Generic Plugin (Control parameters 0, 1, 2... in order)
         else:
             param = knob_index 
 

@@ -3,9 +3,6 @@ class Config:
 
 	LAYOUT_MAP = {
 	    "default": "user_layout.json", 
-	    "nanoKONTROL2": "korg_nano.json",
-	    "ATM SQ": "atom_sq.json",
-	    "MIDIIN2 (ATM SQ)": "atom_sq.json",
 	}
 
 	# LAYOUT_MAP allows more than one controller to use the same script. To add new controllers, use the 
@@ -86,3 +83,7 @@ class Config:
 	"""True enables pitch bend."""
 
 	MIXER_SCROLL_MAX = 32
+
+	""" When using the scroll function, this number will control the highest mixer track that can be accessed. 
+
+	"""

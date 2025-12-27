@@ -1,2 +1,7 @@
 debug_test.py
 __pycache__
+.idea
+atom-sq-test.json
+atom-sq.json
+korg_nano.json
+debug.log

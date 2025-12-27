@@ -56,8 +56,6 @@ class Modes():
 			Modes.seq_status = next(Mode.seq)
 			ui.setHintMsg(f'Seq Mode: {Mode.seq_status}')
 
-	# def get_seq_status():
-	# 	return Mode.seq_status
 
 	@classmethod
 	def remove_mode(cls, m):

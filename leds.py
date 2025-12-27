@@ -5,7 +5,7 @@ import user_files.config as config
 from layout_manager import layout_map
 
 class Leds():
-    active_leds = set() # Kept for state tracking if needed, or we can query layout_map directly
+    active_leds = set() # Kept for state tracking if needed, or  query layout_map directly
     events = {
         "transport": [256, 260],
         "sequencer": [65824, 1056, 1024, 1280],
@@ -38,7 +38,7 @@ class Leds():
             Leds._update_transport_leds()
 
         # 2. Sequencer Check (Existing List Logic)
-        # We use 'if' instead of 'elif' so a single event can update both if needed.
+        # Use 'if' instead of 'elif' so a single event can update both if needed.
         if event in Leds.events["sequencer"] and Leds.mode == 'Sequencer':
             Leds.set_sequence()
             

@@ -2,7 +2,6 @@
 # Author: forgery810
 VERSION = '1.0.0'
 
-# from config_layout import cl  
 import device
 import channels
 from midi import *
@@ -27,7 +26,6 @@ import constants
 import json
 import os
 import sys
-from debug_test import run_test
 
 def OnInit():
     """Function called when script starts"""
@@ -45,7 +43,6 @@ def OnInit():
     else:
         print("Script is not assigned to any device.")
 
-    # Load configuration (handles JSON vs Python fallback internally)
     cl = load_config()
 
     if cl is None:
@@ -95,10 +92,8 @@ def OnInit():
         print("")
     except Exception as e:
         print(f"CRITICAL ERROR: Failed to build layout map from config. Error: {e}")
-        # Optionally print traceback here
         return
 
-    # Initialize Notes after config is loaded
     modes_settings = layout_map.get_setting("modes", ["Buttons", "Keyboard", "Sequencer"])
     Notes.init_notes()
     Modes.init_modes(modes_settings)
@@ -132,7 +127,7 @@ def OnMidiMsg(event):
     p.track = mixer.trackNumber()
     p.pattern = patterns.patternNumber()
     p.d2 = event.data2
-    p.triage() # This runs the whole script logic
+    p.triage() 
 
 
 if config.Config.PITCH_BEND:

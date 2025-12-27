@@ -16,7 +16,7 @@ class LayoutManager:
         self._encoder_ccs.clear()
         
         self._defaults = cl.get("defaults", {})
-        # We map the JSON section names to "Context Keys"
+        # Map the JSON section names to "Context Keys"
         # The user_layout.json sections:
         
         encoder_data = cl.get("encoder", {})
@@ -27,8 +27,8 @@ class LayoutManager:
         self._process_section(cl.get("jogwheel", {}), "jogwheel")
         
         # Mode-specific sections
-        # In your JSON, "defaults"["modes"] = ["Buttons", "Keyboard", "Sequencer"]
-        # These correspond to "button", "keyboard", "sequencer" sections.
+        # In the JSON, "defaults"["modes"] = ["Buttons", "Keyboard", "Sequencer"]
+        # correspond to "button", "keyboard", "sequencer" sections.
         self._process_section(cl.get("button", {}), "Buttons")
         self._process_section(cl.get("keyboard", {}), "Keyboard")
         self._process_section(cl.get("sequencer", {}), "Sequencer")
@@ -58,7 +58,7 @@ class LayoutManager:
             # Standardize Key extraction
             status = item['midi'][0]
             data1 = item['midi'][1]
-            data2 = item['midi'][2] # for jog wheels
+            data2 = item['midi'][2]
             channel = item['channel'] 
             
             try:
@@ -74,7 +74,7 @@ class LayoutManager:
             
             # SPECIAL HANDLING FOR JOGWHEEL
             if context_key == "jogwheel":
-                # Create a sub-dictionary for jogwheels if it doesn't exist
+                # Create a sub-dictionary for jogwheels 
                 if "jogwheel" not in self._map[key]:
                     self._map[key]["jogwheel"] = {}
                 
@@ -104,9 +104,6 @@ class LayoutManager:
         """
         for item in led_data.values():
             action_name = item["actions"][0]
-            # LED data usually needs channel 0-15 for midiOutMsg, 
-            # but config usually provides 1-16. Adjusting by -1 to match legacy logic.
-            # Using tuple (status, channel, data1)
             midi_packet = (item["midi"][0], item["channel"] - 1, item["midi"][1])
             
             if action_name in self.transport_led_names:
@@ -146,11 +143,9 @@ class LayoutManager:
     def get_setting(self, key, default_val=None):
         """
         Safe access to the 'defaults' section of the JSON.
-        Example: layout_map.get_setting("sequence_length", 16)
         """
         return self._defaults.get(key, default_val)
 
-    # --- LED Retrieval Methods ---
 
     def get_transport_led(self, name):
         """Returns (status, channel, data1) for a transport action or None"""

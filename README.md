@@ -1,9 +1,10 @@
 Fl Studio Script Builder is Python script which allows any MIDI controller to work with FL Studio. The layout can be custom designed by the user through a web app available at www.midicontrol.cc. 
 
-1.0.0 Update 
+1.0.0 Update - 12/27/2025 
 
-- layout files (.json files) are must now be place in the user_files folder. config.py is also found in this folder
+- layout files (.json files) are must now be placed in the user_files folder. config.py is also found in this folder
 - Multiple controllers can now be handled by the same script instance. The script will look in the LAYOUT_MAP     variable in config.py to search the controller name with a matching .json file. user_layout.json will be used if no matching layouts are found. 
+- config_layout.py no longer works with the script. Legacy users will have to convert their previous layout dictionary to a json file and placed in the user_files folder. A web converter can be used for this task.
 
 0.9.8 Update - 12/18/2025
 
