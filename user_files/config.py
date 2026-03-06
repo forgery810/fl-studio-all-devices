@@ -3,6 +3,8 @@ class Config:
 
 	LAYOUT_MAP = {
 	    "default": "user_layout.json", 
+	    "VI61": "VI61.json",
+	    "nanoKONTROL2": "korg_nano.json", 
 	}
 
 	# LAYOUT_MAP allows more than one controller to use the same script. To add new controllers, use the 

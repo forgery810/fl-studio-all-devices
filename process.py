@@ -56,6 +56,11 @@ class Process():
        
         current_mode_name = Modes.get_mode() 
         active_contexts.append(current_mode_name)
+
+        # Check for "Always On" modes from layout defaults
+        for mode in ["Keyboard", "Sequencer"]:
+            if mode != current_mode_name and Modes.mode_active(mode):
+                active_contexts.append(mode)
         
         # If the button isn't found in "Sequencer" check "Buttons".
         # avoids adding it twice if current_mode_name is already "Buttons".
@@ -69,8 +74,17 @@ class Process():
 
         # Handle Unmapped
         if not target:
-            print('not target')
-            self.event.handled = config.Config.PREVENT_PASSTHROUGH
+            if (midi_id == 144 or midi_id == 128) and layout_map.get_setting("Keyboard"):
+                # Manually play on selected channel to bypass FL Studio's Omni/Performance mapping
+                if midi_id == 144 and data_2 > 0:
+                    channels.midiNoteOn(channels.selectedChannel(), data_1, data_2)
+                else:
+                    # Note Off or Note On with velocity 0
+                    channels.midiNoteOn(channels.selectedChannel(), data_1, 0)
+                self.event.handled = True
+            else:
+                print('not target')
+                self.event.handled = config.Config.PREVENT_PASSTHROUGH
             return
 
         # dispatch

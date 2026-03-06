@@ -1,5 +1,13 @@
 Fl Studio Script Builder is Python script which allows any MIDI controller to work with FL Studio. The layout can be custom designed by the user through a web app available at www.midicontrol.cc. 
 
+1.0.5 Update - 3/6/2025
+
+- Fixed recent update
+- "Keyboard Always On" and "Sequencer Always On" under default setting were not functioning. This issue is now fixed. This can now be set per controller layout rather than globally for all controllers using the same script. 
+- With "Keyboard Always On" set to true, any 144/128 MIDI message not set in the layout will play notes. This is aimed at controllers with keys where the user wants them always to play notes. 
+- With "Sequencer Always On" set to true, buttons set in the sequencer portion of the layout will always add remove trigs, regardless of mode. This is for users who want a dedicated sequencer. 
+- "Sequencer Always On" overrides "Keyboard Always On" if both are set to true.    
+
 1.0.0 Update - 12/27/2025 
 
 - Script now appears in FL Studio as "All Devices" rather than "No Default".
